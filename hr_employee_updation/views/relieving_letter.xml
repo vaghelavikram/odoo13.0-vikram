@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_relieving_letter" model="report.paperformat">
+        <field name="name">Relieving Letter</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+        id="employee_relieving_letter"
+        string="Relieving Letter"
+        model="hr.employee"
+        report_type="qweb-pdf"
+        name="hr_employee_updation.print_relieving_letter"
+        file="hr_employee_updation.print_relieving_letter"
+        print_report_name="'Relieving Letter - %s' % (object.name).replace('/', '')"
+        paperformat="hr_employee_updation.paperformat_relieving_letter"/>
+
+    <template id="print_relieving_letter">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="employee">
+                <t t-if="employee.is_watermark">
+                    <div style="text-align:right;">
+                        <img t-if="employee.company_id" t-att-src="image_data_uri(employee.company_id.logo)" alt="Logo"/>
+                    </div>
+                </t>
+                <t t-if="employee.is_watermark">
+                    <div class="watermark" style="position:absolute;opacity:1;font-size:3em;width:100%;text-align:center;z-index:1000;">
+                        <img t-att-src="image_data_uri(employee.company_id.letterhead_watermark)" style="padding-top:10rem;"/>
+                    </div>
+                </t>
+                <div>
+                    <strong>e-Zest/HR/Rel/e-Zest<span t-field="employee.identification_id"/></strong>
+                </div>
+                <div>
+                    <strong><span t-esc="time.strftime('%Y-%m-%d')" t-options='{"widget": "date"}'/></strong>
+                </div>
+                <div>
+                    <strong>Name: <span t-field="employee.name"/></strong>
+                </div>
+                <div>
+                    <strong>Pune</strong>
+                </div>
+                <div style="text-align: center;margin-top: 2rem;">
+                    <strong><u><span>Subject: Relieving Letter</span></u></strong>
+                </div>
+                <div style="margin-top: 2rem;">
+                  <strong>Dear <span t-field="employee.name"/>,</strong>
+                </div>
+                <div>
+                    <p>This is in reference to your letter of resignation from services of our company dated &#160;&#160;<t t-if="employee.resign_date"><strong><span t-field="employee.resign_date"/></strong></t>. While accepting the same, we thank you for association you had with us during tenure from <t t-if="employee.joining_date"><strong><span t-field="employee.joining_date"/></strong></t> <strong>to</strong> <t t-if="employee.exit_date"><strong><span t-field="employee.exit_date"/></strong></t></p>
+                    <p>You have been relieved from your service with effect from the closing working hours of &#160;<t t-if="employee.exit_date"><strong> <span t-field="employee.exit_date"/></strong></t>.</p>
+                    <p>We wish you all the best in your future career.</p>
+                </div>
+                <div style="margin-top: 5rem;" name="signature">
+                    <t t-if="employee.company_id.company_signature">
+                        <div class="row">
+                            <div class="col-4">
+                                <img t-att-src="image_data_uri(employee.company_id.company_signature)" style="max-height: 4cm; max-width: 8cm;margin-left:-22px;" alt="Company signature"/>
+                            </div>
+                            <div class="col-6"/>
+                        </div>
+                    </t>
+                    <div class="row">
+                        <div style="margin-top: 1rem;" class="col-4">
+                            <strong>Authorized Signatory</strong>
+                        </div>
+                        <div class="col-6"/>
+                    </div>
+                    <div class="row">
+                        <div style="margin-top: 1rem;" class="col-4">
+                            <strong>e-Zest Solutions Ltd.</strong>
+                        </div>
+                        <div class="col-6"/>
+                    </div>
+                </div>
+                <t t-if="employee.is_watermark">
+                    <footer style="position:relative;top:35rem;border-top:1px solid black;">
+                        <span><t t-esc="employee.company_id.name"/></span><br/>
+                        <span><t t-esc="employee.payroll_loc.address"/></span><br/>
+                        <span><t t-esc="employee.company_id.website"/></span><br/>
+                        <span><t t-esc="employee.payroll_loc.cin"/></span>
+                    </footer>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="allocationListView.open_allocation_button">
+        <button type="button" class="btn btn-primary o_open_allocation_button">
+            Create
+        </button>
+    </t>
+
+    <t t-extend="ListView.buttons" t-name="allocationListView.buttons">
+        <t t-jquery="button.o_list_button_save" t-operation="after">
+            <t t-call="allocationListView.open_allocation_button"/>
+        </t>
+    </t>
+</templates>

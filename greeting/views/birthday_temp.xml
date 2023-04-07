@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model='ir.ui.view' id='birthday_tmp_tree_view'>
+        <field name="name">birth.template.tree</field>
+        <field name="model">birthday.template.template</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name" invisible="1"/>
+                <field name="image_1920" filename="name" widget="image" height='25' width='25' required="1"/>
+                <field name="create_date" widget="date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='birthday_tmp_temp_tree_view'>
+        <field name="name">birthday.template.tree</field>
+        <field name="model">birthday.template</field>
+        <field name="arch" type="xml">
+            <tree create="0" editable="top">
+                <field name="name" invisible="1"/>
+                <field name="employee_id" readonly="1" options="{'no_open':1}"/>
+                <field name="birthday_greeting" filename="name" readonly="1" widget="image" height='25' width='25'/>
+                <field name="create_date" widget="date"/>
+                <button name="download_image" type="object" string="Download" class="btn" icon="fa-download"/>
+                <button string="Make Birthday Zip" type="object" name="cron_birthday_make_zip"
+                class="oe_highlight oe_stat_button " icon="fa-download" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="birthday_tmp_form_view">
+        <field name="name">Birthday</field>
+        <field name="model">birthday.template.template</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Button record" >
+                <group>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="image_1920"/>
+                    </group>
+                </group>
+            </form>
+       </field>
+    </record>
+
+    <record model="ir.ui.view" id="birthday_tmp_temp_form_view">
+        <field name="name">Birthday Template Form</field>
+        <field name="model">birthday.template</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Button record" >
+                <group>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="birthday_greeting" filename="name" widget="image"/>
+                        <field name="employee_id"/>
+                    </group>
+                </group>
+            </form>
+       </field>
+    </record>
+
+    <!-- Actions   -->
+    <record id="action_all_birthday_template" model="ir.actions.act_window">
+        <field name="name">All Birthday Template</field>
+        <field name="res_model">birthday.template.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_employee_birthday_template" model="ir.actions.act_window">
+        <field name="name">e-Zestian Birthday Templates</field>
+        <field name="res_model">birthday.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menuitems -->
+    <menuitem id="menu_templates" name="Templates" parent="hr_employee_updation.menu_hr_management"/>
+    <menuitem id="menu_all_template_birthday" name="All Birthday Template" action="action_all_birthday_template" parent="menu_templates" sequence="0"/>
+   <!--  <menuitem id="menu_all_template_anniversary" name="All Anniversary Template" action="action_all_anniversary_template" parent="menu_templates" sequence="2"/> -->
+    <menuitem id="menu_config_birthday" name="e-Zestian Birthday" action="action_employee_birthday_template" parent="menu_templates" sequence="2"/>
+    <!-- <menuitem id="menu_config_anniversary" name="e-Zestian Anniversary" action="action_employee_anniversary_template" parent="menu_templates" sequence="3"/> -->
+
+</odoo>

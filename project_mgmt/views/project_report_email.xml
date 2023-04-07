@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="ir_cron_project_report_email" model="ir.cron">
+            <field name="name">Project Report Cron</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="code">model._cron_project_report_email()</field>
+            <field name="state">code</field>
+        </record>
+
+        <record id="ir_cron_not_in_syn_order" model="ir.cron">
+            <field name="name">Project Report Not in Sync Order</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="code">model._cron_not_in_syn_order()</field>
+            <field name="state">code</field>
+        </record>
+
+        <record id="ir_cron_invoice_due_reports" model="ir.cron">
+            <field name="name">Milestone: Invoice Due Reports</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="code">model._cron_project_invoice_due_report()</field>
+            <field name="state">code</field>
+        </record>
+
+
+        <record id="ir_cron_project_report_per_sbu_email" model="ir.cron">
+            <field name="name">Project Report Cron Daily at 6</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="code">model._cron_project_report_per_sbu_email()</field>
+            <field name="state">code</field>
+        </record>  
+
+        <record id="ir_cron_project_report_accounts_team" model="ir.cron">
+            <field name="name">Project Report for Accounts Team</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="code">model._cron_project_report_accounts_team()</field>
+            <field name="state">code</field>
+        </record>  
+        
+        <record id="ir_cron_project_report_milestone_summary" model="ir.cron">
+            <field name="name">Project Report for Milestones Summary</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="code">model._cron_project_report_milestone_summary()</field>
+            <field name="state">code</field>
+        </record>  
+
+        <record id="ir_cron_project_report_ryg_summary" model="ir.cron">
+            <field name="name">Project RYG Summary Report for Managers</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="code">model._cron_project_ryg_summary()</field>
+            <field name="state">code</field>
+        </record>
+        
+        <record id="report_tree_view" model="ir.ui.view">
+            <field name="name">project.report.email.tree</field>
+            <field name="model">project.report.email</field>
+            <field name="arch" type="xml">
+                <tree string="Report Team" editable="top">
+                    <field name="report_type"/>
+                    <field name="employee_id" widget="many2many_tags" options="{'no_create_edit':True,'no_create':True}" required="1"/>
+                    <field name="company_id" options="{'no_create_edit':True,'no_open': True,'no_create':True}"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="operations_summary_view_tree" model="ir.ui.view">
+            <field name="name">operations.summary.view.tree</field>
+            <field name="model">operations.summary</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="operations_summary_view_form" model="ir.ui.view">
+            <field name="name">operations.summary.view.form</field>
+            <field name="model">operations.summary</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="date"/>
+                    </group>
+                    <notebook>
+                        <page string="Operations Summary Data">
+                            <field name="operation_data_line">
+                                <tree>
+                                    <field name="data_type"/>
+                                    <field name="data_name"/>
+                                    <field name="total_ezestian"/>
+                                    <field name="total_deployable"/>
+                                    <field name="non_deployable"/>
+                                    <field name="more_100_billable"/>
+                                    <field name="billable_100"/>
+                                    <field name="billable_75"/>
+                                    <field name="billable_50"/>
+                                    <field name="billable_25"/>
+                                    <field name="billable_0"/>
+                                    <field name="billable_per"/>
+                                    <field name="allocation_100"/>
+                                    <field name="allocated_partially"/>
+                                    <field name="unallocated"/>
+                                    <field name="allocated_per"/>
+                                    <field name="resigned"/>
+                                    <field name="probation"/>
+                                    <field name="confirmed"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_report_group">
+            <field name="name">Report Team</field>
+            <field name="res_model">project.report.email</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_no_content_create">Create new record
+                </p>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_operations_summary">
+            <field name="name">Operations Summary Data</field>
+            <field name="res_model">operations.summary</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_report_group" name="Reports Group" parent="project.menu_project_config" action="action_view_report_group"/>
+
+        <menuitem
+            id="operations_summary_data_menu"
+            action="action_operations_summary"
+            parent="base.menu_custom"
+            sequence="111"
+        />
+    </data>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_only_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.product.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="job_id" options="{'no_create': True}" domain="[('is_designation','in',['in_employee', 'both'])]"/>
+                <field name="is_tnm" invisible="1"/>
+                <field name="show_all_role"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_normal_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.product.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="job_id" options="{'no_create': True}" domain="[('is_designation','in',['in_employee', 'both'])]"/>
+                <field name="is_tnm" invisible="1"/>
+                <field name="show_all_role"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

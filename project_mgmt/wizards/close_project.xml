@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="close_project_form" model="ir.ui.view">
+        <field name="name">close.project.form</field>
+        <field name="model">close.project</field>
+        <field name="arch" type="xml">
+            <form string="Close Project">
+                <sheet>
+                    <group>
+                        <field name="actual_start_date" readonly="1"/>
+                        <field name="actual_end_date"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="act_close_project" string="Done" type="object" class="oe_highlight" />  
+                    <button name="cancel" string="Cancel" class="oe_highlight" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_close_project" model="ir.actions.act_window">
+        <field name="name">Close Project</field>
+        <field name="res_model">close.project</field>
+        <field name="view_id" ref="close_project_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

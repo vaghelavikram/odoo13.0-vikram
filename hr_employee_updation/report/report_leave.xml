@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <report
+            id="report_leave_xlsx"
+            model="hr.employee"
+            string="Leave Reports"
+            report_type="xlsx"
+            name="hr_employee_updation.report_leave_allocation_summary"
+            file="Leave Allocation Summary"
+            groups="hr.group_hr_user"
+        />
+    </data>
+</odoo>

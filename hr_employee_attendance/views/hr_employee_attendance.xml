@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="ir_cron_employee_attendence" model="ir.cron">
+        <field name="name">Unity Attendance</field>
+        <field name="interval_number">2</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="code">model._cron_employee_attendance()</field>
+        <field name="state">code</field>
+    </record>
+    
+    <record id="ir_cron_employee_night_shift_attendence" model="ir.cron">
+        <field name="name">Unity Night Shift Attendance</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="code">model._cron_employee_night_shift_attendence()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_employee_auto_attendence_mail" model="ir.cron">
+        <field name="name">Employee Auto Absent Remainder</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="code">model._cron_absent_remainder_mail_change()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record model="ir.cron" id="cron_employee_attendance_mail">
+        <field name="name">Employee Absent Remainder</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="active">True</field>
+        <field name="state">code</field>
+        <field name="code">model._cron_emp_absent_remainder()</field>
+    </record>
+
+    <record model="ir.cron" id="cron_contract_attendance_mail">
+        <field name="name">Employee Contract Remainder</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="active">False</field>
+        <field name="state">code</field>
+        <field name="code">model._cron_contract_absent_remainder()</field>
+    </record>
+
+    <record model="ir.cron" id="cron_employee_leave_adjustment_mail">
+        <field name="name">Employee Leave Adjustment Remainder</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="active">False</field>
+        <field name="state">code</field>
+        <field name="code">model._cron_emp_leave_adjustment_remainder()</field>
+    </record>
+
+    <record model="ir.cron" id="cron_manager_attendance_mail">
+        <field name="name">Manager Absent Remainder</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_manager_subordinate_absent_remainder()</field>
+    </record>
+
+    <record model="ir.cron" id="cron_set_payroll_dates">
+        <field name="name">Update Payroll Dates</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_payroll_dates()</field>
+    </record>
+
+    <record model="ir.cron" id="cron_archive_team_member">
+        <field name="name">Attendance, Leave Archive</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_archive_team_member()</field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_attendance_view_inherit_tree">
+        <field name="name">hr.attendance.view.inherit.tree</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">employee_summary_tree</attribute>
+            </xpath>
+            <xpath expr="//field[@name='check_in']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr="//field[@name='check_out']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='check_in']" position="before">
+                <field name="day_check_in"/>
+                <field name="day_check_out"/>
+                <field name="manager_id"/>
+            </xpath>
+            <xpath expr="//field[@name='check_out']" position="after">
+                <field name="worked_hours" widget="float_time" invisible="1"/>
+                <field name="source_check_in"/>
+                <field name="source_check_out"/>
+                <field name="checkin" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_attendance_view_inherit_form">
+        <field name="name">hr.attendance.view.inherit.tree</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="replace">
+                <sheet>
+                    <group>
+                        <field name="image" widget="image" class="oe_avatar" options="{&quot;size&quot;: [90, 90]}"/>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="regular_id"/>
+                            <field name="day_check_in"/>
+                            <field name="day_check_out"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="ezest_id"/>
+                            <field name="manager_id"/>
+                            <field name="source_check_in"/>
+                            <field name="source_check_out"/>
+                        </group>
+                    </group>
+                </sheet>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_attendance_view_filter_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.view.inherit.search</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='myattendances']" position="after">
+                <filter string="Archived" name="archived" domain="[('active','=',False)]"/>
+                <filter icon="terp-go-month" string="Month" name="month" domain="[('checkin','&lt;=',(datetime.date.today()+relativedelta(day=31)).strftime('%Y-%m-%d')),('checkin','&gt;=',(datetime.date.today()-relativedelta(day=1)).strftime('%Y-%m-%d'))]" help="Current Month"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_attendance_view_pivot_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.pivot</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_pivot"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="replace">
+                <field name="manager_id" type="row"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_attendance.hr_attendance_action_employee" model="ir.actions.act_window">
+        <field name="name">Attendances</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_employee_id': active_id, 'default_employee_id': active_id, 'search_default_month': 1,'group_by': ['check_in:day']}</field>
+    </record>
+
+    <record id="hr_attendance.hr_attendance_action" model="ir.actions.act_window">
+        <field name="name">Attendances</field>
+        <field name="context">{'group_by':['employee_id','check_in:day'],'search_default_month': 1}</field>
+    </record>
+
+    <record id="hr_attendance.hr_attendance_action_graph" model="ir.actions.act_window">
+        <field name="name">Attendance Analysis</field>
+        <field name="res_model">hr.attendance</field>
+        <field name="view_mode">pivot,graph</field>
+    </record>
+
+    <menuitem id="hr_attendance.menu_hr_attendance_root" name="Attendances" sequence="90" groups="hr_attendance.group_hr_attendance" web_icon="hr_employee_attendance,static/description/icon.png"/>
+    <menuitem id="hr_attendance.menu_hr_attendance_kiosk_mode" name="Kiosk Mode" parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="20" groups="base.group_no_one" action="hr_attendance.hr_attendance_action_kiosk_mode"/>
+
+    <menuitem id="hr_attendance.menu_hr_attendance_view_employees_kanban" name="e-Zestians" parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="15" groups="base.group_no_one" action="hr.open_view_employee_list_my"/>
+
+    <!-- <menuitem id="hr_attendance.menu_hr_attendance_report" name="Attendance Analysis" parent="menu_attendance_summary_report" sequence="30" groups="hr_attendance.group_hr_attendance_user" action="hr_attendance.hr_attendance_action_graph"/> -->
+
+    <menuitem id="hr_attendance.menu_hr_attendance_my_attendances" name="Check In / Check Out" parent="hr_attendance.menu_hr_attendance_root" sequence="0" action="hr_attendance.hr_attendance_action_my_attendances"/>
+
+    <menuitem id="hr_attendance.menu_hr_attendance_manage_attendances" name="Manage Attendance" parent="hr_attendance.menu_hr_attendance_root" sequence="1" groups="hr_attendance.group_hr_attendance_user"/>
+    
+    <menuitem id="menu_hr_attendance_settings_menu" name="Settings" parent="hr_attendance.menu_hr_attendance_settings" sequence="1" action="hr_attendance.action_hr_attendance_settings" groups="hr_attendance.group_hr_attendance_user"/>
+</odoo>

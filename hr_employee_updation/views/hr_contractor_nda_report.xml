@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        id="contractor_agreement_letter"
+        string="Contractor NDA Agreement"
+        model="hr.employee"
+        report_type="qweb-pdf"
+        groups="hr.group_hr_manager"
+        name="hr_employee_updation.print_contractor_agreement_letter"
+        file="hr_employee_updation.print_contractor_agreement_letter"
+        print_report_name="'Contractor Agreement Letter - %s' % (object.name).replace('/', '')"/>
+
+    <template id="print_contractor_agreement_letter">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="employee">
+                <div class="m-5">
+                <div style="text-align:right;">
+                    <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="margin-left:55px;max-width: 55%;" alt="Company Logo"/>
+                </div>
+                <div style="color:black;text-align:center;">
+                    <h2>Consultancy Agreement</h2>
+                    <h2>(Non-Competition, Non-disclosure and Inventions and Proprietary Information)</h2>
+                </div>
+                <div class="mt-5">
+                <h4>
+                    As a condition of my employment with
+                    <strong style="color:black;">
+                        e-Zest Solutions Ltd.
+                    </strong>
+                    , its subsidiaries, affiliates,successors, or assigns (together “the Company”), and in consideration of my employment with the Company and my receipt of the compensation now and hereafter paid to me by the Company, I agree to the following:
+                </h4>
+                <h2 style="color:black;">
+                    A. NONDISCLOSURE of CONFIDENTIAL INFORMATION
+                </h2>
+                <h2 style="color:black;">
+                    1. Company Information
+                </h2>
+                <h4>
+                    I agree at all times during the term of my employment and thereafter, to hold in strictest confidence, and not to use, except for the benefit of the Company, or to disclose to any person, firm or corporation without written authorization from the
+                    <strong style="color:black;">
+                        Founder and Director,
+                    </strong>
+                    any Confidential Information of the Company. I understand that “Confidential Information” means any Company proprietary information, technical data, trade secrets or know-how, including but not limited to: research,
+                    product plans, products, services, customer lists and customers (including but not limited to: communications with customers) markets, software, and other business information disclosed to me by the Company either directly or indirectly in writing, orally or by drawings or observation of parts or equipment. I further understand that
+                    Confidential Information does not include any of the foregoing items which has become publicly known and made generally available through no wrongful act of mine or of others who were under confidentiality obligations as to the item or items involved. <br/>
+                    The present Agreement is also governed by the General Data Protection Regulations (EU) 2016/679 (said Regulations) which shall govern the personal data and digital privacy of the data subject.
+                </h4>
+                <h2 style="color:black;">
+                    2. Former Company Information
+                </h2>
+                <h4>
+                    I agree that I will not, during the course of my consultancy with the Company, improperly use or disclose any proprietary information or trade secrets of any former or concurrent Company or other person or entity and that I will not bring onto the premises of the Company any unpublished document or proprietary information
+                    belonging to any such Company, person or entity unless consented to in writing by such Company, person or entity. I shall indemnify and hold harmless Company from all claims, damages, costs, expenses, fines, and fees (including reasonable attorneys' fees) arising out of assertions by third parties of superior rights to any intellectual
+                    property brought to Company and incorporated by me in any deliverable pursuant to this Agreement.
+                </h4>
+                <h2 style="color:black;">
+                    3. Third Party Information
+                </h2>
+                <h4>
+                    I recognize that the Company has received and in the future will receive from other persons or certain Government authorities or agencies and other third parties their confidential or proprietary information subject to a duty on the Company's part to maintain the confidentiality of such information and to use it only for certain limited
+                    purposes. I agree to hold all such confidential or proprietary information in the strictest confidence during the term of this Agreement and thereafter and not to disclose it to any person, firm or corporation or to use it except as necessary in carrying out my work for the Company consistent with the Company's agreement with such third party.
+                </h4>
+                <h2 style="color:black;">
+                    B) NONCOMPETE COVENANTS
+                </h2>
+                <h4>
+                    It is the Company’s policies to conduct its affairs in strict compliance with the letter and spirit of the law and to adhere to the highest principles of business ethics. Accordingly, all officers, employees, and independent contractors must avoid activities which are in conflict, or give the appearance of being in conflict, with these
+                    principles and with the interests of the Company.
+                    <p>
+                        During the consultancy period with the Company, perform for the Company such duties as the Company may designate from time to time and will devote my full time and best efforts to the business of the Company and, I will not, directly or indirectly:
+                    </p>
+                    <p>
+                        (a)  work for, own, invest in, direct, or aid any company or person engaged in competition with the Company; or
+                    </p>
+                    <p>
+                        A company or person is in competition with the Company if it solicits business, performs services, or delivers goods that are competitive to the Company, its customers, or its prospective customers. 
+                    </p>
+                </h4>
+                <h2 style="color:black;">
+                    C) NON-SOLICITATION OF CLIENTS
+                </h2>
+                <h4>
+                    You agree that you will not, without the prior written consent of the Company, at any time during your consultancy with the Company or for a period of 1 year from the termination of your consultancy however caused (whether your consultancy is terminated by you or the Company and whether with or without cause or in breach of this Agreement), either individually or through any company controlled by you and either on your own behalf or on behalf of any person competing or endeavoring to compete with the Company, directly or indirectly solicit, endeavor to solicit or gain
+                    the custom of, canvass or interfere with any person who is a client of the Company or use your personal knowledge of or influence over any such client to or for your own benefit or that of any other person competing with the Company.
+                    <p>
+                        You further agree that you will not, without the prior written consent of the Company, at any time during your consultancy with the Company or for a period of 1 year from the termination of your consultancy however caused (whether your consultancy is terminated by you or the Company and whether with or without cause or in breach of this Agreement), accept consultancy from any person who is a client of the Company.
+                    </p>
+                </h4>
+                <h2 style="color:black;">
+                    D) NON-SOLICITATION OF EMPLOYEES
+                </h2>
+                <h4>
+                    You agree that you will not, without the prior written consent of the Company, at any time during your consultancy with the Company or for a period of 1 years from the date of termination of your consultancy however caused (whether your consultancy is terminated by you or the Company and whether with or without cause or in breach of this Agreement), either individually or through any company controlled by you and either on your behalf or on behalf of any other person competing or endeavoring to compete with the Company, directly or indirectly solicit for consultancy, or endeavour to employ or to retain as an independent contractor or agent, or to resign from the company, any person who is an employee of the Company as of the date of termination of your consultancy or was an employee of the Company at any time during 1 year prior to the termination of your consultancy. 
+                    <p>
+                        You further agree that, should you be approached by a person who is or has been an employee of the Company during the period described above, you will not offer to nor employ or retain as an independent contractor or agent any such person for a period of 1 year following the termination of your consultancy.
+                    </p>
+                </h4>
+                <h2 style="color:black;">
+                    E) INVENTIONS AND PROPRIETARY INFORMATION
+                </h2>
+                <h4>
+                    1. I acknowledge that in its business, the Company has developed and commercially used valuable technical and non-technical information and, to protect the legitimate interests of the Company, it is necessary for the Company to protect certain of the information either by patents, copyright, industrial design or by any other available mechanism, or by maintaining the information as secret or confidential.
+                    <p>
+                        2. I acknowledge that, through my consultancy with the Company, I may be exposed to or generate confidential information including, without limiting the generality of the foregoing, technology, know-how, trade secrets, data, processes, inventions, developments, formulations, discoveries, algorithms, applications, methods of manufacture, information pertaining to existing or potential customers, suppliers, markets, contracts, prices, programs, strategies and products, and improvements thereof, whether oral or written, but not including information otherwise publicly known not as a result of a breach of this Agreement, information acquired by me through my own independent research and experience, and information which was lawfully in my possession prior to receipt thereof from the Company
+                    </p>
+                    <p>
+                        3. I agree that I shall not disclose to any person, firm or corporation, nor use for my own or another person’s benefit, either during or after my consultancy, any confidential information referred to in this agreement, except as otherwise specifically authorised in writing by the Company
+                    </p>
+                    <p>
+                        4. I will not disclose to the Company or induce the Company to use inventions or
+                        confidential information belonging to others.
+                    </p>
+                    <p>
+                        5. I agree to perform for the Company such duties as may be designated from time to time, which may include the functions of inventing, improving, discovering and developing new and novel devices, methods and principles
+                        relating to the work of the Company. Any invention, including without limitation, new contributions, concepts, ideas, algorithms, developments, discoveries, processes, compositions, techniques or improvements thereof,
+                        made, conceived, learned or reduced to practice during the course of my consultancy, and all trade secret, patent, copyright, and other intellectual property rights worldwide therein, are the property of the Company, to
+                        which all right, title and interest in and to the same are hereby assigned, whether or not they are patentable or copyrightable or otherwise capable of statutory protection and whether or not they are made by myself or jointly
+                        with any other persons. I also hereby waive all moral rights into any copyright assigned hereunder. I also agree to assign all my right, title and interest in and to any such invention to a third party as directed by the
+                        Company. I agree that during my consultancy by the Company, I will promptly and fully disclose in writing and assign to the Company, all such inventions. I also agree, if requested, to assist the Company or its
+                        authorised representative in preparing and obtaining any patents, copyrights, industrial designs or securing any other rights for such inventions, in any and all countries. I also agree, upon request, to execute
+                        without further consideration, such documents as may reasonably be required to obtain the patents, copyrights, industrial designs or other rights. In the event the Company is unable for any reason, after reasonable effort,
+                        to secure my signature on any document needed in connection with the actions specified in Sections 5 and 7 hereof, I hereby irrevocably designate and appoint the Company and its duly authorised officers and agents as my
+                        agent and attorney in fact, which appointment is coupled with an interest, to act for and in my behalf to execute, verify and file any such documents and to do all other lawfully permitted acts to further the purposes of this Agreement with the same legal force and effect as if executed by me. I hereby waive and quitclaim to the Company any and all claims, of any nature whatsoever, which I now or may hereafter have for infringement of
+                        any proprietary rights assigned, hereunder to the Company.
+                    </p>
+                    <p>
+                        6. I agree that, during my consultancy, I will not apply for any patent, copyright or industrial design or otherwise secure any other right in any country for any invention, including new contributions, concepts, ideas,
+                        algorithms, developments, discoveries, processes, compositions, techniques or improvements thereof, without the prior written consent of the Company. In addition, I will promptly inform the Company of all patent applications
+                        filed by me or on my behalf within one year of termination of consultancy with sufficient details to enable the Company to reasonably determine that it is not the owner thereof.
+                    </p>
+                    <p>
+                        7. I agree, both during and subsequent to my consultancy by the Company, and without any additional compensation other than for out-of-pocket costs incurred, to testify in any legal proceeding, sign all lawful papers, execute all divisional, continuation, substitution, renewal and re-issue applications, execute all assignment papers, make all rightful oaths and generally do everything necessary or desirable to assist the Company or its successors
+                        and assigns in obtaining and enforcing proper protection for its patents, copyrights and industrial designs or other relevant rights in any and all countries.
+                    </p>
+                    <p>
+                        8. I agree to make and maintain for the Company, adequate and current written records of
+                        all my innovations, inventions, discoveries and improvements.
+                    </p>
+                    <p>
+                        9. I acknowledge that all records or copies of records concerning the Company’s activities, business interest or investigations made or received by me during my consultancy with the Company are and shall be the property of the Company. I agree to keep such records or copies in the custody of the Company and subject to its control, and to surrender the same at the termination of my consultancy, or at any time during my consultancy, at the Company’s request without keeping any copies thereof. Prior to leaving my consultancy with the Company, I agree to cooperate with the Company in completing and signing the Company termination statement at the Company’s request. In the event that I leave the consultancy assignment of the Company, I hereby consent to notify my new Company of
+                        my rights and obligations under this Agreement.
+                    </p>
+                    <p>
+                        10. I agree to obtain the written consent of the Company in advance of any presentation or
+                        publication, or submission for presentation or publication, of any speech, paper or article
+                        authored by me, either alone or jointly with others.
+                    </p>
+                    <p>
+                        11. The obligations in agreements shall apply to any period during which I was previously
+                        employed, or will in the future be employed, by the Company. These Inventions and
+                        Proprietary Information Agreement along with the Employment Agreement entered into
+                        between me and the Company are the final, complete and exclusive agreement of the
+                        parties with respect to the subject matter hereof and supersedes and merges all prior
+                        discussions between us. No modification of or amendment to this Invention and Proprietary
+                        Information Agreement, nor any waiver of any rights hereunder, will be effective unless in
+                        writing and signed by the party to be charged. Any subsequent change or changes in my
+                        duties, salary or compensation will not affect the validity or scope of this Agreement.
+                    </p>
+                </h4>
+                <h2 style="color:black;">
+                    12. Prior Contracts
+                </h2>
+                <h4>
+                    I represent that there are no other contracts to assign inventions or works that are now in existence between me and any other person or entity. I further represents that I have no other employment(s), consultancies or undertakings which would restrict and impair my performance under this Undertaking. 
+                </h4>
+                <h2 style="color:black;">
+                    13. No Employment Agreement
+                </h2>
+                <h4>
+                    I agree that nothing herein shall constitute an agreement of the Company to engage my services for any specific period of time. Rather, my consultancy) relationship with the Company is subject to the consultancy agreement
+                    entered into with the Company.
+                </h4>
+                <h2 style="color:black;">
+                    14. Responsibilities related to Information Security:
+                </h2>
+                <h4>
+                    You are also under obligation to observe and fulfill all your responsibilities
+                    regarding information Security. The same shall be treated as part and parcel
+                    of your employment agreement and breach of the same shall expose you to
+                    appropriate disciplinary/legal action.
+                </h4>
+                <h4>
+                    <strong style="color:black;">
+                        Ref.:
+                    </strong>
+                    Roles and Responsibilities for Information Security Sec. 2.11
+                </h4>
+                <h2 style="color:black;">
+                    F) GENERAL PROVISIONS
+                </h2>
+                <h2 style="color:black;">
+                    1) Entire Agreement
+                </h2>
+                <h4>
+                    This Agreement sets forth the entire agreement and understanding between the Company and me relating to the subject matter herein and merges all prior discussions between us except for prior confidentiality agreements I have signed
+                    relating to information not covered by this Agreement. No modification of or amendment to this agreement, nor any waiver of any rights under this agreement, will be effective unless in writing signed by the party to be charged.
+                    Any subsequent change or changes in my duties, salary or compensation will not affect the validity or scope of this Agreement.
+                </h4>
+                <h2 style="color:black;">
+                    2) Severability
+                </h2>
+                <h4>
+                    If one or more of the provisions (or part thereof) in this Agreement are invalid, unenforceable or deemed void by law, then the remaining provisions will continue in full force and effect and shall not affect validity or enforceability of any other provision (or remaining part thereof).
+                </h4>
+                <h2 style="color:black;">
+                    3) Waiver
+                </h2>
+                <h4>
+                    The waiver by the Company of a breach of any provision of this Undertaking shall not
+                    operate or be construed as a waiver of any subsequent breach of the same or any other
+                    provision hereof.
+                </h4>
+                <h2 style="color:black;">
+                    4) Successors and Assigns
+                </h2>
+                <h4>
+                    This Agreement will be binding upon my heirs, executors, administrators and other legal
+                    representatives and will be for the benefit of the Company, its successors, and its assigns.
+                </h4>
+                <h2 style="color:black;">
+                    5) Survival
+                </h2>
+                <h4>
+                    The rights and obligations of the parties shall survive the termination of this Agreement as
+                    well as any other provisions that by their nature must survive termination of this
+                    Agreement.
+                </h4>
+                <h2 style="color:black;">
+                    6) Governing Law
+                </h2>
+                <h4>
+                    This terms stated under this Undertaking shall be governed and construed in accordance
+                    with laws of India.
+                </h4>
+                <h2 style="color:black;">
+                    7) Injunctive Relief; Consent to Jurisdiction
+                </h2>
+                <h4>
+                    I acknowledge and agree that damages will not be an adequate remedy in the event of a breach of any of his obligations under this Undertaking. I therefore agree that the Company shall be entitled (without limitation of any other rights or remedies otherwise available to the Company) to obtain an injunction or other measures from any court of competent jurisdiction prohibiting the continuance or recurrence of any breach of this Undertaking. I hereby submit myself to the jurisdiction and venue of the Courts in India for purposes of any such action.
+                </h4>
+                <h2 style="color:black;">
+                    8) Arbitration
+                </h2>
+                <h4>
+                    I further agree that the Company, at its option, may elect to submit any dispute or controversy arising out of or related to this Undertaking for final settlement by Arbitration conducted in Pune in accordance with the Arbitration and Conciliation Act, 1996 and judgment upon the award rendered by the arbitrators shall be specifically enforceable and may be enforced in any court having jurisdiction thereof.
+                </h4>
+                <h2 style="color:black;">
+                    9) Disciplinary Action:
+                </h2>
+                <h4>
+                    If you are found involved in any act/s, commissions &amp; omissions which would amount to breach of this agreement &amp;/or violation of security policies, &amp;/or would amount to misconduct, the Company shall initiate appropriate disciplinary action against you which may include termination of your engagement with the company, recovery of losses/damages caused by you to the Company.
+                </h4>
+                <h4>
+                    <strong style="color:black;">
+                        Ref.:
+                    </strong>
+                    Enterprise Information Security Policies Manual Section 7.2
+                </h4>
+                <h2 class="mt-5">
+                    I have read, understood and hereby voluntarily accept the terms of employment outlined
+                    above.
+                </h2>
+
+<div style="font-size:22px;"><strong>Name:</strong> <span t-field="employee.name"/></div>
+<div style="font-size:22px;"><strong>Applicable Date:</strong> <span t-field="employee.joining_date"/></div>
+<div style="font-size:22px;"><strong>Signed Date:</strong> <t t-if="employee.nda_signed_off"><span t-field="employee.nda_signed_off"/></t></div>
+
+</div></div>
+            </t>
+        </t>
+    </template>
+</odoo>

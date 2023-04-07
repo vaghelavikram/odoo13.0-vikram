@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <report
+            id="report_utilization_data_xlsx"
+            model="allocation.utilization.report"
+            string="Utilization Report"
+            report_type="xlsx"
+            name="project_role.report_utilization_data_xlsx"
+            file="Utilization Report Xlsx"
+        />
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="employee_information_agree_form" model="ir.ui.view">
+        <field name="name">employee.information.agree</field>
+        <field name="model">employee.information.agree</field>
+        <field name="arch" type="xml">
+            <form string="Journal Creation">
+                <center><p><strong>I hereby declare that the information's are true.</strong></p></center>
+                    <group>
+                        <group>
+                            <field name="employee_id" invisible="1"/>
+                        </group>
+                    </group>
+                <footer>
+                    <button name="action_submit_information" string="OK" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_employee_information_agree" model="ir.actions.act_window">
+        <field name="name">e-Zestian Information Agree</field>
+        <field name="res_model">employee.information.agree</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="employee_information_agree_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

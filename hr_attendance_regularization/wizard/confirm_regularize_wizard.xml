@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="regularize_confirm_wizard_form">
+        <field name="name">regularize.confirm.wizard.form</field>
+        <field name="model">regularize.confirm.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Confirm dialog">
+                <field name="text" readonly="1" />
+                <footer>
+                    <button class="oe_highlight" special="cancel" string="Close" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

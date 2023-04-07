@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        id="employee_information_agreement"
+        string="Information Agreement"
+        model="hr.employee"
+        report_type="qweb-html"
+        name="hr_employee_updation.print_information_agreement"
+        file="hr_employee_updation.print_information_agreement"
+        groups="hr.group_hr_manager"
+        print_report_name="'Information Agreement - %s' % (object.name).replace('/', '')"/>
+
+    <template id="print_information_agreement">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="employee">
+                <div style="text-align:right;">
+                    <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="margin-left:55px;max-width: 55%;" alt="Company Logo"/>
+                </div>
+                <div style="color:black;text-align:center;">
+                    <h2>Information Agreement</h2>
+                </div>
+                <div>
+                    Name: <t t-esc="employee.name"/>
+                </div>
+                <div>
+                    Mobile Phone: <t t-if="employee.mobile_phone"><t t-esc="employee.mobile_phone"/></t>
+                </div>
+                <div>
+                    Aadhar No.: <t t-esc="employee.aadhar_no"/>
+                </div>
+                <div>
+                    Name as per aadhar card: <t t-esc="employee.name_aadhar_card"/>
+                </div>
+                <div>
+                    PAN No.: <t t-if="employee.pan_no"><t t-esc="employee.pan_no"/></t>
+                </div>
+                <div>
+                    Name as per pan card: <t t-if="employee.name_pan_card"><t t-esc="employee.name_pan_card"/></t>
+                </div>
+                <t t-if="employee.date_of_leaving">
+                    <div>
+                        Date of Leaving of prev. org.: <t t-esc="employee.date_of_leaving"/>
+                    </div>
+                </t>
+                <div>
+                    Blood Group: <t t-esc="employee.blood_group"/>
+                </div>
+                <div>
+                    Current Address: <t t-esc="employee.street_c"/> <t t-if="employee.street2_c"><t t-esc="employee.street2_c"/></t>
+                </div>
+                <div>
+                    Current City: <t t-esc="employee.city_c"/>
+                </div>
+                <div>
+                    State: <t t-esc="employee.state_c"/>
+                </div>
+                <div>
+                    Current Zip: <t t-esc="employee.zip_c"/>
+                </div>
+                <div>
+                    Current Country: <t t-esc="employee.country_c"/>
+                </div>
+                <div>
+                    Permanent Address: <t t-esc="employee.street_p"/> <t t-if="employee.street2_p"><t t-esc="employee.street2_p"/></t>
+                </div>
+                <div>
+                    Permanent City: <t t-esc="employee.city_p"/>
+                </div>
+                <div>
+                    Permanent State: <t t-esc="employee.state_p"/>
+                </div>
+                <div>
+                    Permanent Zip: <t t-esc="employee.zip_p"/>
+                </div>
+                <div>
+                    Permanent Country: <t t-esc="employee.country_p"/>
+                </div>
+                <div>
+                    Nationality: <t t-esc="employee.country_id"/>
+                </div>
+                <div>
+                    Gender: <t t-esc="employee.gender"/>
+                </div>
+                <div>
+                    Date of Birth: <t t-esc="employee.birthday"/>
+                </div>
+                <div>
+                    Father Name: <t t-esc="employee.fathers_name"/>
+                </div>
+                <t t-if="employee.spouse_complete_name">
+                    <div>
+                        Spouse Complete Name: <t t-esc="employee.spouse_complete_name"/>
+                    </div>
+                </t>
+                <div>
+                    Bank Name: <t t-esc="employee.personal_bnk_name"/>
+                </div>
+                <div>
+                    Name as per Bank records: <t t-esc="employee.personal_name"/>
+                </div>
+                <div>
+                    Personal Account Number: <t t-esc="employee.personal_acc_no"/>
+                </div>
+                <div>
+                    Branch Name &amp; Address : <t t-esc="employee.personal_bnk_add"/>
+                </div>
+                <div>
+                    IFSC Code: <t t-esc="employee.personal_bnk_ifsc"/>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

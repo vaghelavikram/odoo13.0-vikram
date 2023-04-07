@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="extend_project_form" model="ir.ui.view">
+        <field name="name">extend.project.form</field>
+        <field name="model">extend.project</field>
+        <field name="arch" type="xml">
+            <form string="Extend Project">
+                <sheet>
+                    <group>
+                        <field name="actual_start_date" readonly="1"/>
+                        <field name="planned_end_date"/>
+                    </group>
+
+                    <!-- <notebook>
+                      <page string="Allocations">
+                        <field name="allocation_ids" nolabel="1" create="0">
+                            <tree create="0">
+                                <field name="employee_id" options="{'no_create': True}"/>
+                                <field name="project_role_id" options="{'no_create': True}"/>
+                                <field name="project_bill_status" options="{'no_create': True}"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="allocation_percentage"/>
+                                <field name="assign_status"/>
+                            </tree>
+                        </field>
+                      </page>
+                    </notebook> -->
+                </sheet>
+                <footer>
+                    <button name="act_extend_project" string="Done" type="object" class="oe_highlight" />  
+                    <button name="cancel" string="Cancel" class="oe_highlight" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_extend_project" model="ir.actions.act_window">
+        <field name="name">Extend Project</field>
+        <field name="res_model">extend.project</field>
+        <field name="view_id" ref="extend_project_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

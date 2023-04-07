@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_expense_view_inherit_form" model="ir.ui.view">
+            <field name="name">hr.expense.form.inherit</field>
+            <field name="model">hr.expense</field>
+            <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,reported,approved,second_approved,done,refused"/>
+                </xpath>
+                <xpath expr="//field[@name='total_amount']" position="attributes">
+                    <attribute name="widget">monetary</attribute>
+                    <attribute name="options">{'currency_field': 'currency_id'}</attribute>
+                </xpath>
+                <xpath expr="//label[@for='payment_mode']" position="attributes">
+                    <attribute name="string">Pay Through</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="string">Bill Description</attribute>
+                    <attribute name="attrs">{'readonly':[('state','not in', ['draft'])]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="attributes">
+                    <attribute name="string">Expense Type</attribute>
+                    <attribute name="options">{"no_open": True,"no_create": True}</attribute>
+                    <attribute name="attrs">{'readonly':[('state','not in', ['draft'])]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='unit_amount']" position="attributes">
+                    <attribute name="string">Amount</attribute>
+                    <attribute name="required">1</attribute>
+                    <attribute name="widget">monetary</attribute>
+                    <attribute name="attrs">{'readonly':[('state','not in', ['draft'])], 'currency_field': 'currency_id'}</attribute>
+                    <attribute name="options">{'currency_field': 'currency_id'}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='unit_amount']" position="before">
+                    <field name="currency_id" options="{'no_create':1}"/>
+                </xpath>
+                <xpath expr="//field[@name='unit_amount']" position="after">
+                    <field name="is_advance" readonly="1" invisible="1"/>
+                    <field name="advance_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="department_manager" invisible="1"/>
+                    <field name="project_id" options="{'no_create':1}"/>
+                    <field name="org_unit" options="{'no_create':1}" attrs="{'invisible':[('state','in', ['draft'])],'readonly':[('state','not in', ['draft'])],'required':[('is_bill_client','=', 'false')]}"/>
+                    <field name="project_code" options="{'no_create':1}" attrs="{'required':[('is_bill_client','=', 'yes')]}"/>
+                    <field name="is_bill_client"/>
+                    <field name="bill_as" attrs="{'invisible':[('is_bill_client','=', 'no')]}"/>
+                    <field name="debit_note" attrs="{'invisible':['|', ('is_bill_client','=', 'no'),('state','in',['draft','reported','approved'])], 'required':[('state','in',['second_approved']),('is_bill_client','=', 'yes')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='reference']" position="attributes">
+                    <attribute name="string">Bill Number</attribute>
+                    <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date']" position="attributes">
+                    <attribute name="string">Bill Date</attribute>
+                    <attribute name="attrs">{'readonly':[('state','not in', ['draft'])]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='description']" position="attributes">
+                    <attribute name="placeholder">Details of Expense</attribute>
+                    <attribute name="attrs">{'readonly':[('state','not in', ['draft'])]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='description']" position="after">
+                    <div>
+                        <ol>
+                            <li>Please mention Team Members name in Detail of Expenses in cases of Lunch/Dinner/Breakfast or any expense done for Team.</li>
+                            <li>Please attach Payment evidences like bank statement or card swap slip.</li>
+                            <li>Please ensure that you have updated Bank Details (A/C number &amp; IFSC code) in Unity.</li>
+                            <li>Please submit all original bills hard copy to accounts department for reimbursement payment..</li>
+                            <li>If advance settlement is not done within 07 days after plan, same will be recovered from salary.</li>
+                        </ol>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='employee_id']" position="attributes">
+                    <attribute name="string">e-Zestian</attribute>
+                    <attribute name="options">{'no_create':1}</attribute>
+                    <attribute name="groups"></attribute>
+                    <attribute name="attrs">{'readonly':[('is_manager','=',False)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="before">
+                    <field name="is_manager" invisible="1"/>
+                    <field name="planned_expense_id" domain="[('state','=','paid'),('employee_id','=',employee_id)]" options="{'no_create':1}"/>
+                    <field name="is_same_planned_amount" invisible="1"/>
+                </xpath>
+                <xpath expr="//label[@for='quantity']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='quantity']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_uom_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_hr_expense_sheet_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.expense.sheet.tree.inherit</field>
+            <field name="model">hr.expense.sheet</field>
+            <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='accounting_date']" position="before">
+                    <field name="write_date" string="Last Updated"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_expense_sheet_view_inherit_form" model="ir.ui.view">
+            <field name="name">hr.expense.sheet.form.inherit</field>
+            <field name="model">hr.expense.sheet</field>
+            <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('state','not in',['draft'])]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve,second_approve,post,done"/>
+                </xpath>
+                <xpath expr="//button[@name='approve_expense_sheets']" position="replace">
+                     <button name="approve_expense_sheets" states="submit" string="Approve" type="object" groups="hr_expense.group_hr_expense_user,unity_expense.group_hr_expense_user_manager" class="oe_highlight o_expense_sheet_approve"/>
+                </xpath>
+                <xpath expr="//button[@name='action_sheet_move_create']" position="before">
+                    <button name="action_second_approve" states="approve" string="Approve Department Manager" type="object" groups="hr_expense.group_hr_expense_manager,unity_expense.group_hr_expense_dept_manager" class="oe_highlight o_expense_sheet_post"/>
+                </xpath>
+                <xpath expr="//button[@name='action_sheet_move_create']" position="replace">
+                    <button name="action_sheet_move_create" states="second_approve" string="Post Journal Entries" type="object" groups="hr_expense.group_hr_expense_manager,unity_expense.group_hr_expense_user_manager" class="oe_highlight o_expense_sheet_post"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='employee_id']" position="attributes">
+                    <attribute name="string">e-Zestian</attribute>
+                    <attribute name="options">{'no_open':1,'no_create':1}</attribute>
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='expense_line_ids']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', 'in', ['second_approve','post','done'])]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="options">{'no_create_edit':True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='expense_line_ids']//tree" position="inside">
+                    <field name="advance_amount"/>
+                    <field name="is_bill_client"/>
+                    <field name="reference" string="Bill Number"/>
+                    <field name="bill_as"/>
+                    <field name="payment_mode" string="Pay Through"/>
+                </xpath>
+                <xpath expr="//page[2]" position="attributes">
+                    <attribute name="attrs">{'invisible':[('state','in',['draft','reported','approve'])]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="bank_account" states="second_approve"/>
+                    <field name="payroll_location" states="second_approve"/>
+                    <field name="department_manager"/>
+                    <field name="org_unit"/>
+                    <field name="approve_date" invisible="1"/>
+                    <field name="second_approve_date" invisible="1"/>
+                    <field name="submit_date" invisible="1"/>
+                    <field name="post_date" invisible="1"/>
+                    <field name="check_planned_amount" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_hr_expense_sheet_filter_inherit" model="ir.ui.view">
+            <field name="name">hr.expense.sheet.filter.inherit</field>
+            <field name="model">hr.expense.sheet</field>
+            <field name="inherit_id" ref="hr_expense.hr_expense_sheet_view_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='approved']" position="before">
+                    <filter domain="[('state', '=', 'second_approve')]" string="Second Approved" name="second_approved" help="Expenses to Invoice"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_expense.hr_expense_actions_my_unsubmitted" model="ir.actions.act_window">
+            <field name="name">My Reimbursement</field>
+            <field name="res_model">hr.expense</field>
+            <field name="context">{'search_default_my_expenses': 1, 'search_default_no_report': 1, 'search_default_status': 1}</field>
+        </record>
+
+        <record id="hr_expense.action_hr_expense_sheet_my_all" model="ir.actions.act_window">
+            <field name="name">My Reimbursement Reports</field>
+            <field name="res_model">hr.expense.sheet</field>
+        </record>
+
+        <menuitem id="hr_expense.menu_hr_expense_my_expenses" name="My Reimbursement" sequence="1" parent="hr_expense.menu_hr_expense_root" groups="base.group_user"/>
+        <menuitem id="hr_expense.menu_hr_expense_report" name="Reimbursement Reports" sequence="2" parent="hr_expense.menu_hr_expense_root" groups="hr_expense.group_hr_expense_user"/>
+    </data>
+</odoo>

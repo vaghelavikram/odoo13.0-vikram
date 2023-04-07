@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        id="antisexual_policy"
+        string="Antisexual Policy"
+        model="hr.employee"
+        report_type="qweb-pdf"
+        groups="hr.group_hr_manager"
+        name="hr_employee_updation.print_antisexual_policy"
+        file="hr_employee_updation.print_antisexual_policy"
+        print_report_name="'Anti-Sexual Policy - %s' % (object.name).replace('/', '')"/>
+
+    <template id="print_antisexual_policy">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="employee">
+                <div class="m-5">
+                    <div style="text-align:right;">
+                        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="margin-left:55px;max-width: 55%;" alt="Company Logo"/>
+                    </div>
+                    <div style="color:black;text-align:center;border-bottom:1px solid black;">
+                        <h2>Anti-Sexual Harassment Policy</h2>
+                    </div>
+                    <div style="text-align:justify;">
+                        <h3>Version Chart</h3>
+                        <style>
+                            th{
+                                text-align:center;
+                            }
+                            table,th,td{
+                                border-collapse: collapse;
+                                border: solid 2px black;
+                            }
+
+                        </style>
+                        <table class="table table-bordered" width="100%">
+                            <thead>
+                                <tr>
+                                <th colspan="2"> Version Number</th>
+                                <th colspan="2"> Date of Release</th>
+                                <th colspan="4"> Author/ Review by</th>
+                                <th colspan="4"> Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="2" style="text-align:center;">
+                                    1.0
+                                </td>
+                                <td colspan="2" style="text-align:center;">
+                                    19-Nov -14
+                                </td>
+                                <td colspan="4" style="text-align:center;">
+                                    Samruddhi Ghatwal
+                                </td>
+                                <td colspan="4" style="text-align:left;padding-left:3px;">
+                                    Initial Draft
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:center;">
+                                        1.1
+                                </td>
+                                <td colspan="2" style="text-align:center;">
+                                        16-Feb-15
+                                </td>
+                                <td colspan="4" style="text-align:center;">
+                                    Milind Kulkarni
+                                </td>
+                                <td colspan="4" style="text-align:left;padding-left:3px;">
+                                    Reviewed and Approved
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:center;">
+                                   1.2
+                                </td>
+                                <td colspan="2" style="text-align:center;">
+                                    09-Feb-22
+                                </td>
+                                <td colspan="4" style="text-align:center;">
+                                    Supriya Acharya, Sneha Keskar
+                                </td>
+                                <td colspan="4" style="text-align:left;padding-left:3px;">
+                                    Reviewed. There is no change.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:center;">
+                                1.4
+                                </td>
+                                <td colspan="2" style="text-align:center;">
+                                    09-Feb-22
+                                </td>
+                                <td colspan="4" style="text-align:center;">
+                                    Devendra Deshmukh
+                                </td>
+                                <td colspan="4" style="text-align:left;padding-left:3px;">
+                                    Approved
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="mt-5" style="text-align: justify;">
+                        <h2 style="color:black;">
+                            Confidential &amp; Proprietary
+                        </h2>
+                        <h4>
+                            Contents of this document are the exclusive property of e-Zest and its anticipated owners. These
+                            contents should not be disclosed to any third party, copied or reproduced, used in any form for
+                            any purpose, without the permission of e-Zest or its anticipated owners
+                        </h4>
+                        <h2 style="color:black;">
+                            1. Background
+                        </h2>
+                        <h4>
+                            Sexual harassment at work place is a violation of a person’s right to equality, life and liberty,
+                            creating insecurity and hostile work environment, discouraging their participation in work and thus
+                            adversely affecting their social and economic empowerment inclusive of goals. In order to control
+                            and remove all the violations in this regard, it is obligatory on the Company to follow all the
+                            provisions of the Sexual Harassment Act, 2013 and the guidelines mentioned in the Vishakha &amp;
+                            Others V/s. State of Rajasthan. Hence this policy is made by e-Zest.
+                        </h4>
+                        <h2 style="color:black;">
+                            2. Applicability
+                        </h2>
+                        <h4>
+                            This policy is applicable to all employees, consultants &amp; visitors of e-Zest.
+                        </h4>
+                        <h2 style="color:black;">
+                            3. Objective
+                        </h2>
+                        <h4>
+                            The objective of the policy is to provide protection against sexual harassment at workplace and for
+                            the prevention and redressal of complaints of sexual harassment and for matters connected
+                            therewith or incidental thereto.
+                        </h4>
+                        <h2 style="color:black;">
+                            4. Policy Statement
+                        </h2>
+                        <h4>
+                            e-Zest is committed to providing an environment, free from sexual harassment. It believes that all
+                            the employees, consultants &amp; visitors should be afforded the opportunity to work in an
+                            environment, free of sexual harassment. No employee, consultant &amp; visitor either male or female,
+                            should be subjected verbally or physically to unsolicited and unwelcome sexual overtures or
+                            conduct. Thus in response to the Supreme Court Guidelines in the judgment delivered in Visakha
+                            &amp; Others V/s. State of Rajasthan &amp; Others &amp; also the Sexual Harassment of Women at Workplace
+                            (Prevention, Prohibition and Redressal) Act, 2013, e-Zest has developed a policy and procedures
+                            designed to prevent sexual harassment, and to deal with any complaints which may arise.
+                        </h4>
+                        <h2 style="color:black;">
+                            5. Definition of Sexual Harassment
+                        </h2>
+                        <h4>
+                            “Sexual Harassment” includes such unwelcome sexually determined behavior as physical contact
+                            and advances, sexually colored remarks, showing pornography and sexual demand, whether by
+                            words or actions. Such conduct can be humiliating and may constitute a health and safety
+                            problem; it is discriminatory when the person has reasonable grounds to believe that his/her
+                            objection would disadvantage him/her in connection with his/her employment, including
+                            recruitment or promotion, or when it creates a hostile working environment. There are usually three kinds of sexual harassment and the following examples are not exhaustive. Sexual harassment can be perpetrated upon members of the opposite gender or one’s own gender.
+                        </h4>
+                        <h2 style="color:black;">
+                            Non-Verbal Gestures includes:
+                        </h2>
+                        <h4>
+                            - Gestures <br/>
+                            - Staring / leering <br/>
+                            - Invading personal space <br/>
+                            - Pin-ups <br/>
+                            - Offensive publications <br/>
+                            - Offensive letters / memos <br/>
+                            - Unsolicited and unwanted gifts <br/>
+                            - inviting home for official work if one is alone at home. <br/>
+                            - exchange of unwanted SMS and forwards
+                        </h4>
+                        <h2 style="color:black;">
+                            Verbal:
+                        </h2>
+                        <h4>
+                            - Language of a suggestive or explicit nature <br/>
+                            - Unwanted propositions <br/>
+                            - exchange of jokes etc. among two men or more when a lady passes by. <br/>
+                            - Jokes of a sexual or explicit nature <br/>
+                            - Use of “affectionate names” <br/>
+                            - Questions or comments of a personal nature
+                        </h4>
+                        <h2 style="color:black;">
+                            Physical:
+                        </h2>
+                        <h4>
+                            - Deliberate body contact<br/>
+                            - Indecent exposure<br/>
+                            - Groping / fondling / kissing<br/>
+                            - Coerced sexual contact
+                        </h4>
+                        <h2 style="color:black;">
+                            Sexual Harassment is unlawful:
+                        </h2>
+                        <h4>
+                            Every employee, consultant &amp; visitor shall have a right to be free from Sexual Harassment and the
+                            right to work in an environment free from any form of Sexual Harassment. No person who is a
+                            part of e-Zest including the visitors shall, sexually harass any employee, consultant &amp; visitor
+                            whether male or female, where he or she is employed; whether the harassment occurs in / at the
+                            workplace, or at a place where the said persons have gone in connection with the work or the
+                            workplace, or at any place whatsoever. The organization will take all necessary, reasonable and immediate steps to prevent and ensure
+                            that no employee, consultant &amp; visitor in e-Zest is subjected to sexual harassment by any other
+                            member of e-Zest or third party during the course of employment. Where any such sexual
+                            harassment occurs, e-Zest shall take all necessary steps to assist the aggrieved person to get the
+                            appropriate redressal against the act of Sexual harassment.
+                            No employee &amp; consultant of e-Zest Solutions shall sexually harass an outsider who visits the
+                            premises for a legitimate purpose.
+                        </h4>
+                        <h2 style="color:black;">
+                            6. Preventive Steps
+                        </h2>
+                        <h4>
+                            The “Internal Complaints Committee” (ICC) is set up for redressal of grievances related to the
+                            act(s) of sexual harassment. The ICC will be appointed for a period of three years. <br/>
+                            <strong>Powers of ICC Committee:</strong>
+                            The Internal Committee shall have the same powers as are vested in a civil court under the code
+                            of civil Procedure, 1908 when trying a suit in respect of the following matters: <br/>
+                            a. Summoning and enforcing the attendance of any person and examining him on oath; <br/>
+                            b. Requiring the discovery and production of documents; and <br/>
+                            c. Any other matter which may be prescribed.
+                        </h4>
+                        <h2 style="color:black;">
+                            7. Reporting the complaint
+                        </h2>
+                        <h4>
+                            If an individual believes he or she is the victim of sexual harassment or retaliation, she/he is
+                            encouraged to report such complaint immediately in writing to ICC.
+                            Such Complaint is to be made within a period of 3 months, from the date of the incident. An
+                            extension of a period of 3 months can be granted if he / she, due to certain circumstances, is
+                            unable to file the complaint or is prevented from doing so. If however, he / she is unable to lodge
+                            the complaint due to physical or mental incapacity or death; her / his legal heirs may do so. <br/>
+                            When the ICC receives a complaint, it will try to resolve the issue by way of conciliation, if the
+                            complainant so wishes. However, no monetary settlement shall be the basis of the conciliation. If
+                            there is a settlement, a report must be sent by Committee, to the e-Zest to take action in
+                            accordance with the recommendations of the Committee.<br/>
+                            If however no conciliation can be met with, the ICC shall start an inquiry into the complaint.
+                            Inquiries shall be completed within 90 days. <br/>
+                            During the pendency of the inquiry, interim relief may be granted to the aggrieved person. The
+                            ICC may recommend e-Zest to:<br/>
+                            - Transfer the aggrieved person or the respondent to any other workplace.
+                            - Grant leave to the aggrieved person up to a period of 3 months.
+                            - Grant such other relief as may be prescribed. <br/>
+                            On completion of the inquiry, the committee must submit its decision within 10 days to the
+                            management. e-Zest shall act on those conclusions within 60 days, in accordance with the
+                            recommendations of the inquiry. <br/>
+                            <strong>Actions that can be taken by e-Zest after inquiry:</strong><br/>
+                            If the respondent is found not liable, the inquiry will end. If, however, his/her misconduct is
+                            proven, then the management shall take appropriate action considering the intensity of the
+                            offence which may include termination of services.
+                            Also legal help shall be provided if sought.
+                        </h4>
+                        <h2 style="color:black;">
+                            8. False and Malicious Complaints
+                        </h2>
+                        <h4>
+                            If the ICC is of the view that a malicious or false complaint has been made, it may recommend
+                            that an action against the person who has made a false complaint in accordance with the service
+                            rules / or as may be prescribed by the rules of Sexual Harassment of Woman at work place
+                            (Prevention, Prohibition and Redressal) Act, 2013. However, an inquiry must be made in order to
+                            establish malicious intent. Also, mere inability to substantiate a complaint will not attract action
+                            under this provision.
+                        </h4>
+                        <h2 style="color:black;">
+                            9. Appeal
+                        </h2>
+                        <h4>
+                            Any person aggrieved by the recommendations, may prefer an appeal to the Court or Tribunal in
+                            accordance with the provisions of the service rules applicable to the said person. Such appeal will
+                            have to be preferred within 90 days of the recommendations.<br/>
+                            <strong>Adherence to the provisions of the Sexual Harassment of Women at work place
+                            (Prevention, Prohibition and Redressal) Act, 2013 and rules made there under:</strong><br/>
+                            e-Zest is committed to adhere itself to all the provisions of the aforesaid Act and Rules framed
+                            there under.
+                        </h4>
+                        <h2 class="mt-5">
+                            I acknowledge that I have read and understood the Anti-Sexual Harassment policy of e-Zest.
+                        </h2>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary btn-agree-antisexual btn-lg">
+                                I Agree
+                            </button>
+                        </div>
+                    </div>
+                    <div style="font-size:22px;"><strong>Name:</strong> <span t-field="employee.name"/></div>
+                    <div style="font-size:22px;"><strong>Applicable Date:</strong> <span t-field="employee.joining_date"/></div>
+                    <div style="font-size:22px;"><strong>Signed Date:</strong> <t t-if="employee.anti_sexual_signed_off"><span t-field="employee.anti_sexual_signed_off"/></t></div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

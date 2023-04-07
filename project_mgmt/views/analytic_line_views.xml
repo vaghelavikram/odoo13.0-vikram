@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ir_cron_create_regularize" model="ir.cron">
+        <field name="name">Timesheet to regularization</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_account_analytic_line"/>
+        <field name="code">model.cron_attendance_regularize()</field>
+        <field name="state">code</field>
+    </record>  
+
+    <record id="account_analytic_line_timeline" model="ir.ui.view">
+        <field name="model">account.analytic.line</field>
+        <field name="type">timeline</field>
+        <field name="arch" type="xml">
+            <timeline date_start="date"
+                      date_stop="date"
+                      default_group_by="employee_id"
+                      event_open_popup="false"
+                      zoomKey="no"
+                      mode="week"
+                      colors="#ec7063: user_id == false;">
+                <field name="user_id"/>
+                <field name="unit_amount"/>
+                <templates>
+                    <t t-name="timeline-item">
+                        <div class="o_project_timeline_item">
+                            <img t-if="record.user_id"
+                                 t-attf-src="/web/image/res.users/#{record.user_id[0]}/image/24x24"
+                                 t-att-title="record.user_id[1]" width="24" height="24" class="mr8"/>
+                            <small name="unit_amount" class="text-muted ml4">
+                                Hours:<t t-esc="field_utils.format.float_time(record.unit_amount)"/>
+                            </small>
+                        </div>
+                    </t>
+                </templates>
+            </timeline>
+        </field>
+    </record>
+
+    <record id="hr_timesheet_line_tree_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.line.tree.inherit</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="replace">
+                <tree string="Timesheet Activities" decoration-primary="state == 'regularize'" decoration-danger="state == 'reject'" decoration-success="state == 'approved'">
+                    <field name="project_id" required="1" context="{'form_view_ref': 'project.project_project_view_form_simplified',}"/>
+                    <field name="employee_id"/>
+                    <field name="task_id" required="1" context="{'default_project_id': project_id}" domain="[('project_id', '=', project_id),('task_id.user_id','=',uid)]"/>
+                    <field name="name"/>
+                    <field name="date" invisible="1"/>
+                    <field name="start_datetime" string="Date"/>
+                    <field name="unit_amount" widget="timesheet_uom" sum="Total"/>
+                    <field name="tym_task_shift"/>
+                    <field name="state"/>
+                    <field name="company_id" invisible="1"/>
+                    <button name="action_resubmit" type="object" string="Resubmit" class="btn btn-primary btn-sm" attrs="{'invisible':[('state','!=','reject')]}"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_timesheet_line_form_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.line.form.inherit</field>
+        <field name="model">account.analytic.line</field>
+        <field name="priority">0</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_resubmit" type="object" string="Resubmit" class="btn btn-primary btn-sm" attrs="{'invisible':[('state','!=','reject')]}"/>
+                </header>
+                <div class="alert alert-success text-center o_form_header" role="status" attrs="{'invisible': [('payroll_pass', '!=', True)]}">
+                  <a class="close" data-dismiss="alert" href="#" aria-label="Close">x</a>
+                  <div>
+                      <strong>Date is beyond Payrolll duration, so record is not converted into regularization</strong>
+                  </div>
+                  <field name="payroll_pass" invisible="1"/>
+               </div>
+               <div class="alert alert-success text-center o_form_header" role="status" attrs="{'invisible': ['|',('regular_id', '!=', False),('state','!=','not_regularize')]}">
+                  <div>
+                      <strong>This timesheet is not considered as attendance entry because your attendance for this date is already "Approved". If you want to re-apply then refuse your previous entry from manager.</strong>
+                  </div>
+               </div>
+            </xpath>
+            <xpath expr="//field[@name='amount']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="widget">text</attribute>
+            </xpath>
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="domain">['|',('id', 'in', project_ids),('name','=','On Bench Internal Project')]</attribute>
+                <attribute name="options">{'no_open':True,'no_create':True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='task_id']" position="replace">
+                <field name="project_ids" invisible="1"/>
+                <field name="task_id" context="{'default_project_id': project_id}" options="{'no_quick_create':True}" domain="[('project_id', '=', project_id),('company_id', '=', company_id),('start_date','&lt;=',date),('date_deadline','&gt;=',date)]"/>
+            </xpath>
+            <field name="unit_amount" position="attributes">
+                <attribute name="required">1</attribute>
+                <attribute name="attrs">{'readonly': [('state','=','approved')]}</attribute>
+            </field>
+            <field name="name" position="attributes">
+                <attribute name="attrs">{'readonly': [('state','=','approved')]}</attribute>
+            </field>
+            <field name="date" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="date" position="after">
+                <field name="start_datetime" attrs="{'readonly': [('state','!=','open')]}" required="1" string="Date"/>
+            </field>
+            <field name="unit_amount" position="after">
+                <field name="regular_id" readonly="1" attrs="{'invisible': [('state', '=', 'open')]}"/>
+                <field name="state" readonly="1" string="Attendance Status" attrs="{'invisible': [('state', '=', 'open')]}"/>
+            </field>
+            <xpath expr="//sheet" position="after">
+                <div class="oe_chatter">
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </xpath>
+        </field>
+    </record>    
+
+    <record id="view_task_form2_inherited_inherit" model="ir.ui.view">
+        <field name="name">project.task.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='timesheet_ids']/tree" position="inside">
+                <field name="tym_task_shift"/>
+                <field name="is_regularize" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="timesheet_view_form_user_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.line.inherit</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.timesheet_view_form_user"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- <record model="ir.actions.server" id="action_regular_line_approval">
+        <field name="name">Create Regular Request</field>
+        <field name="model_id" ref="model_account_analytic_line"/>
+        <field name="binding_model_id" ref="model_account_analytic_line" />
+        <field name="state">code</field>
+        <field name="code">
+          if records:
+              records.create_attendance_regularize()
+        </field>
+    </record> -->
+
+    <record id="hr_timesheet.timesheet_action_all" model="ir.actions.act_window">
+        <field name="res_model">account.analytic.line</field>
+        <field name="domain">[('project_id', '!=', False),('task_id','not ilike','Leave'),('external_timesheet', '=', False)]</field>
+    </record>
+
+    <record id="hr_timesheet.act_hr_timesheet_line" model="ir.actions.act_window">
+        <field name="res_model">account.analytic.line</field>
+        <field name="view_mode">tree,form,timeline</field>
+        <field name="domain">[('project_id', '!=', False), ('user_id','=',uid),('task_id','not ilike','Leave'), ('external_timesheet', '=', False)]</field>
+    </record>
+
+    <record id="hr_timesheet_line_external_tree" model="ir.ui.view">
+        <field name="name">account.analytic.line.external.tree</field>
+        <field name="model">account.analytic.line</field>
+        <field name="arch" type="xml">
+            <tree edit="0" create="1" import="1">
+                <field name="project_id"/>
+                <field name="employee_id"/>
+                <field name="task_id"/>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="unit_amount"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_timesheet_line_external_form" model="ir.ui.view">
+        <field name="name">account.analytic.line.external.form</field>
+        <field name="model">account.analytic.line</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="employee_id"/>
+                            <field name="project_id"/>
+                            <field name="task_id"/>
+                        </group>
+                        <group>
+                            <field name="name"/>
+                            <field name="unit_amount"/>
+                            <field name="external_timesheet" invisible="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="act_hr_external_timesheet_line" model="ir.actions.act_window">
+        <field name="name">External Timesheets</field>
+        <field name="res_model">account.analytic.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('external_timesheet', '=', True)]</field>
+        <field name="context">{
+            "search_default_week":1, "default_external_timesheet":1
+        }</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('hr_timesheet_line_external_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('hr_timesheet_line_external_form')})]"/>
+        <field name="search_view_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+    </record>
+
+    <menuitem id="timesheet_menu_activity_external"
+            name="External Timesheets"
+            parent="hr_timesheet.menu_hr_time_tracking"
+            action="act_hr_external_timesheet_line"/>
+</odoo>

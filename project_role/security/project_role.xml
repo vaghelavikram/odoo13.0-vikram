@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="project_role_comp_rule" model="ir.rule">
+        <field name="name">Project Role multi-company</field>
+        <field name="model_id" ref="model_project_role"/>
+        <field eval="True" name="global"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+
+    <record id="group_project_user_custom_allocation_rule" model="ir.rule">
+        <field name="name">Project Allocation Rule</field>
+        <field name="model_id" ref="project_role.model_project_assignment"/>
+        <field name="domain_force">[('project_id.assignment_ids.employee_id.user_id','=',user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="groups" eval="[(4,ref('project_mgmt.group_project_user_custom'))]"/>
+    </record>
+
+    <record id="group_project_manager_allocation_rule" model="ir.rule">
+        <field name="name">Project Manager Allocation Rule</field>
+        <field name="model_id" ref="project_role.model_project_assignment"/>
+        <field name="domain_force">['|','|',('project_id.department_id.custom_manager_id.user_id','=',user.id),('project_id.department_id.parent_id.custom_manager_id.user_id','=',user.id),('project_id.user_id','=',user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="groups" eval="[(4,ref('project_mgmt.group_project_manager'))]"/>
+    </record>
+        
+</odoo>

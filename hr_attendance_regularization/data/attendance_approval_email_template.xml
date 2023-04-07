@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+    <!-- Email template for applied regularization to manager -->
+
+<record id="send_regularization_email_manager" model="mail.template">
+    <field name="name">Regularization Applied Email to Manager</field>
+    <field name="model_id" ref="hr_attendance_regularization.model_attendance_regular"/>
+    <field name="subject">${object.employee.name} has applied for ${object.reg_category.type} for date ${object.from_date.date().strftime("%d-%b-%Y")}</field>
+    <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+    <field name="email_to">${object.email_formatted | safe}</field>
+    <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <tr>
+<td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+        <tr><td valign="top" style="font-size: 13px;">
+            <div>
+                Dear ${object.employee.parent_id.name},<br/><br/>
+                Your member ${object.employee.name} has submitted request for ${object.reg_category.type} for ${str(object.from_date.date())}
+                <br/><br/>
+                Request you to kindly approve / reject the same
+                <br/><br/>
+                In case of any discrepancy connect with your HR ${object.employee.responsible_hr.name}
+                <br/><br/>
+                Please click on &#160;&#160;<a href="/web#id=${object.id}&amp;action=113&amp;model=attendance.regular&amp;view_type=form&amp;cids=1" target="_blank" style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
+                            View Details
+                </a> &#160;&#160;to action the same.<br/>
+                <br/><br/><br/>
+                Thanks,<br/>
+                Team Unity<br/>
+            </div>
+        </td></tr>
+        <tr><td style="text-align:center;">
+          <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+        </td></tr>
+    </table>
+</td>
+    </tr>
+    <tr>
+<td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+</td></tr><tr>
+    <td valign="bottom" align="left">
+        ${object.company_id.name}
+    </td>
+    <td valign="middle" align="right" rowspan="2">
+<img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+</tr>
+<tr>
+    <td valign="top" align="left" style="opacity: 0.7;">
+        ${object.company_id.phone}
+        % if object.company_id.email
+            | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+        % endif
+        % if object.company_id.website
+            | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+            ${object.company_id.website}
+        </a>
+        % endif
+    </td>
+</tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- <tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr> -->
+</table>
+</field>
+</record>
+
+
+
+                <!-- Email template for approved regularization to user -->
+
+<record id="send_approved_regularization_email_user" model="mail.template">
+    <field name="name">Regularization Approved Email to User</field>
+    <field name="model_id" ref="hr_attendance_regularization.model_attendance_regular"/>
+    <field name="subject">Your ${object.reg_category.type} requested for date ${str(object.from_date.date())} is approved by ${object.env.user.name}</field>
+    <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+    <field name="email_to">${object.email_formatted | safe}</field>
+    <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <tr>
+<td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+        <tr><td valign="top" style="font-size: 13px;">
+            <div>
+                Dear ${object.employee.name},<br/><br/>
+                Your ${object.reg_category.type} for ${str(object.from_date.date())} has been approved. 
+                <br/><br/>
+                In case of any discrepancy connect with your HR ${object.employee.responsible_hr.name}
+                <br/><br/><br/>
+                Thanks,<br/>
+                Team Unity<br/>
+            </div>
+        </td></tr>
+        <tr><td style="text-align:center;">
+          <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+        </td></tr>
+    </table>
+</td>
+    </tr>
+    <tr>
+<td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+</td></tr><tr>
+    <td valign="bottom" align="left">
+        ${object.company_id.name}
+    </td>
+    <td valign="middle" align="right" rowspan="2">
+<img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+</tr>
+<tr>
+    <td valign="top" align="left" style="opacity: 0.7;">
+        ${object.company_id.phone}
+        % if object.company_id.email
+            | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+        % endif
+        % if object.company_id.website
+            | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+            ${object.company_id.website}
+        </a>
+        % endif
+    </td>
+</tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- <tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr> -->
+</table>
+</field>
+</record>
+
+
+        <!-- Email template for manager to notify auto approval -->
+        <record id="send_auto_approve_regularization_email" model="mail.template">
+            <field name="name">Regularization Auto Approve Email</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Notification of auto approved regularization </field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear ${object.employee_id.parent_id.name},<br/><br/>
+                        Regularization is auto approved for ${object.name} on behalf of you.
+                        <br/><br/>
+                        Thanks,<br/>
+                        Team Unity<br/>
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.company_id.phone}
+                % if object.company_id.email
+                    | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+                % endif
+                % if object.company_id.website
+                    | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+                    ${object.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- POWERED BY -->
+<tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+        Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr>
+</table>
+</field>
+</record>
+
+
+        <!-- Email template for user itself -->
+        <record id="send_apply_regularization_email_user" model="mail.template">
+            <field name="name">Regularization Applied Email to User</field>
+            <field name="model_id" ref="hr_attendance_regularization.model_attendance_regular"/>
+            <field name="subject">Your ${object.reg_category.type} requested for date ${object.from_date.date().strftime("%d-%b-%Y")} is sent to manager for further action</field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear ${object.employee.name},<br/><br/>
+                        Your ${object.reg_category.type} request for ${str(object.from_date.date())} has been sent to ${object.employee.parent_id.name} for approval.
+                        <br/><br/>
+                        The same has been forwarded to your manager for approval
+                        <br/><br/>
+                        In case of any discrepancy connect with your HR ${object.employee.responsible_hr.name}
+                        <br/><br/><br/>
+                        Thanks,<br/>
+                        Team Unity<br/>
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.company_id.phone}
+                % if object.company_id.email
+                    | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+                % endif
+                % if object.company_id.website
+                    | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+                    ${object.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- POWERED BY -->
+<tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+        Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr>
+</table>
+</field>
+</record>
+
+<record id="send_reject_regularization_email_user" model="mail.template">
+    <field name="name">Regularization Reject Email to User</field>
+    <field name="model_id" ref="hr_attendance_regularization.model_attendance_regular"/>
+    <field name="subject">Your ${object.reg_category.type} requested for date ${str(object.from_date.date())} is rejected by ${object.env.user.name}</field>
+    <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+    <field name="email_to">${object.email_formatted | safe}</field>
+    <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <tr>
+<td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+        <tr><td valign="top" style="font-size: 13px;">
+            <div>
+                Dear ${object.employee.name},<br/><br/>
+                Your request for ${object.reg_category.type} for ${str(object.from_date.date())} has been rejected
+                <br/><br/>
+                In case of any discrepancy connect with your Manager ${object.manager_id.name}
+                <br/><br/><br/>
+                Thanks,<br/>
+                Team Unity<br/>
+            </div>
+        </td></tr>
+        <tr><td style="text-align:center;">
+          <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+        </td></tr>
+    </table>
+</td>
+    </tr>
+    <tr>
+<td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+</td></tr><tr>
+    <td valign="bottom" align="left">
+        ${object.company_id.name}
+    </td>
+    <td valign="middle" align="right" rowspan="2">
+<img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+</tr>
+<tr>
+    <td valign="top" align="left" style="opacity: 0.7;">
+        ${object.company_id.phone}
+        % if object.company_id.email
+            | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+        % endif
+        % if object.company_id.website
+            | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+            ${object.company_id.website}
+        </a>
+        % endif
+    </td>
+</tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- <tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr> -->
+</table>
+</field>
+</record>
+
+<record id="mail_act_reg_attendance_approval" model="mail.activity.type">
+    <field name="name">Attendance Approval</field>
+    <field name="icon">fa-dollar</field>
+    <field name="res_model_id" ref="hr_attendance_regularization.model_attendance_regular"/>
+    <!-- <field name="mail_template_ids" eval="[(4, ref('hr_attendance_regularization.send_regularization_email_manager'))]"/> -->
+</record>
+
+</data>
+</odoo>

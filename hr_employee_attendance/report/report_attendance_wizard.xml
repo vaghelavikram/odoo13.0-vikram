@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="view_hr_employee_summary_tree" model="ir.ui.view">
+            <field name="name">hr.employee.tree</field>
+            <field name="model">hr.employee</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="identification_id"/>
+                    <field name="department_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_attendance_summary_form" model="ir.ui.view">
+            <field name="name">attendance.summary.confirm.form</field>
+            <field name="model">attendance.summary.confirm</field>
+            <field name="arch" type="xml">
+                <form>
+                    <div>Are you sure you want to Approve all Leaves and Regularization ?</div>
+                    <footer>
+                        <button name="action_approve_leave_reg" string="Approved Leave/Regularization" type="object" class="btn-primary"/>
+                        <button special="cancel" string="Cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_attendance_summary_adjust_form" model="ir.ui.view">
+            <field name="name">attendance.summary.adjust.form</field>
+            <field name="model">attendance.summary.confirm</field>
+            <field name="arch" type="xml">
+                <form>
+                    <div>Are you sure you want to Adjust Leaves on behalf of e-Zestian ?</div>
+                    <footer>
+                        <button name="action_leave_adjust" string="Adjust Leaves" type="object" class="btn-primary"/>
+                        <button special="cancel" string="Cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_attendance_summary_adjust_leaves" model="ir.actions.act_window">
+            <field name="name">Attendance Adjust Leaves</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">attendance.summary.confirm</field>
+            <field name="view_id" ref="view_attendance_summary_adjust_form"></field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_attendance_summary_approve_leaves" model="ir.actions.act_window">
+            <field name="name">Attendance Approve Regularization</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">attendance.summary.confirm</field>
+            <field name="view_id" ref="view_attendance_summary_form"></field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_hr_attendance_summary_report" model="ir.ui.view">
+            <field name="name">hr.attendance.summary.report.form</field>
+            <field name="model">hr.attendance.summary</field>
+            <field name="arch" type="xml">
+            <form string="Attendance Report">
+                <group>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="mode" groups="hr_attendance.group_hr_attendance_manager,hr_employee_attendance.group_payroll"/>
+                    <field name="emp_category" options="{'no_create':True}"/>
+                    <field name="emp_work_location" options="{'no_create':True}"/>
+                    <field name="emp_payroll_loc" options="{'no_create':True}"/>
+                    <field name="holiday_type" groups="hr_attendance.group_hr_attendance_manager,hr_employee_attendance.group_payroll"/>
+                    <field name="mode_company_id" attrs="{'invisible': [('mode', '!=', 'company')]}" options="{'no_create':True}" groups="hr_attendance.group_hr_attendance_manager,hr_attendance.group_hr_attendance_manager,hr_employee_attendance.group_payroll"/>
+                    <field name="mode_employee_id" attrs="{'invisible': [('mode', '!=', 'employee')]}" options="{'no_create':True}" groups="hr_attendance.group_hr_attendance_manager"/>
+                    <field name="mode_department_id" attrs="{'invisible': [('mode', '!=', 'department')]}" options="{'no_create':True}" groups="hr_attendance.group_hr_attendance_manager"/>
+                    <field name="responsible_hr" options="{'no_create':True, 'no_open':True}" groups="hr_attendance.group_hr_attendance_manager"/>
+                    <field name="employee_id" context="{'tree_view_ref': 'hr_employee_attendance.view_hr_employee_summary_tree'}" domain="[('parent_id.user_id', '=', user_id)]" groups="hr_attendance_regularization.group_attendance_regular_manager"/>
+                    <field name="is_for_client" groups="hr_attendance_regularization.group_attendance_client_manager"/>
+                    <field name="user_id" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="print_report" string="Export to Excel" type="object" class="btn-primary"/>
+                    <button name="print_new_joinee_report" string="Export New Joinee/Exit Summary" type="object" class="btn-primary"/>
+                    <button name="print_leave_adjust_report" string="View Leave Adjustment" type="object" class="btn-primary"/>
+                    <button name="%(action_attendance_summary_adjust_leaves)d" string="Adjust Leaves" type="action" class="btn-primary" invisible="1"/>
+                    <button name="%(action_attendance_summary_approve_leaves)d" string="Approved Leave/Regularization" type="action" class="btn-primary" groups="hr_employee_attendance.group_payroll"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+            </field>
+        </record>
+
+        <record id="action_attendance_summary_report" model="ir.actions.act_window">
+            <field name="name">Attendance Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.attendance.summary</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_attendance_summary_report" name="Reporting" parent="hr_attendance.menu_hr_attendance_root" sequence="16" groups="hr_attendance.group_hr_attendance_manager,hr_attendance_regularization.group_attendance_client_manager"/>
+
+        <menuitem id="submenu_attendance_summary_report" name="Payroll Report" parent="menu_attendance_summary_report" action="action_attendance_summary_report" sequence="0" groups="hr_attendance.group_hr_attendance_manager,hr_attendance_regularization.group_attendance_client_manager"/>
+
+</odoo>

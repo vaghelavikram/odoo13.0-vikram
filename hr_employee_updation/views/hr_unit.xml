@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="vendor_form" model="ir.ui.view">
+        <field name="name">Vendor</field>
+        <field name="model">hr.vendor</field>
+        <field name="arch" type="xml">
+            <form string="Vendor">
+                <sheet>
+                    <group>
+                        <group string="Vendor">
+                            <field name="name" class="oe_inline" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="account_form" model="ir.ui.view">
+        <field name="name">Account</field>
+        <field name="model">hr.account</field>
+        <field name="arch" type="xml">
+            <form string="Account">
+                <sheet>
+                    <group>
+                        <group string="Account">
+                            <field name="name" class="oe_inline" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="skills_form" model="ir.ui.view">
+        <field name="name">Skills</field>
+        <field name="model">hr.primary.skill</field>
+        <field name="arch" type="xml">
+            <form string="Skills">
+                <sheet>
+                    <group>
+                        <group string="Skills">
+                            <field name="name" class="oe_inline" required="1"/>
+                            <field name="similar_skill_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="parent_skill_id" options="{'no_create':1}"/>
+                            <field name="contemporary"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="payroll_location_form" model="ir.ui.view">
+        <field name="name">Payroll Location</field>
+        <field name="model">hr.payroll.location</field>
+        <field name="arch" type="xml">
+            <form string="Payroll Location">
+                <sheet>
+                    <group>
+                        <group string="Payroll Location">
+                            <field name="name" class="oe_inline" required="1"/>
+                            <field name="address" required="1"/>
+                            <field name="cin"/>
+                            <field name="pan_no"/>
+                            <field name="gst_no" invisible="1"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="band_form" model="ir.ui.view">
+        <field name="name">Band/grade</field>
+        <field name="model">hr.band</field>
+        <field name="arch" type="xml">
+            <form string="Band">
+                <sheet>
+                    <group>
+                        <group string="Band/Grade">
+                            <field name="name" class="oe_inline" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="org_unit_form" model="ir.ui.view">
+        <field name="name">organization.unit.form</field>
+        <field name="model">organization.unit</field>
+        <field name="arch" type="xml">
+            <form string="Organization Unit">
+                <sheet>
+                    <group>
+                        <group string="Organization Unit">
+                            <field name="name" class="oe_inline" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_group_form" model="ir.ui.view">
+        <field name="name">hr.employee.group.form</field>
+        <field name="model">hr.employee.group</field>
+        <field name="arch" type="xml">
+            <form string="HR Group">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" class="oe_inline"/>
+                            <field name="related_hr" domain="[('department_id.name','=','Human Resource')]" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
+                            <field name="department_ids" widget="many2many_tags" domain="[('parent_id','child_of','Operations')]" options="{'no_create': True, 'no_open':True}"/>
+                            <!-- <field name="company_id" options="{'no_create': True, 'no_open':True}"/> -->
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="skills_tree" model="ir.ui.view">
+        <field name="name">Skills</field>
+        <field name="model">hr.primary.skill</field>
+        <field name="arch" type="xml">
+            <tree string="Skills">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="account_tree" model="ir.ui.view">
+        <field name="name">Account</field>
+        <field name="model">hr.account</field>
+        <field name="arch" type="xml">
+            <tree string="Account">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="vendor_tree" model="ir.ui.view">
+        <field name="name">Vendor</field>
+        <field name="model">hr.vendor</field>
+        <field name="arch" type="xml">
+            <tree string="Vendor" editable="top">
+                <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="payroll_location_tree" model="ir.ui.view">
+        <field name="name">payroll Location</field>
+        <field name="model">hr.payroll.location</field>
+        <field name="arch" type="xml">
+            <tree string="Payroll Location">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="band_tree" model="ir.ui.view">
+        <field name="name">Band/Grade</field>
+        <field name="model">hr.band</field>
+        <field name="arch" type="xml">
+            <tree string="Band">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="org_unit_tree" model="ir.ui.view">
+        <field name="name">organization.unit.tree</field>
+        <field name="model">organization.unit</field>
+        <field name="arch" type="xml">
+            <tree string="Organization Unit">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_employee_group" model="ir.ui.view">
+        <field name="name">hr.employee.group.tree</field>
+        <field name="model">hr.employee.group</field>
+        <field name="arch" type="xml">
+            <tree string="HR Group">
+                <field name="name"/>
+                <!-- <field name="company_id"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="bod_mail_config" model="ir.ui.view">
+        <field name="name">bod.mail.config.tree</field>
+        <field name="model">bod.mail.config</field>
+        <field name="arch" type="xml">
+            <tree string="HR Related Mail" editable="top">
+                <field name="user_id" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='location_work_form'>
+        <field name="name">Location Work form</field>
+        <field name="model">hr.location.work</field>
+        <field name="arch" type="xml">
+            <form string="Work Location">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" required="1"/>
+                            <field name="related_login" widget="many2many_tags"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Bank">
+                            <group string="Bank Accounts" name="banks">
+                                <field name="bank_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="bank_id"/>
+                                        <field name="acc_number"/>
+                                        <field name="acc_holder_name" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_location_work" model="ir.actions.act_window">
+        <field name="name">Work Location</field>
+        <field name="res_model">hr.location.work</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new work location
+          </p>
+        </field>
+    </record>
+
+    <record id="action_hr_group" model="ir.actions.act_window">
+        <field name="name">HR Group</field>
+        <field name="res_model">hr.employee.group</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_skills" model="ir.actions.act_window">
+        <field name="name">Primary Skills</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.primary.skill</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+            </p><p>
+                Use this menu to browse previous Skills. To record new
+                Skills, you may use the create button.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_account" model="ir.actions.act_window">
+        <field name="name">Deployability</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.account</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new Deployability.
+            </p><p>
+                Use this menu to browse previous Deployability. To record new
+                Deployability, you may use the create button.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_vendor" model="ir.actions.act_window">
+        <field name="name">Vendor Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.vendor</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new Vendor.
+            </p><p>
+                Use this menu to browse previous Vendor. To record new
+                Vendor, you may use the create button.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_band" model="ir.actions.act_window">
+        <field name="name">Band</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.band</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new Band.
+            </p><p>
+                Use this menu to browse previous Band. To record new
+                Band, you may use the create button.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_payroll_location" model="ir.actions.act_window">
+        <field name="name">Payroll Location</field>
+        <field name="res_model">hr.payroll.location</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new Payroll Location.
+            </p><p>
+                Use this menu to browse previous Payroll Location. To record new
+                Payroll Location, you may use the create button.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_org_unit" model="ir.actions.act_window">
+        <field name="name">Organization  Units</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">organization.unit</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new Organization Unit.
+            </p><p>
+                Use this menu to browse previous Organization Unit. To record new
+                Payroll Location, you may use the create button.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_bod_mail" model="ir.actions.act_window">
+        <field name="name">BOD Mail</field>
+        <field name="res_model">bod.mail.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="domain">[]</field>
+    </record>
+
+    <menuitem id="menu_units"
+              name="Organisation Master"
+              parent="hr.menu_human_resources_configuration"
+              sequence="4"
+              groups="hr.group_hr_manager"/>
+    <menuitem id="menu_skill" 
+              name="Primary Skills" 
+              parent="hr_employee_updation.menu_units" 
+              sequence="0" 
+              action="action_skills" 
+              groups="hr.group_hr_manager"/>
+    <menuitem id="menu_account"
+              name="Deployability"
+              parent="hr_employee_updation.menu_units"
+              sequence="1"
+              action="action_account"
+              groups="hr.group_hr_manager"/>
+    <menuitem id="menu_vendor"
+              name="Vendor"
+              parent="hr_employee_updation.menu_units"
+              action="action_vendor"
+              groups="hr.group_hr_manager"/>
+    <menuitem id="menu_band"
+              name="Band"
+              parent="hr_employee_updation.menu_units"
+              sequence="2"
+              action="action_band"
+              groups="hr.group_hr_manager"/>
+    <menuitem id="menu_payroll_location"
+              name="Payroll Location"
+              parent="hr_employee_updation.menu_units"
+              sequence="3"
+              action="action_payroll_location"
+              groups="hr.group_hr_manager"/>
+    <menuitem id="menu_org_unit"
+              name="Organization Unit"
+              parent="hr_employee_updation.menu_units"
+              sequence="4"
+              action="action_org_unit"
+              groups="hr.group_hr_manager"/>
+    <menuitem id="menu_hr_group"
+              name="HR Groups Master"
+              parent="hr_employee_updation.menu_units"
+              action="action_hr_group"/>
+    <menuitem id="location_work_menu" 
+              name="e-Zestian Work Location" 
+              parent="hr.menu_human_resources_configuration" 
+              action="action_location_work"/>
+    <menuitem id="menu_bod_mail"
+              name="HR Related Mail"
+              parent="hr_employee_updation.menu_units"
+              action="action_bod_mail"/>
+</odoo>

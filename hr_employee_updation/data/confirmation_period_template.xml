@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Email template for Confirm Probation Period to user-->
+        <record id="send_confirm_period_email_user" model="mail.template">
+            <field name="name">Confirmation Evaluation Email to User</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Congratulations! You have completed probation period successfully and you are confirmed date ${object.employee_id.confirmation_date}</field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear ${object.name},<br/><br/>
+                        We are pleased to inform you that you have successfully completed your probation period. Your performance during this period has met its expectations.<br/><br/>
+                        We thank you for your contribution and wish to confirm your services in our organization with effect from ${object.employee_id.confirmation_date}
+                        <br/><br/>
+                        We look forward to your valued support and wish you all the very best for a rewarding career with our organization.<br/><br/><br/>
+                        Thanks,<br/>
+                        Team Unity<br/>
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.company_id.phone}
+                % if object.company_id.email
+                    | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+                % endif
+                % if object.company_id.website
+                    | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+                    ${object.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- POWERED BY -->
+<!-- <tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+        Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr> -->
+</table>
+</field>
+</record>
+
+        <!-- Email template for Confirmation Email to hr with manager -->
+        <record id="send_confirm_due_email_hr" model="mail.template">
+            <field name="name">Confirmation Evaluation Email to HR</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Confirmation Evaluation of ${object.employee_id.name} is sent to ${object.employee_id.parent_id.name}</field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear HR,<br/><br/>
+                        Confirmation Evaluation for ${object.employee_id.name} has been sent to manager ${object.employee_id.parent_id.name | safe}.
+                        <br/><br/>
+                        PFB the details:<br/>
+                        ${object.employee_id.name} - ${object.employee_id.identification_id}<br/>
+                        Designation - ${object.employee_id.job_id.name}<br/> 
+                        Date of Joining - ${object.employee_id.joining_date}<br/>
+                        Probation Period - ${object.employee_id.confirmation_period}
+                        <br/><br/><br/>
+                        Thanks,<br/>
+                        Team Unity<br/>
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.company_id.phone}
+                % if object.company_id.email
+                    | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+                % endif
+                % if object.company_id.website
+                    | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+                    ${object.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- POWERED BY -->
+<!-- <tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+        Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr> -->
+</table>
+</field>
+</record>
+<!-- Extend Probation Period Email -->
+<record id="send_extend_period_email" model="mail.template">
+            <field name="name">e-Zestian Extended Period Email</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Extended Probation Period for ${object.name}</field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear ${object.name},<br/><br/>
+                        Your confirmation period is extended by ${object.employee_id.extend_period} days.
+                        % if object.employee_id.extend_reason
+                            The reason for extend is ${object.employee_id.extend_reason}.
+                        % endif
+                        <br/><br/>
+                        Thanks,<br/>
+                        Team Unity<br/>
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.company_id.phone}
+                % if object.company_id.email
+                    | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+                % endif
+                % if object.company_id.website
+                    | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+                    ${object.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- POWERED BY -->
+<!-- <tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+        Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr> -->
+</table>
+</field>
+</record>
+
+<!-- Extend Probation Period Email2 -->
+<record id="send_extend_period_email2" model="mail.template">
+            <field name="name">e-Zestian Extended Period Email 2</field>
+            <field name="model_id" ref="hr_employee_updation.model_hr_employee"/>
+            <field name="subject">Extended Probation Period for ${object.name}</field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear ${object.name},<br/><br/>
+                        Your confirmation period is extended by --extend_days-- days.<br/>
+                        --extend_reason--
+                        <br/><br/>
+                        Thanks,<br/>
+                        Team Unity<br/>
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.company_id.phone}
+                % if object.company_id.email
+                    | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+                % endif
+                % if object.company_id.website
+                    | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+                    ${object.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- POWERED BY -->
+<!-- <tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+        Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr> -->
+</table>
+</field>
+</record>
+
+<!-- Employee Fired Email -->
+<record id="send_employee_fired_email" model="mail.template">
+            <field name="name">Employee Fired Email</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Seperation for ${object.name} </field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear ${object.name},<br/><br/>
+                        Your are fired.
+                        The reason for fire is ${object.employee_id.fired_reason}.
+                        <br/><br/>
+                        If you do not expect this, you can safely ignore this email.<br/><br/>
+                        Thanks,<br/>
+                        Team Unity<br/>
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.company_id.phone}
+                % if object.company_id.email
+                    | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+                % endif
+                % if object.company_id.website
+                    | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+                    ${object.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- POWERED BY -->
+<!-- <tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+        Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr> -->
+</table>
+</field>
+</record>
+
+
+<!-- Employee Fired Email -->
+<record id="send_fill_confirmation_email_manager" model="mail.template">
+            <field name="name">Confirmation Evaluation Email to Manager</field>
+            <field name="model_id" ref="hr_employee_updation.model_hr_probation_survey"/>
+            <field name="subject">Probation Period of ${object.employee_id.name} is completed dated ${object.employee_id.confirmation_date}</field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.employee_id.company_id.name, object.employee_id.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear Manager,<br/><br/>
+                        ${object.employee_id.name} has completed his probation period, kindly evaluate his performance and submit the confirmation feedback sheet.
+                        <br/><br/>
+                        PFB the details:<br/>
+                        ${object.employee_id.name} - ${object.employee_id.identification_id}<br/>
+                        Designation - ${object.employee_id.job_id.name}<br/> 
+                        Date of Joining - ${object.employee_id.joining_date}<br/>
+                        Probation Period - ${object.employee_id.confirmation_period}
+                        Date of Confirmation - ${object.employee_id.confirmation_date}
+                        <br/><br/>
+                        You are requested to submit the same on or before ${object.employee_id.confirmation_date}
+                        <br/><br/>
+                        Kindly click on &#160;&#160;<a href="/web#id=${object.id}&amp;action=448&amp;model=hr.probation.survey&amp;view_type=form&amp;cids=1" target="_blank" style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
+                            View Confirmation Evaluation Form
+                        </a> &#160;&#160;for further process.<br/>
+                        <br/><br/><br/>
+                        Thanks,<br/>
+                        Team Unity<br/>                   
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.employee_id.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.employee_id.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.employee_id.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.employee_id.company_id.phone}
+                % if object.employee_id.company_id.email
+                    | <a href="'mailto:%s' % ${object.employee_id.company_id.email}" style=" color: #454748;">${object.employee_id.company_id.email}</a>
+                % endif
+                % if object.employee_id.company_id.website
+                    | <a href="'%s' % ${object.employee_id.company_id.website}" style=" color: #454748;">
+                    ${object.employee_id.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- POWERED BY -->
+<!-- <tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+        Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr> -->
+</table>
+</field>
+</record>
+
+
+<!-- Probation Survey Email -->
+<record id="act_mail_confirmation" model="mail.activity.type">
+    <field name="name">Fill Confirmation Evaluation Form</field>
+    <field name="icon">fa-dollar</field>
+    <field name="res_model_id" ref="model_hr_probation_survey"/>
+    <!-- <field name="mail_template_ids" eval="[(4, ref('hr_employee_updation.send_fill_confirmation_email_manager'))]"/> -->
+</record>
+
+<!-- probation confirmation email to hr -->
+<record id="act_conf_email_hr" model="mail.activity.type">
+    <field name="name">Confirmation Evaluation Submitted</field>
+    <field name="icon">fa-dollar</field>
+    <field name="res_model_id" ref="model_hr_probation_survey"/>
+</record>
+
+    </data>
+</odoo>

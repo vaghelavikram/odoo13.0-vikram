@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_probation_survey" model="report.paperformat">
+        <field name="name">Address Proof Letter</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+        id="employee_probation_survey"
+        string="Address Proof Letter"
+        model="hr.probation.survey"
+        report_type="qweb-pdf"
+        name="hr_employee_updation.print_probation_survey"
+        file="hr_employee_updation.print_probation_survey"
+        print_report_name="'Confirmation Evaluation - %s' % (object.employee_id.name).replace('/', '')"/>
+        <!-- paperformat="hr_employee_updation.paperformat_address_proof_letter" -->
+
+    <template id="print_probation_survey">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="employee">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div style="text-align:right;">
+                            <img t-if="employee.employee_id.company_id" t-att-src="image_data_uri(employee.employee_id.company_id.logo)" style="max-height: 45px;" alt="Logo"/>
+                        </div>
+                        <div style="color:black;text-align:center;">
+                            <h2><u>Confirmation Evaluation</u></h2>
+                        </div>
+                        <div>
+                            <strong>e-Zestian Name: </strong><t t-esc="employee.employee_id.name"/>
+                        </div>
+                        <div>
+                            <strong>e-Zestian ID: </strong><t t-esc="employee.employee_id.identification_id"/>
+                        </div>
+                        <div style="color:black;text-align:center;">
+                            <h2><u>OLIVZ Rating</u></h2>
+                        </div>
+                        <div>
+                            <strong>Ownership: </strong><t t-if="employee.question19"><span t-field="employee.question19"/> Star</t>
+                        </div>
+                        <div>
+                            <strong>Learning: </strong><t t-if="employee.question23"><span t-field="employee.question23"/> Star></t>
+                        </div>
+                        <div>
+                            <strong>Innovative Thinking: </strong><t t-if="employee.question24"><span t-field="employee.question24"/> Star</t>
+                        </div>
+                        <div>
+                            <strong>Value Creation: </strong><t t-if="employee.question25"><span t-field="employee.question25"/> Star</t>
+                        </div>
+                        <div>
+                            <strong>Zest for Life: </strong><t t-if="employee.question26"><span t-field="employee.question26"/> Star</t>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

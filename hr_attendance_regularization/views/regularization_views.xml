@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <record id="ir_cron_leader_team_attendence" model="ir.cron">
+        <field name="name">Leadership Team Attendance</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_attendance_regular"/>
+        <field name="code">model._cron_attendance_leader_team()</field>
+        <field name="state">code</field>
+      </record>
+
+        <record id="view_regular_tree1" model="ir.ui.view">
+            <field name="name">attendance.regular_tree</field>
+            <field name="model">attendance.regular</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="Attendance Regularization" default_order="from_date desc" js_class="reg_create_tree">
+                    <field name="employee"/>
+                    <field name="reg_category"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="worked_hours" widget="float_time"/>
+                    <field name="reg_reason"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_attendance_regular_filter" model="ir.ui.view">
+            <field name="name">attendance.regular.filter</field>
+            <field name="model">attendance.regular</field>
+            <field name="arch" type="xml">
+                <search string="Search Settlement Form">
+                    <field name="employee" string="e-Zestian"/>
+                    <field name="state_select" string="State"/>
+                    <filter string="Archived" name="archived" domain="[('active','=',False)]"/>
+                    <filter string="To approve and Draft" name="state_draft" domain='["|",("state_select","=","draft"),("state_select","=","requested")]'/>
+                    <filter string="To approve" name="state_requested" domain='[("state_select","=","requested")]'/>
+                    <filter string="My Regularization" name="my_reg" domain='[("employee.user_id","=",uid)]'/>
+                    <filter string="My SubOrdiantes" name="my_team" domain='[("employee.parent_id.user_id","=",uid)]'/>
+                    <filter string="This Month" name="month" domain="[('from_date','&gt;', (context_today()+relativedelta(day=1)).strftime('%Y-%m-%d')),('from_date','&lt;', (context_today()+relativedelta(day=31,months=1)).strftime('%Y-%m-%d'))]"/>
+                    <filter string="Today" name="today" domain="[('from_date','&lt;=', context_today().strftime('%Y-%m-%d')), ('to_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <group expand="0" string="Group By">
+                      <filter string="e-Zestian" name="employee" context="{'group_by': 'employee'}"/>
+                      <filter string="State" name="state_select" context="{'group_by': 'state_select'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_view_regularization1">
+            <field name="name">Attendance Request</field>
+            <field name="res_model">attendance.regular</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'group_by':'state_select','search_default_my_team':1}</field>
+            <!-- <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_regular_tree1')}),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('attendance_regular_kanban1')})]"/> -->
+            <field name="help" type="html">
+                <p class="oe_view_no_content_create">Create new Request
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="regular_onsight" name="Attendance Request" parent="hr_attendance.menu_hr_attendance_root" sequence="9" groups="base.group_user"/>
+
+        <menuitem id="applying_regular1" name="Regularization Approval" parent="regular_onsight" action="action_view_regularization1" sequence="15" groups="base.group_user"/>
+
+        <record id="view_regular_approve_tree" model="ir.ui.view">
+            <field name="name">attendance.regular_request_tree</field>
+            <field name="model">attendance.regular</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Approve Regularization" default_order="from_date desc" js_class="reg_create_tree">
+                    <field name="employee"/>
+                    <field name="manager_id"/>
+                    <field name="reg_category"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="worked_hours" widget="float_time"/>
+                    <field name="reg_reason"/>
+                    <field name="state_select"/>
+                    <button string="Approve" name="regular_approval" type="object" icon="fa-check text-success" attrs="{'invisible':[('state_select','!=','requested')]}" groups="hr_attendance_regularization.group_attendance_regular_manager,hr.group_hr_user"/>
+                    <button string="Refuse" name="regular_rejection" type="object" icon="fa-ban text-danger" attrs="{'invisible':[('state_select','!=','requested')]}" groups="hr_attendance_regularization.group_attendance_regular_manager,hr.group_hr_user"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_attendance_regular_tree" model="ir.ui.view">
+            <field name="name">attendance.regular.tree</field>
+            <field name="model">attendance.regular.line</field>
+            <field name="arch" type="xml">
+                <tree create="0" string="Attendance Summary">
+                  <field name="employee_id"/>
+                  <field name="check_in"/>
+                  <field name="check_out"/>
+                  <field name="state" invisible="1"/>
+                  <field name="worked_hours" widget="float_time" sum="Total Worked Hours"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_attendance_regular_form" model="ir.ui.view">
+            <field name="name">attendance.regular.tree</field>
+            <field name="model">attendance.regular.line</field>
+            <field name="arch" type="xml">
+                <form create="0" string="Attendance Summary">
+                  <group>
+                    <group>
+                      <field name="employee_id" readonly="1"/>
+                      <field name="check_in" readonly="1"/>
+                      <field name="manager_id" readonly="1"/>
+                    </group>
+                    <group>
+                      <field name="check_out" readonly="1"/>
+                      <field name="worked_hours" widget="float_time" readonly="1"/>
+                      <field name="create_date" readonly="1"/>
+                    </group>
+                  </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="attendance_regular_kanban" model="ir.ui.view">
+            <field name="name">attend.regular.kanban</field>
+            <field name="model">attendance.regular</field>
+            <field name="arch" type="xml">
+                <kanban class="o_hr_employee_kanban">
+                    <field name="employee"/>
+                    <field name="state_select"/>
+                    <field name="identification_id"/>
+                    <field name="job_id"/>
+                    <field name="manager_id"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                                <div><img t-att-src="kanban_image('hr.employee', 'image_128', record.employee.raw_value)" t-att-title="record.employee.value" t-att-alt="record.employee.value" class="oe_kanban_avatar o_kanban_image_fill_left d-none d-md-block"/></div>
+                                <div><img t-att-src="kanban_image('hr.employee', 'image_128', record.employee.raw_value)" t-att-title="record.employee.value" t-att-alt="record.employee.value" class="oe_kanban_avatar o_kanban_image d-md-none rounded-circle"/></div>
+                                <div class="oe_kanban_details">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <h5>
+                                                <field name="employee"/>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <ul>
+                                        <li t-if="record.identification_id.value"><strong><span style="font-size:12px;">e-Zest ID</span></strong>: <i><field name="identification_id"/></i></li>
+
+                                        <li t-if="record.job_id.value"><strong><span style="font-size:12px;">Designation</span></strong>: <i><field name="job_id"/></i></li>
+                                        <li t-if="record.state_select.value"><strong><span style="font-size:12px;">State</span></strong>: <i><field name="state_select"/></i></li>
+                                        <li t-if="record.manager_id.value"><strong><span style="font-size:12px;">Manager</span></strong>: <i><field name="manager_id"/></i></li>
+                                        <li t-if="record.from_date.value"><strong><span style="font-size:12px;">From Date</span></strong>: <i><field name="from_date"/></i></li>
+                                        <li t-if="record.to_date.value"><strong><span style="font-size:12px;">To Date</span></strong>: <i><field name="to_date"/></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="attendance_regular11" model="ir.ui.view">
+            <field name="name">attend.regular</field>
+            <field name="model">attendance.regular</field>
+            <field name="arch" type="xml">
+               <form string="Regularization" rp_create="show_create=='yes'" edit="0">
+                   <header>
+                      <button name="submit_reg" string="Submit" type="object" class="btn-primary" invisible="1"/>
+                      <button name="regular_approval" type="object" string="Approve" class="oe_highlight" groups="hr_attendance_regularization.group_attendance_regular_manager, hr_attendance.group_hr_attendance_manager,hr.group_hr_user"
+                      attrs="{'invisible': [('state_select','in',['draft','reject','approved'])]}"/>
+                      <button name="regular_rejection" type="object" string="Reject" class="oe_highlight" groups="hr_attendance_regularization.group_attendance_regular_manager, hr_attendance.group_hr_attendance_manager,hr.group_hr_user" attrs="{'invisible': [('state_select','in',['draft','reject'])]}"/>
+                      <button name="open_leave" type="object" string="Apply Leave" class="oe_highlight" attrs="{'invisible': [('state_select','in',['draft','approved'])]}"/>
+                      <field name="state_select" widget="statusbar" statusbar_visible="requested,approved,reject"/>
+                   </header>
+                   <div class="alert alert-success text-center o_form_header" role="status" attrs="{'invisible': [('skip_dates', '=', False)]}">
+                      <div>
+                          <strong>Your attendance is not captured for below dates as you have approved leaves. If you still want to regularize, get your leaves refused and re-apply.</strong>
+                      </div>
+                      <!-- <div attrs="{'invisible': [('state', '!=', 'new')]}">
+                          <strong>An invitation email containing the following subscription link has been sent:</strong>
+                      </div> -->
+                      <div><field name="skip_dates" readonly="1"/></div>
+                   </div>
+                   <div class="alert alert-success text-center o_form_header" role="status" attrs="{'invisible': [('skip_atten', '=', False)]}">
+                      <div>
+                          <strong>Your attendance is not captured for below dates as you have approved or requested attendance. If you still want to regularize, get your attendance refused and re-apply.</strong>
+                      </div>
+                      <div><field name="skip_atten" readonly="1"/></div>
+                   </div>
+                   <sheet>
+                      <group>
+                        <group>
+                          <!-- <field name="skip_dates" invisible="1"/> -->
+                          <field name="show_create" invisible="1"/>
+                          <field name="reg_approved_employee" invisible="1"/>
+                          <field name="auto_approve" attrs="{'readonly': [('state_select','not in','draft')]}" invisible="1"/>
+                          <field name="reg_category" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state_select','not in','draft')]}"/>
+                          <field name="reg_reason" attrs="{'readonly': [('state_select','not in','draft')]}"/>
+                          <field name="divide_date" attrs="{'readonly': [('state_select','in',['requested','approved','reject']),('is_manager','=',False)]}"/>
+                          <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                          <field name="reg_reason_reject" groups="hr_attendance_regularization.group_attendance_regular_manager, hr_attendance.group_hr_attendance_manager,hr.group_hr_user"/>
+                        </group>
+                        <group>
+                          <field name="from_date" attrs="{'readonly':[('state_select','in',['requested','approved','reject']),('is_manager','=',False),('timesheet_ids','!=',False)]}"/>
+                          <field name="to_date" attrs="{'readonly':[('state_select','in',['requested','approved','reject']),('is_manager','=',False),('timesheet_ids','!=',False)]}"/>
+                          <field name="employee" attrs="{'readonly': ['|',('state_select','not in',['draft']),('is_hr','=',False)]}" options="{'no_create':True}"/>
+                          <field name="is_manager" invisible="1"/>
+                          <field name="manager_id" attrs="{'readonly':['|',('state_select','in',['approved','reject']),('is_manager','=',False)]}" force_save="1"/>
+                          <field name="create_date" string="Requested Date"/>
+                          <field name="worked_hours" widget="float_time"/>
+                          <field name="is_lock" invisible="1"/>
+                          <field name="is_hr" invisible="1"/>
+                          <field name="is_readonly" invisible="1"/>
+                          <field name="user_id" invisible="1"/>
+                        </group>
+                      </group>
+                      <notebook>
+                        <page string="Regular Line">
+                          <field name="attendance_regular_ids" attrs="{'readonly': [('state_select','in',['approved','reject'])]}" context="{'tree_view_ref': 'hr_attendance_regularization.view_attendance_regular_tree', 'form_view_ref': 'hr_attendance_regularization.view_attendance_regular_form'}"/>
+                        </page>
+                        <page string="Timesheet">
+                          <field name="timesheet_ids"/>
+                        </page>
+                      </notebook>
+                  </sheet>
+                  <div class="oe_chatter">
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                  </div>
+               </form>
+            </field>
+        </record>
+
+        <record id="attendance_regular_line_tree_view" model="ir.ui.view">
+          <field name="name">attend.regular.line.view</field>
+          <field name="model">attendance.regular.line</field>
+          <field name="arch" type="xml">
+            <tree string="Regularization">
+              <field name="employee_id"/>
+              <field name="check_in"/>
+              <field name="check_out"/>
+              <field name="state"/>
+              <field name="from_date"/>
+              <field name="to_date"/>
+              <field name="attendance_regular_id"/>
+              <button name="approve_regular_line" string="Approve" type="object" class="btn-primary"/>
+            </tree>
+          </field>
+        </record>
+
+        <record id="attendance_regular_line_view" model="ir.ui.view">
+          <field name="name">attend.regular.line.view</field>
+          <field name="model">attendance.regular.line</field>
+          <field name="arch" type="xml">
+            <form string="Regularization">
+              <header>
+                <button name="approve_regular_line" string="Approve" type="object" class="btn-primary"/>
+              </header>
+              <sheet>
+                <group>
+                  <field name="employee_id"/>
+                  <field name="check_in"/>
+                  <field name="check_out"/>
+                </group>
+                <group>
+                  <field name="state"/>
+                  <field name="from_date"/>
+                  <field name="to_date"/>
+                  <field name="attendance_regular_id"/>
+                </group>
+              </sheet>
+            </form>
+          </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_regular_line">
+            <field name="name">Attendance Regular Line</field>
+            <field name="res_model">attendance.regular.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','requested'), ('attendance_regular_id','!=',False)]</field>
+        </record>
+
+        <record model="ir.actions.server" id="action_regular_line_approval">
+          <field name="name">Regular Line Approval</field>
+          <field name="model_id" ref="model_attendance_regular_line"/>
+          <field name="binding_model_id" ref="model_attendance_regular_line" />
+          <field name="state">code</field>
+          <field name="code">
+              if records:
+                  records.approve_regular_line()
+          </field>
+        </record>
+
+        <record id="ir_actions_server_approve_attendance" model="ir.actions.server">
+          <field name="name">Approve Attendance</field>
+          <field name="model_id" ref="model_attendance_regular"/>
+          <field name="binding_model_id" ref="model_attendance_regular"/>
+          <field name="binding_view_types">list</field>
+          <field name="groups_id" eval="[(4, ref('base.group_system')), (4, ref('hr_attendance.group_hr_attendance_manager')), (4, ref('hr_attendance_regularization.group_attendance_regular_manager')), (4, ref('hr.group_hr_user'))]"/>
+          <field name="state">code</field>
+          <field name="code">
+            if records:
+              records.regular_approval()
+          </field>
+        </record>
+
+        <menuitem id="attendance_regular_menu" name="Regular Line" parent="regular_onsight" action="action_view_regular_line" groups="base.group_erp_manager"/>
+
+    </data>
+</odoo>

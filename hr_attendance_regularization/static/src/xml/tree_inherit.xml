@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template id="template" xml:space="preserve">
+    <t t-extend="ListView.buttons">
+        <t t-jquery="button.o_list_button_add" t-operation="replace">
+            <t t-if="widget.self_model == 'attendance.regular' and widget.show_create">
+                <button type="button" class="btn btn-primary o_list_button_add" accesskey="c"> Create </button>
+            </t>
+            <t t-if="widget.self_model != 'attendance.regular'">
+                <button type="button" class="btn btn-primary o_list_button_add" accesskey="c"> Create </button>
+            </t>
+        </t>
+    </t>
+</template>

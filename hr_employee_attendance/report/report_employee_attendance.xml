@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_employee_summary_report_calendar" model="ir.ui.view">
+          <field name="name">employee.summary.report.calendar</field>
+          <field name="model">employee.summary.report.calendar</field>
+          <field name="arch" type="xml">
+              <calendar string="Summary" quick_add="False" date_start="from_date" date_stop="to_date" mode="month" color="employee_id">
+                <field name="name"/>
+              </calendar>
+          </field>
+        </record>
+
+        <record id="view_employee_summary_report_calendar_form" model="ir.ui.view">
+          <field name="name">employee.summary.report.calendar.form</field>
+          <field name="model">employee.summary.report.calendar</field>
+          <field name="arch" type="xml">
+              <form>
+                <header>
+                  <button name="open_leave" string="Apply Leave" type="object" class="oe_highlight" attrs="{'invisible':[('check_absent','=',False)]}"/>
+                  <!-- <button name="open_regularize" string="Apply Attendance Request" type="object" class="oe_highlight" attrs="{'invisible':[('check_absent','=',False)]}"/> -->
+                </header>
+                <sheet>
+                  <group>
+                    <field name="image_medium" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_1024medium&quot;, &quot;size&quot;: [90, 90]}"/>
+                    <group>
+                      <field name="employee_name" readonly="1"/>
+                      <field name="from_date" readonly="1"/>
+                      <field name="name" readonly="1" class="badge-pill badge-danger"/>
+                    </group>
+                    <group>
+                      <field name="identification_id"/>
+                      <field name="check_absent" invisible="1"/>
+                      <field name="to_date" readonly="1"/>
+                    </group>
+                  </group>
+                </sheet>
+              </form>
+          </field>
+        </record>
+
+        <record id="action_employee_summary_report_calendar_form" model="ir.actions.act_window">
+          <field name="name">Summary</field>
+          <field name="res_model">employee.summary.report.calendar</field>
+          <field name="view_mode">calendar,form</field>
+        </record>
+
+        <record id="view_employee_summary_report_form" model="ir.ui.view">
+            <field name="name">employee.summary.report.form</field>
+            <field name="model">employee.summary.report</field>
+            <field name="arch" type="xml">
+            <form string="Attendance/Leave Summary" create="false" edit="false">
+              <script type="text/javascript" src="/hr_employee_attendance/static/src/js/edit_button.js"/>
+              <header>
+                <button name="action_summary_calendar_report" string="View on Calendar" type="object" class="btn-primary"/>
+                <button name="action_change_date" string="Change Details" type="object" class="btn-primary"/>
+                <button name="open_timesheet" string="Apply Timesheet" type="object" class="oe_highlight"/>
+                <button name="open_leave" string="Apply Leave" type="object" class="oe_highlight"/>
+                <button name="open_regularize" string="Apply Regularization" type="object" class="oe_highlight"
+                attrs="{'invisible': [('is_regularization_visible', '!=', 'True')]}"/>
+              </header>
+              <sheet>
+                  <field name="image" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_1024&quot;, &quot;size&quot;: [90, 90]}"/>
+                  <div class="oe_title">
+                    <h2><field name="employee_id"/></h2>
+                    <h3><label for="ezest_id" string="eZest ID"/>
+                    <field name="ezest_id" style="overflow: visible !important;"/></h3>
+                    <field name="is_regularization_visible" invisible="1"/>
+                  </div>
+                  <group>
+                    <group>
+                        <field name="from_date"/>
+                        <field name="total_days" style="width: 23%"/>
+                        <field name="weekend" style="width: 23%"/>
+                        <field name="public_holiday" style="width: 23%"/>
+                        <field name="total_working_days"/>
+                        <field name="actual_present_days"/>
+                        <field name="worked_hours" widget="float_time"/>
+                    </group>
+                    <group>
+                      <field name="to_date"/>
+                      <field name="work_from_home"/>
+                      <field name="out_duty" attrs="{'invisible': [('out_duty', '=', False)]}"/>
+                      <field name="to_approve_regularize"/>
+                      <field name="leave"/>
+                      <label for="absent"/>
+                      <div>
+                        <field name="absent" class="badge-pill badge-danger" attrs="{'invisible':[('absent_green','!=', False)]}"/>
+                        <field name="absent_green" class="badge-pill badge-success" attrs="{'invisible':[('absent','!=', False)]}"/>
+                        <button name="action_summary_calendar_report" type="object" class="btn-link" attrs="{'invisible':[('absent_green','!=', False)]}">
+                        <i class="fa fa-arrow-right"/>View
+                        </button>
+                      </div>
+                      <field name="absent_dates" attrs="{'invisible':[('absent_green','!=', False)]}"/>
+                      <field name="optional_holiday" invisible="1"/>
+                      <field name="half_day_leave" invisible="1"/>
+                      <field name="remaining_leave"/>
+                      <field name="date_list" invisible="1"/>
+                    </group>
+                  </group>
+                <center><h2 role="separator">Attendance/Leave Details</h2></center>
+                <notebook>
+                  <page string="Attendance Details" name="attendance">
+                    <field name="attendance_ids" readonly="1">
+                      <tree>
+                        <field name="employee_id" string="e-Zestian" invisible="1"/>
+                        <field name="day_check_in"/>
+                        <field name="day_check_out"/>
+                        <field name="source_check_in"/>
+                        <field name="source_check_out"/>
+                        <field name="worked_hours" widget="float_time"/>
+                      </tree>
+                    </field>
+                  </page>
+                  <page string="Leave Details" name="leaves">
+                    <field name="leave_ids">
+                      <tree>
+                        <field name="holiday_status_id"/>
+                        <field name="name"/>
+                        <field name="day_request_date_from"/>
+                        <field name="day_request_date_to"/>
+                        <field name="number_of_days_display"/>
+                        <field name="state"/>
+                      </tree>
+                    </field>
+                  </page>
+                  <page string="Regularization Details" name="regularize">
+                    <field name="regularize_ids">
+                      <tree>
+                        <field name="employee_id"/>
+                        <field name="check_in"/>
+                        <field name="check_out"/>
+                        <field name="worked_hours"/>
+                        <field name="state"/>
+                      </tree>
+                    </field>
+                  </page>
+                </notebook>
+              </sheet>
+            </form>
+          </field>
+        </record>
+
+        <record id="view_employee_own_attendance_form" model="ir.ui.view">
+            <field name="name">employee.attendance.leave.summary.form</field>
+            <field name="model">employee.attendance.leave.summary</field>
+            <field name="arch" type="xml">
+            <form string="Attendance/Leave Summary">
+              <group col="4" colspan="4">
+                  <field name="from_date"/>
+                  <field name="to_date"/>
+                  <!-- <field name="employee_id" options="{'no_create':True}" domain="['|',('user_id.id', '=', uid),('user_id.employee_id.parent_id.user_id.id', '=', uid)]"/> -->
+                  <field name="employee_id" options="{'no_create':True}"/>
+                  <field name="user_id" invisible="1"/>
+              </group>
+              <footer>
+                  <button name="action_summary_report" string="View Summary" type="object" class="btn-primary"/>
+                  <button string="Cancel" class="btn-secondary" special="cancel"/>
+              </footer>
+            </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_employee_own_attendance">
+          <field name="name">Attendance/Leave Summary</field>
+          <field name="res_model">employee.attendance.leave.summary</field>
+          <field name="view_mode">form</field>
+          <field name="target">new</field>
+        </record>
+
+        <record id="ir_actions_server_action_open_attendance_summary" model="ir.actions.server">
+          <field name="name">Attendance Summary</field>
+          <field name="model_id" ref="hr_employee_attendance.model_employee_summary_report" />
+          <field name="state">code</field>
+          <field name="code">
+              action = env['employee.attendance.leave.summary'].action_summary_report()
+          </field>
+        </record>
+
+        <menuitem id="employee_attendance_summary" name="Attendance Summary" parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="0" action="ir_actions_server_action_open_attendance_summary"/>
+
+        <!-- <menuitem id="employee_own_attendance" name="e-Zestian Attendance Summary" parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="2" action="action_employee_own_attendance"/> -->
+    </data>
+</odoo>

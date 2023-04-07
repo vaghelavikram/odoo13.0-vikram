@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        id="employee_coc_pdf"
+        string="Code of Conduct"
+        model="hr.employee"
+        report_type="qweb-pdf"
+        name="hr_employee_updation.print_coc_letter"
+        file="hr_employee_updation.print_coc_letter"
+        groups="hr.group_hr_manager"
+        print_report_name="'Code of Conduct Letter - %s' % (object.name).replace('/', '')"/>
+
+    <template id="print_coc_letter">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="employee">
+                <div class="m-5">
+                <div style="text-align:right;">
+                    <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="margin-left:55px;max-width: 55%;" alt="Company Logo"/>
+                </div>
+                <div style="color:black;text-align:center;">
+                    <h1>e-Zest</h1>
+                    <h1>Code of Conduct</h1>
+                </div>
+                    <P style="page-break-after: always"/>
+
+                <div class="mt-5">
+
+                    <h2><b>1 Introduction</b></h2>
+                    <p>
+                        e-Zest is an entrepreneurial company that empowers the team members by giving them space to take ownership and explore. We strive to bring back the joy of creativity and creation in everyone’s life.
+                        Joy is our central theme. We understand that real joy comes from using our talents to create value for others and self. Our goal is to create joy in all our relationships.
+                        Ethical conduct is at the core of how we do business. At e-Zest, we conduct our business ethically and consistent with applicable laws and regulations. Each of us is essential to our culture of ethics. You contribute through the decisions you make and the actions you take every day. This includes making ethical decisions and acting consistently with our values of integrity, honesty and respect. Being ethical is a part of who we are and how we behave.
+                    </p>
+
+                    <h2><b>2 Scope</b></h2>
+                    <p>
+                        The Code is your guide for doing business at e-Zest ethically and consistent with applicable laws, regulations and company policies. While the Code cannot answer every question, it lays the foundation for ethical business practices and shows you where to go when the answer isn’t clear.
+                    </p>
+
+                    <h2><b>3 Applicability</b></h2>
+                    <p>
+                        This code applies to all team members, including leadership team and others working on e-Zest’s behalf (e.g. contractors and consultants).
+                    </p>
+
+                    <h2><b>4 Your role and responsibilities</b></h2>
+                    <p>
+                       <b>What you need to do</b>
+                        <ul>
+                            <li>Access only the information necessary to do your job.</li>
+                            <li>When discussing confidential information, pay attention to your environment and mindful of others who could overhear your conversations.</li>
+                            <li>Do not leave confidential information in a place where unauthorized people have access to it</li>
+                            <li>ACT ETHICALLY: Live e-Zest’s values of integrity, honesty and respect</li>
+                            <li>FOLLOW THE LAW: Understand and follow the laws and other requirements that apply to your job and our business</li>
+                            <li>ASK FOR HELP: When the answer is unclear, ask for guidance before taking action.</li>
+                            <li>SPEAK UP: Voice compliance and ethics concerns right away. Compliance with the Code is a condition of your employment. You are personally responsible for being familiar with the Code.</li>
+                        </ul>
+                        <b>Additional responsibilities for managers</b>
+                        If you supervise others, you have additional responsibilities.
+                        <ul>
+                            <li>BE AN EXAMPLE: Model e-Zest’s values and commitment to compliance.</li>
+                            <li>SET EXPECTATIONS: Reinforce the importance of compliance and ethics.</li>
+                            <li>FOSTER OPEN COMMUNICATION: Make ethics conversations part of your routine.</li>
+                            <li>UNDERSTAND YOUR RESOURCES: Know who to contact for compliance and ethics guidance.</li>
+                            <li>TAKE ACTION: Address compliance and ethics concerns immediately.</li>
+                            <li>ENSURE NO RETALIATION: Never retaliate or allow others to retaliate for good faith reporting.</li>
+                        </ul>
+                    </p>
+
+                    <h2><b>5 Respecting Each Other</b></h2>
+                    <h3><b>5.1 Foster Diversity</b></h3>
+                    <p>
+                        e-Zest is strongly committed to providing equal employment opportunity for all members and all applicants for employment. We do not discriminate based on age, race, religion, caste, ancestry, color, family or medical care leave, gender identity or expression, marital status, medical condition, national origin, physical or mental disability, political affiliation, sexual orientation, or any other characteristic protected by applicable laws and regulations. We recognize that Persons with Disabilities are valuable human resources and seeks to create an environment that provides them with equal opportunities, protection of their rights and full participation in e-Zest. It is in consonance with the basic principles of equality, freedom, justice and dignity of all individuals that are enshrined in the Constitution of India and mandated under the Rights of Persons with Disability Act, 2016. We examine our unconscious biases and take steps to create an inclusive culture that makes every member feel welcome.
+                    </p>
+
+                    <h3><b>5.2 Safe Place to Work</b></h3>
+                    <p>
+                        To work effectively, all of us need a healthy and safe work environment. All forms of substance abuse as well as the use or distribution of drugs and alcohol while at work is prohibited. Unless required as part of your role (for instance for security personnel where deemed necessary), possession and / or use of weapons / firearms or ammunition while on business of the Company is prohibited. All of us should be safe at our place of work. Should you observe any unsafe situations at work, please reach out to your manager, HR or Leadership team. Please also take the time to familiarize yourselves with emergency procedures and the safety manuals applicable to your location.
+                    </p>
+
+                    <h3><b>5.3 Conflict of Interest</b></h3>
+                    <p>
+                        A conflict of interest is when a person or company has a financial, business or other relationship that may conflict with the best interests of the company they work for or their assigned duties. You are required to report all potential conflicts. However, not all conflicts require any action beyond disclosure. The best rule for any situation that appears to present a conflict of interest is to “abstain and disclose.” If it is not possible to avoid participating in the event or activity creating the conflict, (1) promptly disclose the potential conflict to your manager, HR and Leadership team (2) avoid participating in decisions that might raise the appearance of a conflict until you receive appropriate guidance from the Leadership team.
+                    </p>
+
+                    <h2><b>6 Relationship with Clients</b></h2>
+                    <h3><b>6.1 Honor Privacy</b></h3>
+                    <p>
+                        We build successful relationships when our customers trust us with privacy and use of their data in the way they permit us.
+We follow local privacy and data protection laws as well as privacy law of EU GDPR.
+We provide clear and accurate privacy notices when collecting or processing personal data.
+                    </p>
+
+                    <h3><b>6.2 Don’t Make or Accept Improper Payments</b></h3>
+                    <p>
+                        e-Zest is transparent in our interactions with customers, and do not influence their
+decisions through improper payments.
+We do not offer or pay bribe or kickbacks to anyone. We prohibit corrupt payment of any kind.
+Any gift, hospitability or travel offered to customers or our partners is pre- approved and reasonable.
+                    </p>
+
+                    <h2><b>7 Compliance of Laws</b></h2>
+                    <p>
+                        We act within the boundaries of applicable laws, rules and regulations of the countries where we do business. We are honest and transparent in our discussions with government representatives and officials.
+                    </p>
+
+                    <h2><b>8 Protecting Company Assets</b></h2>
+                    <p>
+                        e-Zest provides a wide range of valuable assets to help you perform your work. For e- Zest, its most valuable asset is our confidential information.
+We are personally responsible for protecting these assets in general, as well as those entrusted to us. This includes those assets that we have been authorized to provide to other members, contract personnel, clients or others. To do this, we should know and
+understand e-Zest’s security controls, processes, and practices. We should be alert to situations that could lead to the loss, misuse, theft, or unauthorized disclosure of our assets. Furthermore, we should report those situations to Admin or your manager as soon as they come to your attention.
+                    </p>
+
+                    <h3><b>8.1 Don’t Make or Accept Improper Payments</b></h3>
+                    <p>
+                        We shape e-Zest’s reputation by what we do and say every day. Our reputation is affected by what people hear about us, either directly or through the media. We must make sure our external communications are coordinated and consistent
+                    </p>
+
+                     <h3><b>8.2 Social media</b></h3>
+                    <p>
+                        Your social media activity is subject to e-Zest policies. Those policies apply when you are posting, blogging or tweeting about anything relating to or referencing e-Zest even if it's outside of designated work hours and from your personal device. When posting on your personal social media accounts, you can share that you work for e-Zest.
+                    </p>
+
+                    <h3><b>8.3 Information and Data security</b></h3>
+                    <p>
+                        As a team member of e-Zest, this is your responsibility to protect e-Zest’s information systems and data created or received from clients. e-Zest has established information security policies as per ISO 27001:2013, PCI DSS and HIPAA. You should understand and follow these policies to protect e-Zest’s and client’s intellectual property, Personally Identifiable Information (PII) and electronic Protected Health Information (ePHI).
+Ref.:
+- Enterprise Information Security Policies Manual
+- Roles and Responsibilities for Information Security.
+                    </p>
+
+                    <h3><b>8.4 Computer Uses</b></h3>
+                    <p>
+                        Any data created on e-Zest's computers is e-Zest's property. This includes data you create, receive, send or store on an e-Zest device. We monitor our computer systems and may read and copy any files or data on any computer at any time without prior notice. You can use e-Zest’s computers for personal use, but should not expect personal documents to be considered private — even if they’re marked private or confidential. You cannot engage in any activity that is illegal while using an e-Zest computer system.
+Ref.: Acceptable Usage Policy
+                    </p>
+
+                    <h3><b>8.5 Email and instant messaging</b></h3>
+                    <p>
+                        The purpose of email and instant messaging is to facilitate business communications. Instant messaging should not be used for formal business communications or to document business decisions. CAN USE Occasional personal use of e-Zest’s email and phone systems is allowed, as long as you use good judgment. Your personal use should be consistent with the Code and e-Zest’s policies and procedures. Personal use should not interfere with your work. CANNOT USE you cannot access personal cloud storage and email services (for example: Dropbox, Google Docs, iCloud, Gmail and Hotmail) on Prime equipment. You are not allowed to use personal email applications (for example: Gmail) to send or store Prime information.
+                    </p>
+
+                    <h3><b>8.6 Software Licensing</b></h3>
+                    <p>
+                        Most of the software we use at e-Zest is protected by licensing agreements and copyright laws. You are required to adhere to all licensing requirements. Downloading or duplicating software outside the terms the vendor sets may result in personal penalties and/or liability for e-Zest
+                    </p>
+
+                    <h3><b>8.7 Data and Business Records</b></h3>
+                    <p>
+                        e-Zest uses governance controls throughout the data lifecycle of creation, distribution, use, placement, retention and deletion for all of e-Zest’s data, including Business Records, personal data and ePHI.
+                    </p>
+                    <p>
+                        <b>Creation:</b>
+                        Data should be created for specific business purposes. You should only create data when necessary due to the nature of e-Zest’s business and the personnel, monetary and governance resources needed to create new data.
+Any data created on e-Zest owned equipment is owned by e-Zest, including data you help to create. Data should be accurate, factual and objective. Fraudulent or illegal activity of any kind is not permitted.
+                    </p>
+
+                    <p>
+                        <b>Placement:</b>
+                        All data, including Business Records, must be placed in the approved storage location for retention.
+For example:
+• Store work in progress data to your home (H) drive or approved collaboration application. • Save Business Records to a secured folder.
+• Maintain paper Business Records at an e-Zest facility. If you are working from home, discuss with your manager whether you need digital access to the data.
+• Consult the RIM department for corporate databases. e-Zest can remediate or delete the data if not placed in the appropriate storage location.
+
+                    </p>
+
+                    <p>
+                        <b>Deletion:</b>
+                        All data must be deleted in accordance with the Data Deletion Schedule. You must retain indefinitely all data subject to a legal records hold until instructed otherwise by the legal department.
+                    </p>
+
+                    <h2><b>9 Choosing Vendors</b></h2>
+                    <p>
+                        We select the best vendors for the job, by carefully considering their proven
+record of accomplishment, reputation for integrity and not based on favoritism.
+We do not exert or attempt to exert influence to obtain special treatment for a particular vendor.
+                    </p>
+
+                    <h2><b>10 Upholding Standards</b></h2>
+                    <p>
+                        You are expected to uphold these standards, e-Zest’s policies and laws and
+regulations pertaining to your job.
+Read, understand and comply with the standards and policies. For any doubts you can reach the HR team, your manager or the Leadership team.
+Speak up when you see any violation of these standards or policies. Cooperative and be truthful during investigations.
+                    </p>
+
+                    <h2><b>11 Anti-retaliation</b></h2>
+                    <p>
+                        e-Zest strictly prohibits any unlawful retaliation against anyone who: • Reports concerns in good faith
+• Participates in a company investigation
+• Refuses to participate in suspected improper activity
+• Engages in other legally protected activity
+You have a duty to bring all compliance and ethics concerns forward. You will not be disciplined or terminated for concerns reported in good faith, even if those concerns are not, in the end, compliance and ethics violations.
+                    </p>
+                    <p>
+                        <b>Investigations:</b>
+                        e-Zest takes all reports of alleged violations seriously. We investigate reports of improper behavior and violations of the law, the Code or our policies as required. We take prompt and appropriate actions based on investigation findings. If you are asked to participate in an investigation, you are required to cooperate.
+                    </p>
+
+                    <p>
+                        <b>Corrective action:</b>
+                        As you perform your job, you are expected to follow the Code, our policies and all applicable laws and regulations. Failure to do so may result in corrective action, such as:
+• Warnings (verbal, written and final written warnings) • Suspension
+• Termination
+Corrective action does not need to be taken in any particular order and may include any or all of the steps outlined above.
+                    </p>
+
+                    <h2><b>12 Reporting Options</b></h2>
+                    <p>
+                        There are several ways to ask questions or to report a compliance or ethics concern. All
+good faith reports can be made without fear of retaliation or retribution. You can contact:
+ Your supervisor or manager
+ HR Team : hrd@e-zest.in
+ Leadership Team : exec@e-zest.in
+Ref.:
+ Whistleblower Policy
+ E-SYSAD-1.13 - Reporting IS events
+                    </p>
+<h2 class="mt-5">I have read, understood and hereby voluntarily accept the terms of employment outlined
+above.</h2>
+<div style="font-size:22px;"><strong>Name:</strong> <span t-field="employee.name"/></div>
+<!--<div style="font-size:22px;"><strong>Applicable Date:</strong> <span t-field="employee.joining_date"/></div>-->
+<div style="font-size:22px;"><strong>Signed Date:</strong> <t t-if="employee.coc_signed_off"><span t-field="employee.coc_signed_off"/></t></div>
+
+</div></div>
+            </t>
+        </t>
+    </template>
+</odoo>

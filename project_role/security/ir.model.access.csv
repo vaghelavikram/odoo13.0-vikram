@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_role_assignee,project.role,model_project_role,base.group_user,1,0,0,0
+access_project_role_user,project.role,model_project_role,project.group_project_user,1,0,0,0
+access_project_role_manager,project.role,model_project_role,base.group_system,1,1,1,1
+access_project_assignment_assignee,project.assignment,model_project_assignment,base.group_user,1,0,0,0
+access_project_assignment_user,project.assignment,model_project_assignment,project.group_project_user,1,0,0,0
+access_project_assignment_manager,project.assignment,model_project_assignment,project.group_project_manager,1,1,1,1
+access_allocation_tag_manager,allocation.tag,model_allocation_tag,project_mgmt.group_project_manager,1,1,1,0
+access_allocation_tag_user,allocation.tag.user,model_allocation_tag,base.group_user,1,0,0,0
+access_allocation_team,access_allocation_team,model_allocation_team,base.group_user,1,1,1,1
+access_allocation_team_manager,access_allocation_team_manager,model_allocation_team,project_mgmt.group_project_manager,1,1,1,0
+access_utilization_report_year,access_utilization_report_year,model_utilization_report_year,base.group_user,1,1,1,0
+access_project_ptp_assignment,access_project_ptp_assignment,model_project_ptp_assignment,base.group_user,1,1,1,0
+access_allocation_bench_tag,access_allocation_bench_tag,model_allocation_bench_tag,project.group_project_manager,1,1,1,1
+access_project_team_utilization,access_project_team_utilization,model_project_team_utilization,base.group_user,1,1,1,1
+access_project_team_utilization_data,access_project_team_utilization_data,model_project_team_utilization_data,base.group_user,1,1,1,1 
+access_project_piiline,access_project_piiline,model_project_piiline,base.group_user,1,1,1,1

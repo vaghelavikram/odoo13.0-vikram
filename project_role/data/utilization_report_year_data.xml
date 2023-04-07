@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- years -->
+        <record id="utilization_report_year_2020" model="utilization.report.year">
+            <field name="name">2020</field>
+        </record>
+        <record id="utilization_report_year_2021" model="utilization.report.year">
+            <field name="name">2021</field>
+        </record>
+        <record id="utilization_report_year_2022" model="utilization.report.year">
+            <field name="name">2022</field>
+        </record>
+        <record id="utilization_report_year_2023" model="utilization.report.year">
+            <field name="name">2023</field>
+        </record>
+        <record id="utilization_report_year_2024" model="utilization.report.year">
+            <field name="name">2024</field>
+        </record>
+        <record id="utilization_report_year_2025" model="utilization.report.year">
+            <field name="name">2025</field>
+        </record>
+        <record id="utilization_report_year_2026" model="utilization.report.year">
+            <field name="name">2026</field>
+        </record>
+        <record id="utilization_report_year_2027" model="utilization.report.year">
+            <field name="name">2027</field>
+        </record>
+        <record id="utilization_report_year_2028" model="utilization.report.year">
+            <field name="name">2028</field>
+        </record>
+        <record id="utilization_report_year_2029" model="utilization.report.year">
+            <field name="name">2029</field>
+        </record>
+        <record id="utilization_report_year_2030" model="utilization.report.year">
+            <field name="name">2030</field>
+        </record>
+    </data>
+</odoo>

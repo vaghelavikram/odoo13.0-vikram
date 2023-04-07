@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="extend_project_form_inherit" model="ir.ui.view">
+        <field name="name">extend.project.form</field>
+        <field name="model">extend.project</field>
+        <field name="inherit_id" ref="project_mgmt.extend_project_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="after">
+                <notebook>
+                    <page string="Allocations">
+                        <field name="allocation_ids" nolabel="1" create="0">
+                            <tree create="0">
+                                <field name="employee_id" options="{'no_create': True}"/>
+                                <field name="project_role_id" options="{'no_create': True}"/>
+                                <field name="project_bill_status" options="{'no_create': True}"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="allocation_percentage"/>
+                                <field name="assign_status"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

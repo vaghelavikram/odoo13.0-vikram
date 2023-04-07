@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="mail_act_expense_second_approval" model="mail.activity.type">
+            <field name="name">Expense Second Approval</field>
+            <field name="icon">fa-dollar</field>
+            <field name="res_model_id" ref="hr_expense.model_hr_expense_sheet"/>
+        </record>
+
+        <record id="mail_act_expense_payment" model="mail.activity.type">
+            <field name="name">Expense Payment Approval</field>
+            <field name="icon">fa-dollar</field>
+            <field name="res_model_id" ref="hr_expense.model_hr_expense_sheet"/>
+        </record>
+
+        <record id="mail_act_expense_account" model="mail.activity.type">
+            <field name="name">Expense Account Approval</field>
+            <field name="icon">fa-dollar</field>
+            <field name="res_model_id" ref="hr_expense.model_hr_expense_sheet"/>
+        </record>
+
+        <record id="mt_expense_second_approved" model="mail.message.subtype">
+            <field name="name">Second Approved</field>
+            <field name="res_model">hr.expense.sheet</field>
+            <field name="default" eval="True"/>
+            <field name="description">Expense report second approved</field>
+        </record>
+
+        <!-- Email template for manager to approve expenses -->
+        <record id="send_expense_email" model="mail.template">
+            <field name="name">Expense Email</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Notification of Expense Approval</field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear Accounts Department,<br/><br/>
+                        Find the expense approved by Department head manager.
+                        <br/>
+                        If you do not expect this, you can safely ignore this email.<br/><br/>
+                        Thanks,<br/>
+                        ${user.signature | safe}<br/>
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.company_id.phone}
+                % if object.company_id.email
+                    | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+                % endif
+                % if object.company_id.website
+                    | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+                    ${object.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+<!-- POWERED BY -->
+<tr><td align="center" style="min-width: 590px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+      <tbody><tr><td style="text-align: center; font-size: 13px;">
+        Powered by <a target="_blank" href="http://unity.e-zest.in/" style="color: #875A7B;">Unity</a>
+      </td></tr>
+    </tbody></table>
+</td></tr>
+</table>
+</field>
+</record>
+
+    </data>
+</odoo>

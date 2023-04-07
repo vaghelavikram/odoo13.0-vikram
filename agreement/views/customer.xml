@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_partner_filter_inherit" model="ir.ui.view">
+      <field name="name">partner.inherit.search</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_res_partner_filter"/>
+      <field name="arch" type="xml">
+        <xpath expr="//filter[@name='type_person']" position="after">
+          <filter string="Active Customer" name="active_customer" domain="[('active_customer', '=', True)]"/>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="view_partner_inherit_form" model="ir.ui.view">
+        <field name="name">partner.inherit.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='company_type']" position="attributes">
+           <attribute name="invisible">1</attribute>
+          </xpath>
+          <field name="type" position="before">
+            <field name="geo_location" options="{'no_open':True,'no_create':True}"/>
+            <!-- <field name="parent_id" string="Group Customer" widget="res_partner_many2one" placeholder="Company" domain="[('is_company', '=', True)]" context="{'default_is_company': True, 'show_vat': True}" options="{'no_create':True}"/> -->
+            <field name="customer_group" options="{'no_open':True, 'no_create':True}" domain="[('is_company','=', True)]"/>
+          </field>
+          <field name="category_id" position="after">
+            <field name="cost_center"/>
+            <field name="vendor_id"/>
+            <field name="customer_type"/>
+            <field name="active_customer" invisible="1"/>
+          </field>
+          <xpath expr="//field[@name='child_ids']//form//group//group" position="inside">
+            <field name="vat" string="GSTIN"/>
+          </xpath>
+          <xpath expr="//field[@name='lang']" position="attributes">
+            <attribute name="invisible">1</attribute>
+          </xpath>
+          <field name="vat" position="before">
+            <field name="department_id" options="{'no_create':True,'no_open':True}" domain="[('parent_id','child_of','Operations')]" widget="dept_format"/>
+          </field>
+          <xpath expr="//field[@name='vat']" position="attributes">
+    			  <attribute name="string">GST/VAT</attribute>
+    		  </xpath>
+          <xpath expr="//group[@name='purchase']" position="attributes">
+            <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//notebook//page[1]" position="before">
+            <page name="account" string="Account Information" autofocus="autofocus">
+              <group>
+                <group>
+                  <field name="revenue_potential" options="{'no_create':True, 'no_open':True}"/>
+                  <field name="account_owner" options="{'no_create':True, 'no_open':True}"/>
+                  <field name="delivery_owner" options="{'no_create':True, 'no_open':True}"/>
+                </group>
+                <group>
+                  <field name="technical_owner" options="{'no_create':True, 'no_open':True}"/>
+                  <field name="lob" widget="many2many_tags"/>
+                </group>
+              </group>
+            </page>
+          </xpath>
+          <xpath expr="//group[@name='sale']" position="inside">
+              <field name="hubspot_id"/>
+          </xpath>
+          <xpath expr="//page[@name='sales_purchases']" position="attributes">
+            <attribute name="string">Sales &amp; Finance</attribute>
+          </xpath>
+      </field>
+  </record>
+
+    <record id="base.action_partner_form" model="ir.actions.act_window">
+        <field name="domain">[('is_company','=', True)]</field>
+        <field name="context">{'default_is_company':1}</field>
+    </record>
+
+    <record id="geo_location_tree" model="ir.ui.view">
+      <field name="name">geo.location.tree</field>
+      <field name="model">geo.location</field>
+      <field name="arch" type="xml">
+        <tree string="Geo Location" editable="top">
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_geo_location" model="ir.actions.act_window">
+      <field name="name">Geo Location</field>
+      <field name="res_model">geo.location</field>
+      <field name="view_mode">tree</field>
+    </record>
+
+    <record id="line_business_tree" model="ir.ui.view">
+      <field name="name">line.business.tree</field>
+      <field name="model">line.business</field>
+      <field name="arch" type="xml">
+        <tree string="Line of Business" editable="top">
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_line_business" model="ir.actions.act_window">
+      <field name="name">Line of Business</field>
+      <field name="res_model">line.business</field>
+      <field name="view_mode">tree</field>
+    </record>
+
+    <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+      <field name="name">Customers</field>
+        <field name="res_model">res.partner</field>
+        <field name="domain">[('customer_rank','>',0)]</field>
+        <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1,'search_default_active_customer':1}</field>
+    </record>
+
+    <menuitem id="menu_geo_location" name="Geo Location" parent="sale.menu_sale_config" action="action_geo_location"/>
+    <menuitem id="menu_line_business" name="Line of Business" parent="sale.menu_sale_config" action="action_line_business"/>
+</odoo>

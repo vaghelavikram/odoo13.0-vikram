@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="assets_extend" name="Extend Title" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/oh_employee_documents_expiry/static/src/js/download_zip_button.js"/>
+        </xpath>
+    </template>
+
+</odoo>

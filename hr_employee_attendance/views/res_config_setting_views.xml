@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_employee_attendance_settings" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.hr.attendance</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Employees" string="Attendances" data-key="hr_attendance" groups="hr.group_hr_manager">
+                    <h2>e-Zestian Attendance Parameter</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="employee_attendance_from_date"/>
+                                <span class="fa fa-lg fa-building-o" role="img" groups="hr.group_hr_manager"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Add from date to get attendance...
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="employee_attendance_from_date"
+                                            placeholder="2019-01-01 00:00:00" class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="employee_attendance_to_date"/>
+                                <span class="fa fa-lg fa-building-o" role="img" groups="hr.group_hr_manager"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Add to date to get attendance...
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="employee_attendance_to_date"
+                                            placeholder="2019-01-01 00:00:00" class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Payroll Attendance Parameter</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="payroll_from_date"/>
+                                <span class="fa fa-lg fa-building-o" role="img" groups="hr.group_hr_manager"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Add from date to get attendance...
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="payroll_from_date" class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="payroll_to_date"/>
+                                <span class="fa fa-lg fa-building-o" role="img" groups="hr.group_hr_manager"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Add to date to get attendance...
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="payroll_to_date" class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="allocate_pl" invisible="1"/>
+                                <span class="fa fa-lg fa-building-o" role="img" groups="hr.group_hr_manager"/>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="allocate_pl" class="o_light_label" invisible="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

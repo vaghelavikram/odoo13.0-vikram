@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="employee_resume_form" model="ir.ui.view">
+        <field name="name">employee.resume.format</field>
+        <field name="model">employee.resume.format</field>
+        <field name="arch" type="xml">
+            <form string="Journal Creation">
+                <group>
+                    <group>
+                        <field name="employee_id" invisible="1"/>
+                        <field name="mobile_phone"/>
+                        <field name="work_email"/>
+                        <field name="address"/>
+                        <field name="birthday"/>
+                        <field name="nationality"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print_report" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+<!--     <record id="action_employee_resume_form" model="ir.actions.act_window">
+        <field name="name">Print Resume</field>
+        <field name="res_model">employee.resume.format</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="employee_resume_form"/>
+        <field name="target">new</field>
+    </record>
+ -->
+    <record id="action_employee_resume_form" model="ir.actions.act_window">
+        <field name="name">e-Zestian Resume</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.resume.format</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{
+            'default_employee_id': active_id,
+        }</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee" />
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

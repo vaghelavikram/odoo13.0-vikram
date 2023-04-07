@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequences for sale.order -->
+        <record id="seq_project_mgmt" model="ir.sequence">
+            <field name="name">Project Sequence</field>
+            <field name="code">project.mgmt.sequence</field>
+            <field name="prefix">UEZ-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_kth_location" model="ir.sequence">
+            <field name="name">Kth Location</field>
+            <field name="code">kth.location</field>
+            <field name="prefix">KTH-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_sez3_location" model="ir.sequence">
+            <field name="name">SEZ 3 Location</field>
+            <field name="code">sez3.location</field>
+            <field name="prefix">SEZ1-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_sez6_location" model="ir.sequence">
+            <field name="name">SEZ 6 Location</field>
+            <field name="code">sez6.location</field>
+            <field name="prefix">SEZ2-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_contract_location" model="ir.sequence">
+            <field name="name">Contract Location</field>
+            <field name="code">contract.location</field>
+            <field name="prefix">Contract-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_inc_location" model="ir.sequence">
+            <field name="name">INC Location</field>
+            <field name="code">inc.location</field>
+            <field name="prefix">INC-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_gmbh_location" model="ir.sequence">
+            <field name="name">GMBH Loction</field>
+            <field name="code">gmbh.location</field>
+            <field name="prefix">GMBH-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_uk_location" model="ir.sequence">
+            <field name="name">UK Location</field>
+            <field name="code">uk.location</field>
+            <field name="prefix">UK-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_austria_location" model="ir.sequence">
+            <field name="name">Austria Location</field>
+            <field name="code">austria.location</field>
+            <field name="prefix">Austria-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

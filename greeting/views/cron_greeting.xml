@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_birthday_greeting" model="ir.cron">
+        <field name="name">Birthday Greeting: Auto Remainder Birthday</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_birthday_template"/>
+        <field name="code">model._cron_birthday_greeting()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_birthday_make_zip" model="ir.cron">
+        <field name="name">Birthday Greeting Zip</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_birthday_template"/>
+        <field name="code">model.cron_birthday_make_zip()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_anniversary_greeting" model="ir.cron">
+        <field name="name">Anniversary Greeting: Auto Remainder Anniversary</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_anniversary_template"/>
+        <field name="code">model._cron_anniversary_greeting()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_anniversary_make_zip" model="ir.cron">
+        <field name="name">Anniversary Greeting Zip</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_anniversary_template"/>
+        <field name="code">model.cron_anniversary_make_zip()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_mail_birth_anni" model="ir.cron">
+        <field name="name">Birthday Anniversary Mail</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_birthday_anni"/>
+        <field name="code">model._cron_mail_birth_anni()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>

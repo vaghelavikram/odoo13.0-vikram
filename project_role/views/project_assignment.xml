@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ir_cron_employee_allocation" model="ir.cron">
+        <field name="name">Compute Employee Allocation</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_project_assignment"/>
+        <field name="code">model._cron_employee_allocation()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_calculate_unbilled_today" model="ir.cron">
+        <field name="name">Compute Employee Unbilled Today</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_project_assignment"/>
+        <field name="code">model._cron_calculate_unbilled_today()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_calculate_unallocated_today" model="ir.cron">
+        <field name="name">Compute Employee UnAllocated Today</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_project_assignment"/>
+        <field name="code">model._cron_calculate_unallocated_today()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_calculate_effective_efforts" model="ir.cron">
+        <field name="name">Compute Effective Project Efforts</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_project_assignment"/>
+        <field name="code">model._cron_calculate_effective_efforts()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_task_allocation" model="ir.cron">
+        <field name="name">Employee Project Task Allocation</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_project_assignment"/>
+        <field name="code">model._cron_allocate_task()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_allocation_completed" model="ir.cron">
+        <field name="name">Employee Project Allocation Complete</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_project_assignment"/>
+        <field name="code">model._cron_allocation_complete()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="project_assignment_form" model="ir.ui.view">
+        <field name="name">project.assignment.form</field>
+        <field name="model">project.assignment</field>
+        <field name="arch" type="xml"> 
+            <form string="Project Assignment" delete="0" duplicate="0">
+                <header>
+                  <field name="assign_status" widget="statusbar" statusbar_visible="planned,requested,confirmed,reject"/>
+                  <button name="action_requested" type= "object" string="Request" class="oe_highlight" attrs="{'invisible': [('assign_status', 'not in', ['planned'])]}"/>
+                  <button name="action_reject" type= "object" string="Reject" class="oe_highlight" attrs="{'invisible': [('assign_status', 'not in', ['requested'])]}" groups="project_mgmt.group_project_operations"/>
+                  <button name="action_approval" type= "object" string="Approve" class="oe_highlight" attrs="{'invisible': [('assign_status', 'not in', ['requested'])]}" groups="project_mgmt.group_project_operations"/>
+                  <button name="action_deallocate" type="object" string="Deallocate" class="oe_highlight" attrs="{'invisible': [('assign_status', 'in', ['planned', 'requested', 'reject'])]}" invisible="1"/>
+                </header>
+                <sheet> 
+                    <group>
+                        <group>  
+                            <field name="project_id" domain="[('actual_start_date','&lt;=', context_today().strftime('%m-%d-%Y')),('actual_end_date','=',False), ('state','!=','closed')]" options="{'no_create':1}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="role_ids" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}" domain="[('is_designation','in',['in_employee','both'])]" widget="many2many_tags" invisible="1"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="start_date" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}" required="1"/>
+                            <field name="is_operation_right" invisible="1"/>
+                            <field name="end_date" required="1" attrs="{'readonly':[('is_operation_right','=',True)]}"/>
+                            <field name="change_manager" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])],'invisible':[('assign_status','in',['planned'])]}"/>
+                            <field name="change_dept" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])],'invisible':[('assign_status','in',['planned'])]}"/>
+                            <field name="show_ryg" attrs="{'readonly':[('assign_status','in',['reject'])]}"/>
+                            <field name="is_unbilled_today" invisible="1"/>
+                            <field name="is_unallocated_today" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="project_bill_status" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="allocation_percentage" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="assignment_filter" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="allocation_tags" widget="many2many_tags" attrs="{'invisible': [('assign_status', '!=', 'confirmed')]}"/>
+                            <field name="send_approve_mail" attrs="{'invisible': [('assign_status', 'not in', ['requested', 'confirmed'])]}" groups="project_mgmt.group_project_operations"/>
+                            <field name="team" groups="project_mgmt.group_project_operations,project_mgmt.group_project_manager,project_mgmt.group_project_operations_copy" options="{'no_create':True, 'no_open': True}" attrs="{'required':[('assign_status','=','planned')]}"/>
+                            <field name="last_update_date" options="{'no_create':True, 'no_open': True}" invisible="1"/>
+                            <!-- <field name="user_id" domain="[('active', '=', True)]" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed'])]}"/> -->
+                        </group>
+                    </group>
+                    <div class="alert alert-success text-center o_form_header" role="status" attrs="{'invisible': [('project_id', '!=', False), ('end_date','!=',False), ('allocation_percentage','!=',False), ('start_date','!=',False),('project_bill_status','!=',False)]}">
+                        <div>
+                            <strong>Fill Project and Assigned Till to fill e-Zestian</strong>
+                        </div>
+                    </div>
+                    <div attrs="{'invisible': ['|','|','|','|',('project_id', '=', False), ('end_date','=',False), ('allocation_percentage','=',False), ('start_date','=',False),('project_bill_status','=',False)]}">
+                        <div class="alert alert-success text-center o_form_header" role="status" attrs="{'invisible': [('is_error_message', '=', False)]}">
+                            <!-- <a class="close" data-dismiss="alert" href="#" aria-label="Close">x</a> -->
+                            <div>
+                                <strong>Click on search</strong>
+                            </div>
+                            <field name="is_error_message" invisible="1"/>
+                        </div>
+                    </div>
+                    <group class="col-8">
+                        <label for="employee_id"/>
+                        <div class="o_row">
+                            <field name="employee_id" options="{'no_create': True}" context="{'show_detail':True}" attrs="{'readonly':['|',('assign_status','in',['confirmed', 'reject']),('is_error_message','=',True)]}"/>
+                           <!-- <button name="search_employee_filter" type="object" string="Search" class="oe_highlight ml-5" attrs="{'invisible':[('assign_status','in',['confirmed', 'reject'])]}"/> -->
+                           <!-- <label for="is_search" class="btn btn-primary" attrs="{'invisible':[('assign_status','in',['confirmed', 'reject'])]}"/> -->
+<!--                           <label for="is_search" style="border: 1px solid transparent;padding: 0.0 0.7rem;background: #a1324f;color: #fff;box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;border-color: #a1324f !important;border-radius: 3px !important;" attrs="{'invisible':['|',('assign_status','in',['confirmed', 'reject']), '|','|','|','|',('project_id', '=', False), ('end_date','=',False), ('allocation_percentage','=',False), ('start_date','=',False),('project_bill_status','=',False)]}"/>-->
+<!--                           <field name="is_search" invisible="1" readonly="0"/>-->
+                        </div>
+                        <field name="filter_employee_ids" invisible="1"/>
+                        <field name="project_role_id" options="{'no_create': True}" required="1" attrs="{'readonly':[('assign_status','in',['reject'])]}" domain="[('is_designation','in',['in_employee','both']),('company_id','=',company_id)]"/>
+                        <field name="description_approve" attrs="{'readonly':[('assign_status','in',['reject'])]}" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+                    </group>
+                    <notebook>
+                        <page string="Current Allocations" name="current_allocations">
+                            <field name="alloc_ids">
+                                <tree create="0" delete="0">
+                                    <field name="employee_id"/>
+                                    <field name="project_id"/>
+                                    <field name="manager_id"/>
+                                    <field name="project_role_id"/>
+                                    <field name="project_bill_status"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="allocation_percentage"/>
+                                    <field name="assign_status"/>
+                                </tree>
+            <form string="Project Assignment">
+                <header>
+                  <field name="assign_status" widget="statusbar" statusbar_visible="planned,requested,confirmed,reject"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>  
+                            <field name="project_id" domain="[('actual_start_date','&lt;=', context_today().strftime('%m-%d-%Y')),('actual_end_date','=',False), ('state','!=','closed')]"/>
+                            <field name="role_ids" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}" domain="[('is_designation','in',['in_employee','both'])]" widget="many2many_tags"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="start_date" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}" required="1"/>
+                            <field name="is_operation_right" invisible="1"/>
+                            <field name="end_date" required="1" attrs="{'readonly':[('is_operation_right','=',True)]}"/>
+                            <field name="change_manager" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                        </group>
+                        <group>
+                            <field name="project_bill_status" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="allocation_percentage" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="assignment_filter" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                        </group>
+                    </group>
+                    <group class="col-8">
+                        <field name="employee_id" options="{'no_create': True}" widget="emp_format" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}" domain="[('id','in',filter_employee_ids)]"/>
+                        <field name="filter_employee_ids" invisible="1"/>
+                        <field name="project_role_id" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}" domain="[('is_designation','in',['in_employee','both']),('company_id','=',company_id)]"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="write_allocation" string="Save" type="object" default_focus="1" class="oe_highlight"/>
+                </footer>
+            </form>
+                            </field>
+                        </page>
+                        <page string="Previous Allocations" name="previous_allocations">
+                            <field name="prev_alloc_ids">
+                                <tree create="0" delete="0">
+                                    <field name="employee_id"/>
+                                    <field name="project_id"/>
+                                    <field name="manager_id"/>
+                                    <field name="project_role_id"/>
+                                    <field name="project_bill_status"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="allocation_percentage"/>
+                                    <field name="assign_status"/>
+                                </tree>
+            <form string="Project Assignment">
+                <header>
+                  <field name="assign_status" widget="statusbar" statusbar_visible="planned,requested,confirmed,reject"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>  
+                            <field name="project_id" domain="[('actual_start_date','&lt;=', context_today().strftime('%m-%d-%Y')),('actual_end_date','=',False), ('state','!=','closed')]"/>
+                            <field name="role_ids" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}" domain="[('is_designation','in',['in_employee','both'])]" widget="many2many_tags"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="start_date" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}" required="1"/>
+                            <field name="is_operation_right" invisible="1"/>
+                            <field name="end_date" required="1" attrs="{'readonly':[('is_operation_right','=',True)]}"/>
+                            <field name="change_manager" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="is_max_date" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="project_bill_status" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="allocation_percentage" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                            <field name="assignment_filter" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}"/>
+                        </group>
+                    </group>
+                    <group class="col-8">
+                        <field name="employee_id" options="{'no_create': True}" widget="emp_format" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}" domain="[('id','in',filter_employee_ids)]"/>
+                        <field name="filter_employee_ids" invisible="1"/>
+                        <field name="project_role_id" options="{'no_create': True}" attrs="{'readonly':[('assign_status','in',['confirmed', 'reject'])]}" domain="[('is_designation','in',['in_employee','both'])]"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="write_allocation" string="Save" type="object" default_focus="1" class="oe_highlight"/>
+                </footer>
+            </form>
+                            </field>
+                        </page>
+                        <page string="Skills" name="skills">
+                            <div class="col-lg-4 o_group_skills">
+                                <field mode="tree" nolabel="1" name="project_assignment_skill_ids"  widget="hr_skills" attrs="{'readonly':[('assign_status','in',['confirmed','reject'])]}">
+                                    <tree>
+                                      <field name="skill_type_id" invisible="1"/>
+                                      <field name="skill_id"/>
+                                      <field name="skill_level_id"/>
+                                      <!-- <field name="project_id" invisible="1"/> -->
+                                      <field name="level_progress" widget="progressbar"/>
+                                    </tree>
+                              </field>
+                            </div> 
+                        </page>
+                        <page string="Responsibility">
+                            <field name="responsibility" widget="html"/>
+                        </page>
+                        <page string="Tasks">
+                            <button class="btn btn-primary btn-sm mb-2" type="object" name="emp_allocate_task" string="Allocate Task" attrs="{'invisible': [('assign_status','!=','confirmed')]}"/>
+                            <field name="parent_task_ids" invisible="1"/>
+                            <field name="task_ids" domain="[('id','in',parent_task_ids)]">
+                                <tree edit="0">
+                                    <field name="partner_id"/>
+                                    <field name="project_id"/>
+                                    <field name="parent_id"/>
+                                    <field name="name"/>
+                                    <field name="user_id"/>
+                                    <!-- <field name="start_date"/> -->
+                                    <field name="date_deadline"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook> 
+                </sheet>
+                <div class="oe_chatter">
+                    <!-- <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/> -->
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>  
+            </form>            
+      </field>  
+                
+    </record>
+
+
+    <!-- <record id="hr_employee_skill_type_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.skill.type.form.inherit</field>
+        <field name="model">hr.skill.type</field>
+        <field name="inherit_id" ref="hr_skills.hr_employee_skill_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="project_id"/>
+            </xpath>
+        </field>
+      </record> -->
+
+    <record id="project_assignment_tree" model="ir.ui.view">
+        <field name="name">project.assignment.tree</field>
+        <field name="model">project.assignment</field>
+        <field name="arch" type="xml">
+            <tree string="Project Assignments" js_class="open_allocation_tree" create="0" delete="0" multi_edit="1" default_order="employee_id" duplicate="0" editable="bottom">
+                <field name="employee_id" widget="list.many2one" readonly="1"/>
+                <field name="sbu_id" optional="show" widget="dept_format" options="{'no_open':True}"/>
+                <field name="primary_skill" optional="show"/>
+                <field name="total_exp" optional="show"/>
+                <field name="project_role_id" options="{'no_open': True}" readonly="1" string="Role" optional="show"/>
+                <field name="start_date" readonly="1" string="From" optional="show" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+                <field name="end_date" readonly="1" string="To" optional="show" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+                <field name="project_bill_status" options="{'no_open': True}" readonly="1" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+                <field name="allocation_percentage" readonly="1" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+                <field name="description_approve" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+                <field name="bench_tags" widget="many2many_tags" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+                <field name="manager_id" options="{'no_open': True}" readonly="1"/>
+                <field name="project_id" domain="[('active', '=', True)]" options="{'no_open': True}" invisible="context.get('default_project_id', False)" readonly="1"/>
+                <field name="assign_status" readonly="1" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+                <field name="is_max_date" invisible="1"/>
+                <field name="resign_date" optional="show" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+                <field name="exit_date" optional="show" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+                <button class="btn btn-primary btn-sm" type="object" name="action_open_allocation" string="Open Alloc" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy,project_mgmt.group_project_user_custom"/>
+                <button class="btn btn-primary btn-sm" type="object" name="action_create_allocation" string="Create Alloc" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="project_assignment_pivot" model="ir.ui.view">
+        <field name="name">project.assignment.pivot</field>
+        <field name="model">project.assignment</field>
+        <field name="arch" type="xml">
+            <pivot string="Project Assignment">
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="project_id"/>
+                <!-- <field name="user_id" type="row"/> -->
+                <field name="employee_id" type="row"/>
+                <field name="project_role_id" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="project_assignment_kanban" model="ir.ui.view">
+        <field name="name">project.assignment.kanban</field>
+        <field name="model">project.assignment</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" delete="0">
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="project_id"/>
+                <!-- <field name="user_id"/> -->
+                <field name="employee_id"/>
+                <field name="project_role_id"/>
+                <field name="project_bill_status"/>
+                <!-- <field name="assignment_status"/> -->
+                <field name="assign_status"/>
+                <field name="allocation_percentage"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="row">
+                                <div class="col-2">
+                                    <img t-att-src="kanban_image('hr.employee', 'image_small', record.employee_id.raw_value)" t-att-title="record.employee_id.value" t-att-alt="record.employee_id.value" width="40" height="40" class="oe_kanban_avatar float-left"/>
+                                </div>
+                                <div class="col-10">
+                                    <div>
+                                        <h5><t t-esc="record.employee_id.value"/></h5>
+                                    </div>
+                                    <div invisible="context.get('default_project_id', False)">
+                                        <span>
+                                            <b>Project: </b><i><t t-esc="record.project_id.value"/></i>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <b>Role: </b><i><t t-esc="record.project_role_id.value"/></i>
+                                        </span>
+                                    </div>
+                                    <!-- <div>
+                                        <span>
+                                            <b>Billability Status: </b><i><t t-esc="record.project_billable_status.value"/></i>
+                                        </span>
+                                    </div> -->
+                                    <div>
+                                        <span>
+                                            <b>Billability Status: </b><i><t t-esc="record.project_bill_status.value"/></i>
+                                        </span>
+                                    </div>
+                                    <!-- <div>
+                                        <span>
+                                            <b>Assignment Status: </b><i><t t-esc="record.assignment_status.value"/></i>
+                                        </span>
+                                    </div> -->
+                                    <div>
+                                        <span>
+                                            <b>Assignment Status: </b><i><t t-esc="record.assign_status.value"/></i>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <b>Allocation(%): </b><i><t t-esc="record.allocation_percentage.value"/></i>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <b>Assigned From: </b><i><t t-esc="record.start_date.value"/></i>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <b>Assigned Till: </b><i><t t-esc="record.end_date.value"/></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="project_assignment_search" model="ir.ui.view">
+        <field name="name">project.assignment.search</field>
+        <field name="model">project.assignment</field>
+        <field name="arch" type="xml">
+            <search string="Assignments">
+                <field name="employee_id"/>
+                <field name="project_id"/>
+                <field name="project_role_id"/>
+                <field name="allocation_percentage"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter string="My Assignments" name="my_assignments" domain="[('employee_id.user_id','=',uid)]"/>
+<!--                <filter string="Unallocated Today" name="unallocated" domain="[('employee_id.project_allocate','=',0),('employee_id.is_ezestian','=',True),('employee_id.active','=',True),('is_max_date','=', True),('employee_id.account', 'in', ['Deployable - Billable', 'Temporarily - Deployable']),('employee_id.project_assign_till','&lt;',context_today().strftime('%m-%d-%Y')),('assign_status','!=','reject')]"/>-->
+<!--                <filter string="UnBilled Today" name="not_billable" domain="[('employee_id.total_billability','=',0),('employee_id.is_ezestian','=',True),('employee_id.active','=',True),('is_max_date','=', True),('employee_id.account', 'in', ['Deployable - Billable', 'Temporarily - Deployable']),('assign_status','!=','reject')]"/>-->
+                <filter string="Unallocated Today" name="unallocated" domain="[('is_unallocated_today','=', True)]"/>
+                <filter string="UnBilled Today" name="not_billable" domain="[('is_unbilled_today','=', True)]"/>
+                <filter string="Release this Week" name="release_week" domain="[('employee_id.is_ezestian','=',True),('employee_id.active','=',True),('is_max_date','=', True),('employee_id.account', 'in', ['Deployable - Billable', 'Temporarily - Deployable']),
+                ('employee_id.project_assign_till', '>=', (datetime.datetime.combine(context_today() + relativedelta(weeks=-1,days=1,weekday=0), datetime.time(0,0,0)).to_utc()).strftime('%m-%d-%Y')),
+                ('employee_id.project_assign_till', '&lt;', (datetime.datetime.combine(context_today() + relativedelta(days=1,weekday=0), datetime.time(0,0,0)).to_utc()).strftime('%m-%d-%Y')),('assign_status','!=','reject')]"/>
+                <filter string="Partial allocated" name="partial_allocated" domain="[('employee_id.project_allocate','>',0),('employee_id.project_allocate','&lt;',100),('employee_id.is_ezestian','=',True),('employee_id.active','=',True),('is_max_date','=', True),('employee_id.account', 'in', ['Deployable - Billable', 'Temporarily - Deployable']),('assign_status','!=','reject')]"/>
+                <filter string="Partial Billable" name="partial_billable" domain="[('employee_id.total_billability','>',0),('employee_id.total_billability','&lt;',100),('employee_id.is_ezestian','=',True),('employee_id.active','=',True),('is_max_date','=', True),('employee_id.account', 'in', ['Deployable - Billable', 'Temporarily - Deployable']),('assign_status','!=','reject')]"/>
+                <!-- <filter string="My Assignments" name="my_assignments" domain="[('user_id','=',uid)]"/> -->
+                <filter string="Active" name="active" domain="[('start_date','&lt;=', context_today().strftime('%m-%d-%Y')),('end_date','&gt;=', context_today().strftime('%m-%d-%Y')),('assign_status', '=', 'confirmed')]"/>
+                <filter string="Past" name="past" domain="['|',('assign_status', 'in', ['confirmed']),('allocation_completed', '=', True),('end_date','&lt;', context_today().strftime('%m/%d/%Y'))]"/>
+                <filter string="Future" name="future" domain="[('end_date','&gt;', context_today().strftime('%m/%d/%Y')),('assign_status', '=', 'confirmed')]"/>
+                <filter string="Approved" name="approved" domain="[('assign_status', '=', 'confirmed')]"/>
+                <filter string="Planned" name="planned" domain="[('assign_status', '=', 'planned')]"/>
+                <filter string="Requested" name="requested" domain="[('assign_status', '=', 'requested')]"/>
+                <filter string="Rejected" name="rejected" domain="[('assign_status', '=', 'reject')]"/>
+                <filter string="Not Rejected" name="not_rejected" domain="[('assign_status', '!=', 'reject')]" groups="base.group_erp_manager"/>
+                <filter string="Allocation Completed" name="deallocate" domain="[('allocation_completed', '=', True)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Project" name="groupby_project" context="{'group_by':'project_id'}"/>
+                    <filter string="Billable Status" name="groupby_billable" context="{'group_by':'project_bill_status'}"/>
+                    <filter string="Role" name="groupby_role" context="{'group_by':'project_role_id'}"/>
+                    <filter string="Allocation(%)" name="groupby_allocation_percentage" context="{'group_by':'allocation_percentage'}"/>
+                    <filter string="eZestian" name="groupby_user" context="{'group_by':'employee_id'}"/>
+                    <filter string="Company" name="groupby_company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_project_assignment_timeline" model="ir.ui.view">
+        <field name="model">project.assignment</field>
+        <field name="type">timeline</field>
+        <field name="arch" type="xml">
+            <timeline date_start="start_date"
+                      date_stop="end_date"
+                      default_group_by="employee_id"
+                      event_open_popup="false"
+                      zoomKey="no"
+                      mode="week">
+                <field name="employee_id"/>
+                <field name="project_id"/>
+                <templates>
+                    <t t-name="timeline-item">
+                        <div class="o_project_timeline_item">
+                            <img t-if="record.employee_id"
+                                 t-attf-src="/web/image/hr.employee/#{record.employee_id[0]}/image_512/24x24"
+                                 t-att-title="record.employee_id[0]" width="24" height="24" class="mr8"/>
+                            <span name="name">
+                                <t t-if="record.project_id"> 
+                                    <t t-esc="record.project_id[1]"/>
+                                </t>
+                            </span>
+                        </div>
+                    </t>
+                </templates>
+            </timeline>
+        </field>
+    </record>
+
+    <record id="project_assignment_view_all_action" model="ir.actions.act_window">
+        <field name="name">Allocations</field>
+        <field name="res_model">project.assignment</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph,timeline</field>
+        <field name="search_view_id" ref="project_assignment_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+    </record>
+
+    <record id="project_assignment_view_inc_action" model="ir.actions.act_window">
+        <field name="name">INC Allocations</field>
+        <field name="res_model">project.assignment</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="search_view_id" ref="project_assignment_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="domain">[('company_id','=','e-Zest Solutions Inc.')]</field>
+    </record>
+
+    <record id="project_assignment_view_project_action" model="ir.actions.act_window">
+        <field name="name">Allocations</field>
+        <field name="res_model">project.assignment</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph,timeline</field>
+        <field name="search_view_id" ref="project_assignment_search"/>
+        <field name="context">{
+            'default_project_id': active_id,
+            'search_default_active': 1}</field>
+        <field name="domain">[('project_id','=',active_id)]</field>
+    </record>
+
+    <record id="action_project_released_assignment" model="ir.actions.act_window">
+        <field name="name">Released Allocations</field>
+        <field name="res_model">project.assignment</field>
+        <field name="view_mode">tree,form,timeline</field>
+        <field name="search_view_id" ref="project_assignment_search"/>
+        <field name="domain">[('end_date','&lt;',context_today().strftime('%m/%d/%Y')), ('assign_status', '=', 'confirmed'), ('send_release_mail', '!=', True)]</field>
+    </record>
+
+    <record model="ir.actions.server" id="action_released_allocation">
+        <field name="name">Send Email</field>
+        <field name="model_id" ref="model_project_assignment"/>
+        <field name="binding_model_id" ref="model_project_assignment" />
+        <field name="state">code</field>
+        <field name="code">
+          if records:
+              action = records.send_email_released_allocation()
+        </field>
+    </record>
+
+    <record id="hr_employee_tree" model="ir.ui.view">
+        <field name="name">hr.employee.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+          <tree>
+            <field name="name"/>
+            <field name="work_email"/>
+            <field name="department_id" widget="dept_format" options="{'no_open':True}"/>
+            <field name="parent_id"/>
+            <field name="project_allocate" optional="hide"/>
+            <field name="project_assign_till" optional="hide"/>
+            <field name="total_billability" optional="hide"/>
+            <button class="btn btn-primary btn-sm" type="object" name="action_create_allocation" string="Create Alloc"/>
+          </tree>
+        </field>
+    </record>
+
+    <record id="hr_employee_search" model="ir.ui.view">
+        <field name="name">hr.employee.search</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <search string="e-Zestian">
+                <field name="name"/>
+                <filter string="Unallocated" name="unallocated" domain="[('project_allocate','=',0),('project_assign_till', '=', False),('is_ezestian','=',True),('account', 'in', ['Deployable - Billable', 'Temporarily - Deployable'])]"/>
+                <filter string="Onboarding Pipeline" name="onboarding" domain="[('planned_join_date', '&gt;=', context_today().strftime('%Y-%m-%d')),('joining_date','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- <record id="unallocated_allocation_tree" model="ir.ui.view">
+        <field name="name">project.assignment.unallocated.tree</field>
+        <field name="model">project.assignment</field>
+        <field name="arch" type="xml">
+            <tree string="Project Assignments" multi_edit="1" default_order="employee_id" duplicate="1">
+                <field name="employee_id" widget="list.many2one"/>
+                <field name="primary_skill" optional="show"/>
+                <field name="sbu_id" widget="dept_format" optional="show" options="{'no_open':True}"/>
+                <field name="project_role_id" string="Role" options="{'no_open': True}" readonly="1" optional="show"/>
+                <field name="start_date" string="From" readonly="1" optional="show"/>
+                <field name="end_date" readonly="1" string="To" optional="show"/>
+                <field name="project_bill_status" options="{'no_open': True}" readonly="1"/>
+                <field name="allocation_percentage" readonly="1"/>
+                <field name="description_approve"/>
+                <field name="manager_id" options="{'no_open': True}" readonly="1"/>
+                <field name="project_id" domain="[('active', '=', True)]" options="{'no_open': True}" invisible="context.get('default_project_id', False)" readonly="1"/>
+                <field name="assign_status" readonly="1"/>
+                <field name="is_max_date" invisible="1"/>
+                <field name="resign_date" optional="show"/>
+                <field name="exit_date" optional="show"/>
+                <button class="btn btn-primary btn-sm" type="object" name="action_create_allocation" string="Create Alloc"/>
+            </tree>
+        </field>
+    </record> -->
+
+    <record id="allocation_bench_tag_tree" model="ir.ui.view">
+          <field name="name">allocation.bench.tag.tree</field>
+          <field name="model">allocation.bench.tag</field>
+          <field name="arch" type="xml">
+              <tree editable="bottom">
+                <field name="name" required="1"/>
+              </tree>
+          </field>
+      </record>
+
+      <record id="allocation_team_tree" model="ir.ui.view">
+          <field name="name">allocation.team.tree</field>
+          <field name="model">allocation.team</field>
+          <field name="arch" type="xml">
+              <tree>
+                <field name="name"/>
+              </tree>
+          </field>
+      </record>
+
+      <record id="allocation_team_form" model="ir.ui.view">
+          <field name="name">allocation.team.form</field>
+          <field name="model">allocation.team</field>
+          <field name="arch" type="xml">
+              <form>
+                <group>
+                  <group>
+                    <field name="name"/>
+                    <field name="user_id" widget="many2many_tags" options="{'no_create_edit': True, 'no_open': True, 'no_create': True}"/>
+                  </group>
+                </group>
+              </form>
+          </field>
+      </record>
+
+    <record id="action_allocation_team" model="ir.actions.act_window">
+        <field name="name">Allocation Team</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">allocation.team</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <record id="action_allocation_bench_tag" model="ir.actions.act_window">
+        <field name="name">Allocation Bench Tag</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">allocation.bench.tag</field>
+        <field name="view_mode">tree</field>
+    </record>
+    
+    <record id="action_project_unassignment" model="ir.actions.act_window">
+        <field name="name">New Unassigned Members</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.employee</field>
+        <field name="search_view_id" ref="hr_employee_search"></field>
+        <field name="context">{'search_default_unallocated':1}</field>
+        <field name="domain">[('account', 'in', ['Deployable - Billable', 'Temporarily - Deployable'])]</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="project_unassignment_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="hr_employee_tree"/>
+        <field name="act_window_id" ref="action_project_unassignment"/>
+    </record>
+    
+    <!-- <record id="action_exist_project_unallocated" model="ir.actions.act_window">
+        <field name="name">Existing Unallocated Members</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.assignment</field>
+        <field name="context">{'search_default_unallocated':1}</field>
+        <field name="view_mode">tree,form</field>
+    </record> -->
+    
+<!--     <record id="exist_project_unallocated_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="unallocated_allocation_tree"/>
+        <field name="act_window_id" ref="action_exist_project_unallocated"/>
+    </record> -->
+
+    <!-- <record id="action_project_billable_status" model="ir.actions.act_window">
+        <field name="name">Project Billable Status</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.billable.status</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        </field>
+    </record> -->
+
+    <!-- <record id="action_project_assignment_status" model="ir.actions.act_window">
+        <field name="name">Project Assignment Status</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.assignment.status</field>
+        <field name="view_mode">tree,form</field>
+    </record> -->
+
+    <menuitem
+        name="Allocations"
+        id="menu_project_assignments"
+        parent="project.menu_main_pm"
+        sequence="2"
+        groups="project.group_project_user"
+    />
+    <menuitem
+        name="Allocations"
+        id="menu_sub_project_assignments"
+        parent="project_role.menu_project_assignments"
+        action="project_assignment_view_all_action"
+        sequence="1"
+        groups="project.group_project_user"
+    />
+    <menuitem
+        name="Released Allocations"
+        id="menu_project_release_assignments"
+        parent="project_role.menu_project_assignments"
+        action="action_project_released_assignment"
+        sequence="2"
+        groups="project.group_project_manager"
+    />
+    <menuitem
+        name="New Unassigned Members"
+        id="menu_project_unassignments"
+        parent="project_role.menu_project_assignments"
+        action="action_project_unassignment"
+        sequence="2"
+        groups="project.group_project_manager"
+    />
+    <menuitem
+        name="Inc Allocations"
+        id="menu_inc_assignments"
+        parent="project_role.menu_project_assignments"
+        action="project_assignment_view_inc_action"
+        sequence="3"
+        groups="project_mgmt.group_project_operations"
+    />
+    <!-- <menuitem
+        name="Existing Unallocated Members"
+        id="menu_existing_project_unallocated"
+        parent="project_role.menu_project_assignments"
+        action="action_exist_project_unallocated"
+        sequence="2"
+        groups="project.group_project_user"
+    /> -->
+    <menuitem id="menu_allocation_team" name="Allocation Team" parent="project.menu_main_pm" action="action_allocation_team" sequence = '15' groups="project.group_project_manager"/>
+    
+    <menuitem id="menu_allocation_bench_tag" name="Allocation Bench Tag" parent="project.menu_project_config" action="action_allocation_bench_tag" sequence = '16' groups="project.group_project_manager"/>
+    <!-- <menuitem
+        name="Billable Status"
+        id="menu_project_billable_status"
+        parent="project_mgmt.parent_menu_project_whisible"
+        action="action_project_billable_status"
+        sequence="14"
+    /> -->
+    <!-- <menuitem
+        name="Assignment Status"
+        id="menu_project_assignment_status"
+        parent="project_mgmt.parent_menu_project_whisible"
+        action="action_project_assignment_status"
+        sequence="15"
+    /> -->
+
+</odoo>

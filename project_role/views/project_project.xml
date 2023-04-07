@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project.project.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+              <field name="active_allocation_ids" invisible="1"/>
+            </field>
+            <button name="attachment_tree_view" position="after">
+                <button class="oe_stat_button" type="action" name="%(project_assignment_view_project_action)d" icon="fa-users">
+                    <!-- <field string="Allocations" name="assignment_count" widget="statinfo"/> -->
+                    <field string="Allocations" name="allocation_count" widget="statinfo"/>
+                </button>
+                <button class="oe_stat_button" type="object" string="Project Overview" name="action_view_timesheet" icon="fa-puzzle-piece" groups="base.group_system,project_mgmt.group_project_manager"/>
+            </button>
+            <xpath expr="//field[@name='privacy_visibility']" position="before">
+             <field name ="user_ids_project" string="Project Coordinators" widget="many2many_tags" options="{'no_create_edit':True}" force_save="1" group="project_mgmt.role_project_coordinator"/>
+            </xpath>
+
+            <xpath expr="//page[@name='settings']" position="after">
+                <page name="data_processing_activities" string="PII/ePHI Register">
+                    <group>
+                        <group>
+                            <field name="office_location"/>
+                            <field name="name_of_client_organizations_country"/>
+                            <field name="client_data_stored_location"/>
+                            <field name="loc_source_code"/>
+                            <field name="system_accessed"/>
+                            <field name="dev_system_accessed"/>
+
+                        </group>
+                        <group>
+                            <field name="resource_access_control"/>
+                            <field name="received_phi_ephi_identifiable_information"/>
+                            <field name="shared_phi_ephi_identifiable_information"/>
+                            <field name="data_processing"/>
+                            <field name="third_country_name"/>
+                            <field name="general_description"/>
+                        </group>
+                    </group>
+                    <field name="project_piiline_ids" nolable="1">
+                            <tree>
+                                <field name="group_team_member_name"/>
+                                <field name="name"/>
+                                <field name="date_of_birth"/>
+                                <field name="telephone_numbers"/>
+                                <field name="geographic_data"/>
+                                <field name="fax_numbers"/>
+                                <field name="social_security_numbers"/>
+                                <field name="email_addresses"/>
+                                <field name="medical_records"/>
+                                <field name="bank_account_numbers"/>
+                                <field name="health_plan_beneficiary_numbers"/>
+                                <field name="certificate_license_numbers"/>
+                                <field name="vehicle_identifiers_serial_numbers_including_license_plates"/>
+                                <field name="web_urls"/>
+                                <field name="device_identifiers_serial_numbers"/>
+                                <field name="internet_protocol_addresses"/>
+                                <field name="full_face_photos_comparable_images"/>
+                                <field name="biometric_identifiers"/>
+                                <field name="any_unique_identifying_number_code"/>
+                                <field name="any_other_field"/>
+                            </tree>
+                        <form>
+                            <group>
+                                <group>
+                                    <field name="group_team_member_name"/>
+                                    <field name="name" placeholder="Select"/>
+                                    <field name="date_of_birth" placeholder="Select"/>
+                                    <field name="telephone_numbers" placeholder="Select"/>
+                                    <field name="geographic_data" placeholder="Select"/>
+                                    <field name="fax_numbers" placeholder="Select"/>
+                                    <field name="social_security_numbers" placeholder="Select"/>
+                                    <field name="email_addresses" placeholder="Select"/>
+                                    <field name="medical_records" placeholder="Select"/>
+                                    <field name="bank_account_numbers" placeholder="Select"/>
+                                </group>
+                                <group>
+                                    <field name="health_plan_beneficiary_numbers" placeholder="Select"/>
+                                    <field name="certificate_license_numbers" placeholder="Select"/>
+                                    <field name="vehicle_identifiers_serial_numbers_including_license_plates"
+                                           placeholder="Select"/>
+                                    <field name="web_urls" placeholder="Select"/>
+                                    <field name="device_identifiers_serial_numbers" placeholder="Select"/>
+                                    <field name="internet_protocol_addresses" placeholder="Select"/>
+                                    <field name="full_face_photos_comparable_images" placeholder="Select"/>
+                                    <field name="biometric_identifiers" placeholder="Select"/>
+                                    <field name="any_unique_identifying_number_code" placeholder="Select"/>
+                                </group>
+                                <group>
+                                    <field name="any_other_field"/>
+                                </group>
+                            </group>
+                        </form>
+                        </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_project_timeline" model="ir.ui.view">
+        <field name="model">project.project</field>
+        <field name="type">timeline</field>
+        <field name="arch" type="xml">
+            <timeline date_start="planned_start_date"
+                      date_stop="planned_end_date"
+                      default_group_by="partner_id"
+                      event_open_popup="true"
+                      zoomKey="no"
+                      mode="week"
+                      colors="#2ecb71:state == 'closed'">
+                <field name="name"/>
+                <templates>
+                    <t t-name="timeline-item">
+                        <div class="o_project_timeline_item">
+                            <!-- <img t-if="record.user_id" -->
+                                 <!-- t-attf-src="/web/image/res.users/#{record.user_id[0]}/image/24x24" -->
+                                 <!-- t-att-title="record.user_id[1]" width="24" height="24" class="mr8"/> -->
+                            <span name="name">
+                                <t t-esc="record.name"/>
+                            </span>
+                            <!-- <small name="planned_hours" class="text-muted ml4"> -->
+                                <!-- <t t-esc="field_utils.format.float_time(record.planned_hours)"/> -->
+                            <!-- </small> -->
+                        </div>
+                    </t>
+                </templates>
+            </timeline>
+        </field>
+    </record>
+
+    <record id="view_project_list_tree_inherit" model="ir.ui.view">
+        <field name="name">project.project.list.tree.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project_mgmt.view_project_list_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="assignment_count" string="Allocations"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_mgmt_tree_inherit" model="ir.ui.view">
+        <field name="name">Project mgmt tree inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project_mgmt.project_mgmt_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="assignment_count" string="Allocations"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project.open_view_project_all" model="ir.actions.act_window">
+        <field name="view_mode">kanban,timeline,form</field>
+    </record>
+
+</odoo>

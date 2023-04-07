@@ -1,0 +1,1275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="_cron_missing_salary_details" model="ir.cron">
+        <field name="name">Reminder for missing Salary details</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="code">model._cron_missing_salary_details()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_contract_expiry_remainder" model="ir.cron">
+        <field name="name">Contractor: Remainder for Contractor</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="code">model._cron_contract_expiry_remainder()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_probation_period" model="ir.cron">
+        <field name="name">Hr: Auto Remainder for Confirmation Evaluation</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="code">model._cron_probation_period()</field>
+        <field name="state">code</field>
+    </record>    
+
+    <record id="ir_cron_new_onboarded_ezestian_daily" model="ir.cron">
+        <field name="name">Hr: Daily new Onboarded e-Zestian</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="code">model._cron_new_onboarded_ezestian_daily()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_fnf" model="ir.cron">
+        <field name="name">Hr Resignation FNF</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_fnf()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+    </record>
+
+    <record id="ir_cron_change_NP" model="ir.cron">
+        <field name="name">Change Notice Period1</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_change_NP()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+    </record>
+
+    <record id="ir_cron_experience_letter" model="ir.cron">
+        <field name="name">e-Zestian Experience Letter</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_send_experience_letter()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+    </record>
+
+    <!-- <record id="ir_cron_monthly_bu_report" model="ir.cron">
+        <field name="name">Inter-BU Movement Report</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_inter_bu_movement_report()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall" />
+    </record> -->
+
+
+
+    <menuitem id="employee_report_menu" name="Reports" parent="hr.menu_hr_root" sequence="30" groups="hr.group_hr_manager,hr.group_hr_user"/>
+    <menuitem id="menu_hr_management" name="HR Management" parent="hr.menu_hr_root" sequence="5" groups="hr.group_hr_manager,hr.group_hr_user"/>
+
+    <record id="hr_view_employee_filter_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.search.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='inactive']" position="after">
+                <filter string="Own Info" name="own_info" domain="[('user_id', '=', uid)]"/>
+                <filter string="My Team" name="my_team" domain="[('parent_id.user_id', '=', uid)]"/>
+                <filter string="Default" name="default_joined" domain="[('joining_date', '!=', False)]" groups="hr.group_hr_user"/>
+                <filter string="Onboarding Pipeline" name="onboarding" domain="[('planned_join_date', '&gt;=', context_today().strftime('%Y-%m-%d')),('joining_date','=',False)]" groups="hr.group_hr_user"/>
+                <filter string="This Month Joinee" name="new_joinee" domain="[('joining_date', '>=', (context_today()+relativedelta(day=1)).strftime('%Y-%m-%d')),('joining_date', '&lt;=',context_today().strftime('%Y-%m-%d'))]" groups="hr.group_hr_user"/>
+                <filter string="Joining Today" name="new_joined" domain="[('joining_date', '=',context_today().strftime('%Y-%m-%d'))]" groups="hr.group_hr_user"/>
+            </xpath>
+            <xpath expr="//filter[@name='message_needaction']" position="attributes">
+                <attribute name="groups">hr.group_hr_user</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='inactive']" position="attributes">
+                <attribute name="groups">hr.group_hr_user</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='activities_overdue']" position="attributes">
+                <attribute name="groups">hr.group_hr_user</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='activities_today']" position="attributes">
+                <attribute name="groups">hr.group_hr_user</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='activities_upcoming_all']" position="attributes">
+                <attribute name="groups">hr.group_hr_user</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_employee_inherit_form_view_my">
+        <field name="name">hr.employee.form.view.my</field>
+        <field name="model">hr.employee</field>
+        <field name="groups_id" eval="[(4,ref('hr.group_hr_user'))]"/>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="after">
+                <div class="oe_chatter">
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_employee_inherit_form_view_user">
+        <field name="name">hr.employee.form.view.user</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_chatter')]" position="replace">
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_employee_view_form_inherit_org_chart_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit.org_chart.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_org_chart.hr_employee_view_form_inherit_org_chart"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//field[@name='child_ids']" position="replace">
+                <field name="child_ids"/>
+            </xpath> -->
+            <xpath expr="//div[@id='o_employee_right']" position="inside">
+                <field name="show_org_chart" invisible="1"/>
+                <button name="action_show_org" class="btn btn-primary btn-sm" string="Show Org Chart" type="object" attrs="{'invisible':[('show_org_chart','=',True)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
+        <field name="name">Fellow e-Zestian</field>
+        <field name="res_model">hr.employee</field>
+        <field name="context">{'search_default_own_info':1, 'search_default_default_joined':1}</field>
+    </record>
+
+    <record id="open_view_employee_list_user" model="ir.actions.act_window">
+        <field name="name">e-Zestians</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="domain">[('joining_date','!=',False)]</field>
+        <field name="context">{'search_default_own_info':1}</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="hr.view_employee_filter"/>
+    </record>
+
+    <record model="ir.ui.view" id="hr_employee_inherit_form_view">
+        <field name="name">hr.employee.form.view</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="delete">0</attribute>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_information_agree" string="Submit" class="btn-primary" type="object" attrs="{'invisible':[('is_submit','=',True)]}"/>
+                <button name="action_change_emp_category" string="Change Team Member Category" class="btn-primary" type="object" groups="hr.group_hr_user"/>
+                <button name="action_send_exp_letter" string="Send Experience Letter" class="btn-primary" type="object" attrs="{'invisible':[('show_exp_button','!=',True)]}" groups="hr.group_hr_user"/>
+            </xpath>
+            <xpath expr="//widget[@name='web_ribbon']" position="before">
+                <div class="alert alert-success text-center" role="status" attrs="{'invisible':[('is_submit','=',True)]}">
+                    <div>
+                        <strong>You need to submit the Information.</strong>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//button[@id='hr_presence_button']" position="attributes">
+                <attribute name="groups">hr_multi_user.group_invisible_menu,hr.group_hr_user</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="attrs">{'readonly': [('can_edit','=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='image_1920']" position="attributes">
+                <attribute name="options">{'preview_image':'image_128'}</attribute>
+                <attribute name="required">1</attribute>
+            </xpath>
+            <div class="oe_button_box" position="inside">
+                <button class="oe_stat_button" name="contractor_document_view" type="object" icon="fa-list-ol" attrs="{'invisible':[('employee_category', '!=', 5)]}" groups="hr_employee_updation.group_emp_cheque_access" string="Contractor Documents">
+                </button>
+                <button name="action_get_attachment_view"
+                    class="oe_stat_button"
+                    icon="fa-book"
+                    type="object"
+                    string="NDA Agreement" invisible="1">
+                </button>
+                <button name="confirmation_view"
+                    class="oe_stat_button" icon="fa-user"
+                    type="object" attrs="{'invisible': ['|',('show_details','=',False),('confirmation_status', '=', 'due')]}">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Confirmation</span>
+                    </div>
+                </button>
+            </div>
+            <xpath expr="//field[@name='work_location']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='work_phone']" position="after">
+                <field name="employee_category" readonly="1" string="Team Member Category" options='{"no_open": True, "no_create": True}'/>
+                <!-- <field name="contract_id"/> -->
+                <!-- <field name="contract_ids" invisible="1"/> -->
+                <field name="location_work" options='{"no_open": True, "no_create": True}'/>
+                <field name="confirmation_status" attrs="{'invisible':[('employee_category','in',[2, 3])]}"/>
+                <field name="cancel_check" string="Cancel Cheque (*)" groups="hr_employee_updation.group_emp_cheque_access"/>
+            </xpath>
+            <xpath expr="//field[@name='work_email']" position="after">
+                <field name="skills" options='{"no_open": True, "no_create": True}'/>
+            </xpath>
+            <xpath expr="//field[@name='address_home_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='mobile_phone']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='job_title']" position="attributes">
+                <attribute name="string">Designation prev</attribute>
+            </xpath>
+            <xpath expr="//field[@name='job_id']" position="attributes">
+                <attribute name="string">Designation</attribute>
+                <attribute name="options">{'no_open': True,'no_create': True}</attribute>
+                <!-- <attribute name="domain">[('is_designation','in',['in_employee', 'both'])]</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="options">{'no_create': True,'no_open':True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="responsible_hr" options="{'no_create': True,'no_open':True}"/>
+                <field name="responsible_recruiter_ids" options="{'no_create': True,'no_open':True}" widget="many2many_tags" domain="['|',('department_id.name','=','Human Resource'),('department_id.name','=','Recruitment')]" invisible="1"/>
+                <field name="responsible_recruiter" options="{'no_create': True,'no_open':True}" widget="many2many_tags" domain="['|',('department_id.name','=','Human Resource'),('department_id.name','=','Recruitment')]"/>
+                <field name="consultancy_name" options="{'no_create':True,'no_open':True}"/>
+                <field name="account" options="{'no_create':True,'no_open':True}"/>
+                <field name="payroll_loc" domain="[('company_id','=',company_id)]" options="{'no_create':True,'no_open':True}"/>
+                <field name="joining_date" readonly="1" groups="    sales_team.group_sale_manager"/>
+                <field name="is_exp_letter" invisible="1"/>
+                <field name="is_submit" invisible="1"/>
+                <field name="show_exp_button" invisible="1"/>
+                <field name="can_edit" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='work_email']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='coach_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='resource_calendar_id']" position="attributes">
+                <attribute name="options">{'no_create': True}</attribute>
+                <attribute name="groups">hr.group_hr_user</attribute>
+            </xpath>
+            <xpath expr="//field[@name='department_id']" position="attributes">
+                <attribute name="options">{'no_open':True,'no_create': True}</attribute>
+                <attribute name="widget">dept_format</attribute>
+            </xpath>
+            <xpath expr="//field[@name='department_id']" position="after">
+                <field name="sbu_id" options="{'no_open':True}" widget="dept_format" attrs="{'invisible': [('sbu_id','=',False)]}"/>
+                <!-- <field name="dept_change_date" invisible="1"/> -->
+                <!-- <field name="dept_change_date" invisible="1"/> -->
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='hr_settings']/group/group" position="before">
+                <group>
+                    <group name="organization_details" colspan="4" string="Organization Details">
+                        <field name="business_entities" options="{'no_create_edit':True,'no_open':True}" invisible="1"/>
+                        <field name="relevant_exp_aftr_join"/>
+                        <field name="band_grade" options="{'no_create_edit':True,'no_open':True}"/>
+                        <field name="payroll_loc" options="{'no_create_edit':True,'no_open':True}" domain="[('company_id','=',company_id)]"/>
+                        <field name="lwf"/>
+                        <field name="lin" attrs="{'invisible':[('lwf','=',False)]}"/>
+                        <field name="is_technical"/>
+                        <field name="is_hr_verified"/>
+                        <field name="joining_month"/>
+                        <field name="consultant_salary" attrs="{'invisible':[('employee_category', '!=', 3)]}"/>
+                        <field name="contractor_type" attrs="{'invisible': [('employee_category','!=',3)], 'required': [('employee_category','=',3)]}"/>
+                        <field name="vendor_name" invisible="1"/>
+                        <field name="vendor_id" attrs="{'invisible': [('contractor_type','!=','third_party')], 'required': [('contractor_type','=','third_party')]}" options="{'no_create':1, 'no_open':1}"/>
+                        <field name="applicant_id" options="{'no_create':1}" readonly="1"/>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='identification_group']" position="after">
+                <group string="Salary Information" groups="hr.group_hr_manager">
+                    <field name="emp_wage"/>
+                    <field name="annual_bonus"/>
+<!--                    <field name="next_appraisal"/>-->
+<!--                    <field name="is_revise_salary_visible" invisible="1"/>-->
+<!--                    <field name="is_revise_salary" attrs="{'invisible': [('is_revise_salary_visible', '=', False)]}"/>-->
+<!--                    <field name="revised_salary_effective_from" attrs="{'invisible': [('is_revise_salary', '=', False)]}"/>-->
+                </group>
+            </xpath>
+            <field name="address_home_id" position="after">
+                <field name="personal_mobile" invisible="1"/>
+                <field name="personal_email" widget="email" string="Personal Email (*)"/>
+                <field name="mobile_phone" string="Personal Mobile (*)"/>
+            </field>
+            <field name="user_id" position="before">
+                <field name="is_ezestian" string="Is Unity Access"/>
+            </field>
+            <field name="user_id" position="after">
+                <field name="empl_shift"/>
+                <field name="planned_join_date"/>
+                <field name="joining_date"/>
+                <field name="nda_signed_off" readonly="1" force_save="1"/>
+                <field name="coc_signed_off" readonly="1" force_save="1"/>
+                <field name="anti_sexual_signed_off" readonly="1" force_save="1"/>
+                <field name="show_details" invisible="1"/>
+                <field name="confirmation_status" attrs="{'invisible':[('employee_category','in',[2,3])]}"/>
+                <field name="confirmation_date" attrs="{'invisible':[('employee_category','in',[2,3])]}"/>
+                <field name="is_confirmation_check" invisible="1"/>
+                <label for="confirmation_period" attrs="{'invisible':[('employee_category','in',[2,3])]}"/>
+                <div class="o_row">
+                    <field name="confirmation_period" force_save="1" attrs="{'invisible':[('employee_category','in',[2,3])]}"/>
+                    <button name="action_confirmation_period" type="object" string="Generate Confirmation Form" class="btn btn-sm btn-primary" attrs="{'invisible': ['|',('employee_category','in',[2,3]), ('confirmation_status','in', ['in_progress','confirmed'])]}"/>
+                </div>
+                <field name="is_extend" attrs="{'invisible':[('confirmation_status','not in',['extended'])]}"/>
+                <field name="extend_period" placeholder="eg: 30+30" attrs="{'invisible': [('is_extend', '=', False)]}"/>
+                <field name="extend_reason" attrs="{'invisible': [('is_extend', '=', False)]}"/>
+                <field name="is_fired"/>
+                <field name="fired_reason" attrs="{'invisible': [('is_fired', '=', False)]}"/>
+                <field name="is_abscond"/>
+                <field name="abscond" attrs="{'invisible': [('is_abscond', '=', False)]}"/>
+                <label for="resign_date"/>
+                <field name="notice_period" force_save="1"/>
+                <label for="exit_date"/>
+                <div class="o_row">
+                    <field name="exit_date" attrs="{'required': [('employee_category', 'in', [2,3])]}"/>
+                    <button name="action_clearance" type="object" string="Generate Clearance Form" class="btn btn-sm btn-primary" attrs="{'invisible': [('is_fired','=', False),('is_abscond','=', False),('employee_category','not in',[3])]}"/>
+                </div>
+                <field name="fnf_days"/>
+                <field name="is_watermark"/>
+            </field>
+            <field name="identification_id" position="replace"/>
+            <field name="passport_id" position="replace"/>
+            <xpath expr="//page[@name='personal_information']/group/group[1]" position="after">
+                <group name="e_identification_id" string="Identification ID">
+                    <label for="identification_id" attrs="{'invisible': [('company_id','!=',1)]}"/>
+                    <div class="o_row" attrs="{'invisible': [('company_id','!=',1)]}">
+                        <span>e-Zest</span>
+                        <field name="identification_id" string="e-Zest Id" readonly="1"/>
+                        <button name="action_identification_id" type="object" class="btn btn-link" string="Generate ID" groups="hr.group_hr_user" attrs="{'invisible':[('identification_id','!=','New')]}"/>
+                    </div>
+                    <field name="identification_id" string="e-Zest Id" attrs="{'invisible': [('company_id','=',1)]}"/>
+                    <field name="id_expiry_date"  groups="hr.group_hr_user" invisible="1"/>
+                    <field name="aadhar_no" string="Aadhar Number (*)"/>
+                    <field name="name_aadhar_card" string="Name As Per Aadhar Card (*)"/>
+                    <field name="pan_no" string="PAN Number (*)"/>
+                    <field name="name_pan_card" string="Name As Per PAN Card (*)"/>
+                    <field name="is_date_leaving"/>
+                    <field name="date_of_leaving" string="Date of Leaving of prev. org. (*)" attrs="{'invisible': [('is_date_leaving','=',False)]}"/>
+                    <field name="id_attachment_id" groups="hr.group_hr_user" widget="many2many_binary" class="oe_inline" invisible="1"/>
+                </group>
+                <group name="passport_id" string="Passport ID">
+                    <field name="passport_id"/>
+                    <field name="passport_expiry_date" attrs="{'invisible': [('passport_id', 'in', [None,False])]}"/>
+                    <field name="passport_validity_date" attrs="{'invisible': [('passport_id', 'in', [None,False])]}"/>
+                    <field name="passport_country_id" attrs="{'invisible': [('passport_id', 'in', [None,False])]}" options="{'no_create_edit':True}"/>
+                    <field name="passport_attachment_id" groups="hr.group_hr_user" widget="many2many_binary" class="oe_inline" attrs="{'invisible': [('passport_id', 'in', [None,False])]}" invisible="1"/>
+                </group>
+                <group name="group_blood" string="Blood Group">
+                    <field name="blood_group" string="Blood Group (*)"/>
+                </group>
+                <group name="userc_address" string="Current Address">
+                    <!-- <group col=""> -->
+                    <label for="street_c" string="Address (*)"/>
+                    <div class="o_address_format">
+                        <field name="street_c" placeholder="Street..." class="o_address_street"/>
+                        <field name="street2_c" string="Current Address Street2 (*)" placeholder="Street 2..." class="o_address_street"/>
+                        <field name="city_c" string="Current Address City (*)" placeholder="City" class="o_address_city"/>
+                        <field name="state_c" string="Current Address State (*)" class="o_address_state" placeholder="State" options='{"no_open": True, "no_create": True}'/>
+                        <field name="zip_c" string="Current Address ZIP (*)" placeholder="ZIP" class="o_address_zip"/>
+                        <field name="country_c" string="Current Address Country (*)" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                    </div>
+                </group>
+                <group name="userp_address" string="Permanent Address">
+                    <field name="current_address_copy"/>
+                    <label for="street_p" string="Address (*)"/>
+                    <div class="o_address_format">
+                        <field name="street_p" string="Permanent Address Street (*)" placeholder="Street..." class="o_address_street"/>
+                        <field name="street2_p" string="Permanent Address Street2 (*)" placeholder="Street 2..." class="o_address_street"/>
+                        <field name="city_p" string="Permanent Address City (*)" placeholder="City" class="o_address_city"/>
+                        <field name="state_p" class="o_address_state" string="Permanent Address State (*)" placeholder="State" options='{"no_open": True, "no_create": True}'/>
+                        <field name="zip_p" string="Permanent Address ZIP (*)" placeholder="ZIP" class="o_address_zip"/>
+                        <field name="country_p" string="Permanent Address Country (*)" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                    </div>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='work_permit']" position="after">
+                <group string="Social Media" name="social_media" class="o_group_col_12">
+                    <group>
+                        <field name="social_facebook"/>
+                        <field name="social_linkedin"/>
+                        <field name="social_twitter"/>
+                    </group>
+                    <group>
+                        <field name="social_instagram"/>
+                        <field name="social_googleplus"/>
+                        <field name="social_personal_website"/>
+                        <field name="social_whatsapp" invisible="1"/>
+                    </group>
+                </group>             
+            </xpath>
+            <xpath expr="//field[@name='place_of_birth']" position="attributes">
+                <attribute name="groups"></attribute>
+                <attribute name="string">Place of Birth</attribute>
+            </xpath>
+            <xpath expr="//field[@name='gender']" position="attributes">
+                <attribute name="string">Gender (*)</attribute>
+            </xpath>
+            <xpath expr="//field[@name='emergency_contact']" position="replace">
+                <field name="emp_emergency_contact" string="e-Zestian Emergency Contact (*)">
+                    <tree>
+                        <field name="relation"/>
+                        <field name="number"/>
+                        <field name="relationship"/>
+                    </tree>
+                    <form>
+                        <sheet>
+                            <group>
+                                <group>
+                                    <field name="relation"/>
+                                    <field name="employee_obj" options="{'no_create_edit':True}" invisible="1"/>
+                                    <field name="number"/>
+                                    <field name="relationship"/>
+                                </group>
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+            </xpath>
+            <xpath expr="//field[@name='country_of_birth']" position="attributes">
+                <attribute name="groups"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='km_home_work']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='bank_account_id']" position="attributes">
+                <attribute name="string">Kotak Bank Details</attribute>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']" position="attributes">
+                <attribute name="groups"></attribute>
+                <attribute name="attrs">{'invisible': [('show_details', '=', False)]}</attribute>
+                <attribute name="string">Personal Information</attribute>
+            </xpath>
+            <xpath expr="//field[@name='emergency_phone']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <field name="marital" position="attributes">
+                <attribute name="string">Marital (*)</attribute>
+            </field>
+            <field name="birthday" position="attributes">
+                <attribute name="string">Date of Birth (*)</attribute>
+            </field>
+            <field name="country_id" position="attributes">
+                <attribute name="string">Nationality (Country) (*)</attribute>
+            </field>
+            <field name="marital" position="after">
+                <field name="fathers_name" string="Father's Name (*)"/>
+            </field>
+            <xpath expr="//group[@name='work_permit']" position="attributes">
+                <attribute name="attrs">{'invisible':[('company_id','=',1)]}</attribute>
+            </xpath>
+            <xpath expr="//group[@name='work_permit']" position="after">
+                <group/>
+                <group string="Mediclaim Details">
+                </group>
+                <group/>
+                <group>
+                    <field name="spouse_name"/>
+                    <field name="spouse_age"/>
+                    <field name="spouse_birth_date"/>
+                </group>
+                <group>
+                    <field name="chlid1_name"/>
+                    <field name="child1_age"/>
+                    <field name="child1_birth_date"/>
+                </group>
+                <group>
+                    <field name="chlid2_name"/>
+                    <field name="child2_age"/>
+                    <field name="child2_birth_date"/>
+                </group>
+                <group/>
+                <group string="Parental Mediclaim Details">
+                </group>
+                <group>
+                </group>
+                <group>
+                    <field name="single_parent" attrs="{'invisible':[('set_of_parent','=',True)]}"/>
+                    <field name="father_ins" attrs="{'invisible':['|',('single_parent','=',False),('mother_ins','=',True)]}"/>
+                    <field name="mother_ins" attrs="{'invisible':['|',('single_parent','=',False),('father_ins','=',True)]}"/>
+                    <field name="single_parent_amt1" attrs="{'required': ['|', ('father_ins', '=', True), ('mother_ins', '=', True)], 'invisible':['|', ('set_of_parent','=',True), '&amp;', ('father_ins','=',False), ('mother_ins','=',False)]}"/>
+                    <field name="set_of_parent" attrs="{'invisible':[('single_parent','=',True)]}"/>
+                    <field name="set_of_parent_amt1" attrs="{'invisible':[('set_of_parent','=',False)],'required': [('set_of_parent', '=', True)]}"/>
+                </group>
+                <group>
+                    <field name="father_n_law" attrs="{'invisible': ['&amp;', '|', ('single_parent','=',False), ('father_ins','=',False), ('set_of_parent','=',False)]}"/>
+                    <field name="father_n_dob" attrs="{'invisible': ['&amp;', '|', ('single_parent','=',False), ('father_ins','=',False), ('set_of_parent','=',False)]}"/>
+                    <field name="mother_n_law" attrs="{'invisible':['&amp;','|', ('single_parent','=',False),('mother_ins','=',False),('set_of_parent','=',False)]}"/>
+                    <field name="mother_n_dob" attrs="{'invisible':['&amp;','|', ('single_parent','=',False),('mother_ins','=',False),('set_of_parent','=',False)]}"/>
+                </group>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Access Roles" groups="hr.group_hr_user">
+                    <button name="action_clear_roles" string="Clear Roles" class="btn-primary" type="object" groups="hr.group_hr_user"/>
+                    <button name="action_give_roles" string="Assign Roles" class="btn-primary ml-4" type="object" groups="hr.group_hr_user"/>
+                    <field name="group_ids">
+                        <tree>
+                            <field name="full_name"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+            <page name="hr_settings" position="before">
+                <page name="family_info" string="Family Information" groups="hr.group_hr_user" attrs="{'invisible': [('show_details', '=', False)]}" invisible="1">
+                    <group string="Family">
+                        <field name="fam_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="member_name"/>
+                                <field name="relation"/>
+                                <field name="member_contact"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+                <page name="account_form" string="Account Info" attrs="{'invisible': [('show_details', '=', False)]}">
+                    <group string="Account">
+                        <group string="Kotak Bank Details" invisible="1">
+                            <field name="kotak_acc" invisible="1"/>
+                            <field name="kotak_acc_no" invisible="1"/>
+                            <field name="kotak_acc_brn" invisible="1"/>
+                            <field name="kotak_acc_active" invisible="1"/>
+                        </group>
+                        <group string="Personal Savings Bank Details">
+                            <field name="is_account_info" attrs="{'invisible': [('employee_category', '!=', 3)]}"/>
+                            <field name="personal_bnk_name" string="Bank Name (*)"/>
+                            <field name="personal_name" string="Your Name as per Bank records (*)"/>
+                            <field name="personal_acc_no" string="Personal Account Number (*)"/>
+                            <field name="personal_bnk_add" string="Branch Name &amp; Address (*)"/>
+                            <field name="personal_bnk_ifsc" string="IFSC Code (*)"/>
+                            <field name="cancel_check" string="Cancel Cheque (*)"/>
+                        </group>
+                        <group string="PF">
+                            <field name="pf_acc" attrs="{'invisible': [('company_id', '!=', 1)]}"/>
+                            <field name="pf_acc_status" attrs="{'invisible': [('pf_acc', '=', False)]}" invisible="1"/>
+                            <field name="pf_uan" string="UAN Number (*)" attrs="{'invisible': [('pf_acc', '=', False)]}"/>
+                            <field name="prev_pf_address" string="Prev. Pf Address (*)" attrs="{'invisible': [('pf_acc', '=', False)]}"/>
+                            <field name="prev_pension_no" string="Prev. Pension No." attrs="{'invisible': [('pf_acc', '=', False)]}"/>
+                            <field name="prev_epf_no" string="Prev. EPF No." attrs="{'invisible': [('pf_acc', '=', False)]}"/>
+                            <field name="pf_status" attrs="{'invisible': [('pf_acc', '=', False)]}"/>
+                            <field name="pf_opt"/>
+                        </group>
+                        <group string="PayTM Food Wallet" attrs="{'invisible': [('company_id', '!=', 1)]}">
+                            <field name="paytm_acc"/>
+                            <field name="paytm_amt" string="Select Amount? (*)" attrs="{'invisible': [('paytm_acc', '=', False)]}"/>
+                            <field name="paytm_contact" string="Paytm Contact (*)" attrs="{'invisible': [('paytm_acc', '=', False)]}"/>
+                        </group>
+                        <group string="LTC" attrs="{'invisible': [('company_id', '!=', 1)]}">
+                            <field name="ltc"/>
+                            <field name="ltc_amount" attrs="{'invisible': [('ltc', '=', False)]}" groups="hr.group_hr_user"/>
+                        </group>
+                    </group>
+                </page>
+                <page name="ref_check" string="Reference &amp; Refer" attrs="{'invisible': [('show_details', '=', False)]}">
+                    <group string="For Reference Check (Previous Company)">
+                        <group string="HR details">
+                            <field name="hr_name"/>
+                            <field name="hr_designation"/>
+                            <field name="hr_email"/>
+                            <field name="hr_contact"/>
+                        </group>
+                        <group string="Reporting Manager">
+                            <field name="manager_name"/>
+                            <field name="manager_designation"/>
+                            <field name="manager_email"/>
+                            <field name="manager_contact"/>
+                        </group>
+                    </group>
+                    <group string="Refer your Friends/Family">
+                        <field name="ref_name"/>
+                        <field name="ref_contact"/>
+                        <field name="ref_email"/>
+                        <field name="ref_skill"/>
+                    </group>
+                </page>
+                <page name="know_more" string="Know You More" attrs="{'invisible': [('show_details', '=', False)]}">
+                    <!-- <div>
+                        <label for="question11"/>
+                        <field name="question11" placeholder="e.g. qualities"/>
+                    </div> -->
+                    <div>
+                        <label for="question1" string="Where are your roots from - your native place?"/>
+                        <field name="question1" placeholder="e.g. Nashik, Maharashtra"/>
+                    </div>
+                    <div>
+                        <label for="question2" string="Extra-curricular activities that keeps you engaged after work - your hobbies?"/>
+                        <field name="question2" placeholder="e.g. Playing cricket, reading books and cooking"/>
+                    </div>
+                    <div>
+                        <label for="question3" string="Taste buds calling - what is your favorite Food Item?"/>
+                        <field name="question3" placeholder="e.g. Like vegetarian food in any cuisine with Italian, Punjabi and South India being Favorites. Favorite food item – White Pasta"/>
+                    </div>
+                    <div>
+                        <label for="question4" string="Now something about Music. You like Music – which type?"/>
+                        <field name="question4" placeholder="e.g. Yes Music gets me going. Favorite type depends on the mood, preference is slow meaningful songs or inspirational songs depending on the mood"/>
+                    </div>
+                    <div>
+                        <label for="question5" string="Place(s) you love Travelling to?"/>
+                        <field name="question5" placeholder="e.g. I am not too fond of travelling. But like travelling to places with Natural beauty with cooler environment or else beaches."/>
+                    </div>
+                    <div>
+                        <label for="question6" string="Now some literature - any favorite Books?"/>
+                        <field name="question6" placeholder="e.g. Not a vivid reader, from the books read liked Shriman Yogi."/>
+                    </div>
+                    <div>
+                        <label for="question7" string="In which Attire you love to see yourself in?"/>
+                        <field name="question7" placeholder="e.g. I think Casuals suits me best."/>
+                    </div>
+                    <div>
+                        <label for="question8" string="What do you do when there is nothing to do – your Favorite Pastime Activity?"/>
+                        <field name="question8" placeholder="e.g. When I have nothing to do, I would like to take a nap :)"/>
+                    </div>
+                    <div>
+                        <label for="question9" string="Who inspires you - your Role Model?"/>
+                        <field name="question9" placeholder="e.g. Chhatrapati Shivaji Maharaj"/>
+                    </div>
+                    <div>
+                        <label for="question10" string="A Slogan you swear by?"/>
+                        <field name="question10" placeholder="e.g. Things that don't improve, deteriorate over a period of time"/>  
+                    </div>               
+                </page>
+            </page>
+        </field>
+    </record>
+
+    <record id="view_employee_tree_inherit_updation" model="ir.ui.view">
+        <field name="name">hr.employee.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+                <!-- <attribute name="js_class">list_view_search</attribute>
+                <attribute name="class">oe_search_tree</attribute> -->
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_gamification_badge_form" model="ir.ui.view">
+        <field name="name">gamification.badge.form.inherit</field>
+        <field name="model">gamification.badge</field>
+        <field name="inherit_id" ref="gamification.badge_kanban_view"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//kanban" position="attributes">
+                <attribute name="js_class">hr_nda_form</attribute>
+            </xpath> -->
+            <xpath expr="//span[hasclass('oe_grey')]" position="replace"/>
+            <xpath expr="//field[@name='rule_max_number']" position="after">
+                <field name="gamification_ids"/>
+            </xpath>
+            <xpath expr="//div[hasclass('o_kanban_badge_description')]" position="replace">
+                <div t-if="record.description.value" class="o_kanban_badge_description">
+                    <em><field name="description"/></em>
+                    <div>
+                        <t t-foreach="record.gamification_ids.raw_value.slice(0,11)" t-as="owner">
+                            <img class="oe_kanban_avatar o_image_24_cover" t-att-src="kanban_image('hr.employee', 'image_128', owner.employee_id)" t-att-data-member_id="owner.employee_id" alt="Owner"/>
+                        </t>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+  <!--   <record id="employee_view_tree_simplified" model="ir.ui.view">
+        <field name="name">employee.view.form.simplified</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <tree string="e-Zestians">
+                <field name="name" string="e-Zestian"/>
+                <field name="skills" string="Primary Skill"/>
+                <field name="allocate" string="Allocation %"/>
+                <field name="project_assign_till" string="Project Assign Till"/>
+                <field name="total_billability" string="Total Billability"/>
+                <field name="total_exp" string="Total Experience"/>
+            </tree>
+        </field>
+    </record> -->
+
+    <record id="hr_gamification.hr_hr_employee_view_form" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='public']" position="after">
+                <page name="badges" string="OLIVZ Certificates">
+                    <div name="badges">
+                        <field name="has_badges" invisible="1"/>
+                        <button class="btn btn-primary" string="Grant a Badge" type="action" name="%(hr_gamification.action_reward_wizard)d"/> to reward this e-Zestian for a good action
+                        <div class="oe_view_nocontent" attrs="{'invisible': [('has_badges', '=', True)]}">
+                            <p class="oe_view_nocontent_create">
+                                Click to grant this e-Zestian first certificate
+                            </p><p class="oe_grey">
+                                Certificate are rewards of good work. Give them to people you believe deserve it.
+                            </p>
+                        </div>
+                    </div>
+                    <field name="badge_ids" context="{'form_view_ref':'view_hr_employee_badge_form'}">
+                        <tree>
+                          <field name="badge_name"/>
+                          <field name="sender_id" string="Granted By"/>
+                          <field name="create_date" string="Granted Date"/>
+                          <field name="comment" string="Comments"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="options">{"no_open": True, "no_create": True}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_employee_document_inherit_form_view_inherit">
+        <field name="name">hr.employee.document.inherit.form.view.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="oh_employee_documents_expiry.hr_employee_document_inherit_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='document_view']" position="attributes">
+                <attribute name="attrs">{'invisible': [('show_details', '=', False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_department_form_inherit_view">
+        <field name="name">hr.department.form.inherit.view</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <field name="manager_id" position="before">
+                <field name="custom_manager_id" string="Manager"/>
+            </field>
+            <field name="manager_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_department_tree_inherit_view">
+        <field name="name">hr.department.tree.inherit.view</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="delete">0</attribute>
+            </xpath>
+            <field name="manager_id" position="after">
+                <field name="custom_manager_id" string="Manager"/>
+            </field>
+            <field name="manager_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_inherit_employee_kanban_view">
+        <field name="name">hr.employee.kanban.custom.view</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="default_order">joining_date desc</attribute>
+            </xpath>
+            <xpath expr="//templates" position="before">
+                <field name="identification_id"/>
+                <field name="job_id"/>
+                <!-- <field name="badge_ids"/> -->
+                <field name="uniq_badge_ids"/>
+            </xpath>
+            <xpath expr="//ul/li[2]" position="after">
+                <li t-if="record.identification_id.raw_value">
+                    e-Zest ID: <field name="identification_id"/>
+                </li>
+                <li t-if="record.job_id.raw_value">
+                    <field name="job_id"/>
+                </li>
+                <!-- <div t-if="record.badge_ids.raw_value">
+                    <t t-set="countt" t-value="0"/>
+                    <div>
+                        <t t-foreach="record.badge_ids.raw_value" t-as="badges_id">
+                            <t t-if="countt===0 || countt1 === 1">
+                                <t t-if="badges_id.badge_name">
+                                    <span t-esc="badges_id.badge_name" class="badge badge-pill badge-gamma"/>
+                                </t>
+                            </t>
+                            <t t-set="countt1" t-value="countt+1"/>
+                            <t t-set="countt" t-value="2"/>
+                        </t>
+                    </div>
+                </div> -->
+                <div t-if="record.uniq_badge_ids.raw_value">
+                    <t t-set="countt" t-value="0"/>
+                    <div>
+                        <t t-foreach="record.uniq_badge_ids.raw_value" t-as="badges_id">
+                            <t t-if="countt===0 || countt1 === 1">
+                                <t t-if="badges_id.name">
+                                    <span t-esc="badges_id.name" class="badge badge-pill badge-gamma"/>
+                                </t>
+                            </t>
+                            <t t-set="countt1" t-value="countt+1"/>
+                            <t t-set="countt" t-value="2"/>
+                        </t>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='view_designation_tree'>
+        <field name="name">Designation</field>
+        <field name="model">hr.job</field>
+        <field name="arch" type="xml">
+            <tree editable="top" delete="0">
+                <field name="name"/>
+                <field name="is_designation" readonly="1"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_groups_tree" model="ir.ui.view">
+        <field name="name">res.groups</field>
+        <field name="model">res.groups</field>
+        <!-- <field name="inherit_id" ref="base.view_groups_form"/> -->
+        <field name="arch" type="xml">
+            <tree>
+                <field name="full_name"/>
+                <field name="is_group_access" invisible="1"/>
+                <button icon="fa-check text-success" string="Grant Group" type="object" name="give_group_user" attrs="{'invisible': [('is_group_access', '=', True)]}"/>
+                <button icon="fa-ban text-danger" string="Remove Group" type="object" name="remove_group_user" attrs="{'invisible': [('is_group_access', '=', False)]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_groups_search_inherit" model="ir.ui.view">
+        <field name="name">res.groups.search.inherit</field>
+        <field name="model">res.groups</field>
+        <field name="inherit_id" ref="base.view_groups_search"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <filter name="name_role" domain="[('name','ilike','Role:')]" string="Role"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_wmp_dept_move_tree" model="ir.ui.view">
+        <field name="name">hr.emp.dept.move.tree</field>
+        <field name="model">hr.emp.dept.move</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" default_order="mov_date desc">
+                <field name="employee_id"/>
+                <field name="manager_id"/>
+                <field name="mov_date"/>
+                <field name="last_project_id"/>
+                <field name="prev_dept_id"/>
+                <field name="current_project_id"/>
+                <field name="current_dept_id"/>
+                <field name="is_max_date" invisible="1"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_emp_dept_move_search" model="ir.ui.view">
+        <field name="name">hr.emp.dept.move.search</field>
+        <field name="model">hr.emp.dept.move</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <filter string="Current Movement" name="max_date_mov" domain="[('mov_date','&gt;', (context_today()+relativedelta(day=1)).strftime('%Y-%m-%d')),('mov_date','&lt;', (context_today()+relativedelta(day=31,months=1)).strftime('%Y-%m-%d')),('is_max_date','=',True)]"/>
+                <filter string="This Month" name="month" domain="[('mov_date','&gt;', (context_today()+relativedelta(day=1)).strftime('%Y-%m-%d')),('mov_date','&lt;', (context_today()+relativedelta(day=31,months=1)).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                  <filter string="e-Zestian" name="employee" context="{'group_by': 'employee_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_group_form" model="ir.ui.view">
+        <field name="name">hr.employee.group.form</field>
+        <field name="model">hr.employee.group</field>
+        <field name="arch" type="xml">
+            <form string="HR Group">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" class="oe_inline"/>
+                            <field name="related_hr" domain="[('department_id.name','=','Human Resource')]" widget="many2many_tags" options="{'no_create': True, 'no_open':True}"/>
+                            <field name="department_ids" widget="many2many_tags" domain="[('parent_id','child_of','Operations')]" options="{'no_create': True, 'no_open':True}"/>
+                            <!-- <field name="company_id" options="{'no_create': True, 'no_open':True}"/> -->
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_employee_group" model="ir.ui.view">
+        <field name="name">hr.employee.group.tree</field>
+        <field name="model">hr.employee.group</field>
+        <field name="arch" type="xml">
+            <tree string="HR Group">
+                <field name="name"/>
+                <!-- <field name="company_id"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_inc_employee_tree" model="ir.ui.view">
+        <field name="name">hr.employee.inc.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <tree string="e-Zestian Inc" create="0" delete="0">
+                <field name="name"/>
+                <field name="work_email"/>
+                <field name="department_id"/>
+                <field name="parent_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_inc_employee_form" model="ir.ui.view">
+        <field name="name">hr.employee.inc.form</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <form string="e-Zestian Inc" create="0" delete="0">
+                <header>
+                    <button name="action_reset_password" string="Reset Password" class="btn-primary" attrs="{'invisible': [('is_invitation', '=', False)]}" type="object" groups="hr.group_hr_user,hr_recruitment.group_hr_recruitment_manager"/>
+                    <button name="action_reset_password" string="Send an Invitation Email" attrs="{'invisible': [('is_invitation', '=', True)]}" context="{'create_user': 1}" class="btn-primary" type="object" groups="hr.group_hr_user,hr_recruitment.group_hr_recruitment_manager"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" position="inside">
+                        <button class="oe_stat_button" name="document_view" type="object" icon="fa-list-ol" groups="hr_recruitment.group_hr_recruitment_manager,hr.group_hr_user">
+                            <field string="Documents" name="document_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <field name="is_invitation" groups="base.group_erp_manager" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <field name="image_1920" invisible="0" widget="image" class="oe_avatar" required="0" options="{&quot;preview_image&quot;:&quot;image_128&quot;}"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="0" placeholder="e-Zestian's Name" required="True"/>
+                        </h1>
+                        <h2>
+                            <field name="job_title" placeholder="Job Position" invisible="1"/>
+                        </h2>
+                        <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Tags" groups="hr.group_hr_manager"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="work_email" widget="email"/>
+                            <field name="skills"/>
+                            <!-- <field name="total_exp"/> -->
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Resume">
+                            <div class="row">
+                                <div class="o_hr_skills_group o_group_resume col-lg-7 d-flex">
+                                    <field mode="tree" nolabel="1" name="resume_line_ids" widget="hr_resume">
+                                        <tree>
+                                            <field name="line_type_id"/>
+                                            <field name="name"/>
+                                            <field name="description"/>
+                                            <field name="date_start"/>
+                                            <field name="date_end"/>
+                                            <field name="display_type" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                                <div class="o_hr_skills_group o_group_skills col-lg-5 d-flex flex-column">
+                                    <separator string="Skills"/>
+                                    <field mode="tree" nolabel="1" name="employee_skill_ids" widget="hr_skills">
+                                        <tree>
+                                            <field name="skill_type_id" invisible="1"/>
+                                            <field name="skill_id"/>
+                                            <field name="skill_level_id"/>
+                                            <field name="level_progress" widget="progressbar"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Work Information">
+                            <div id="o_work_employee_container"> <!-- These two div are used to position org_chart -->
+                                <div id="o_work_employee_main">
+                                    <group>
+                                        <group>
+                                            <field name="work_phone" widget="phone"/>
+                                            <field name="employee_category" readonly="1"/>
+                                            <field name="department_id" options="{'no_open':True,'no_create':True}"/>
+                                            <field name="sbu_id" options="{'no_open':True,'no_create':True}"/>
+                                            <field name="company_id" groups="base.group_multi_company" options="{'no_create':1,'no_open':1}"/>
+                                        </group>
+                                        <group>
+                                            <field name="job_id" options="{'no_create':1,'no_open':1}"/>
+                                            <field name="parent_id" options="{'no_create':1,'no_open':1}"/>
+                                            <field name="responsible_hr" options="{'no_create':1,'no_open':1}"/>
+                                            <field name="account" options="{'no_create':1,'no_open':1}"/>
+                                        </group>
+                                    </group>
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Personal Information">
+                            <group>
+                                <group>
+                                    <field name="personal_email"/>
+                                    <field name="mobile_phone"/>
+                                </group>
+                                <group>
+                                    <label for="identification_id"/>
+                                    <div class="o_row">
+                                        <field name="identification_id" string="e-Zest Id" readonly="1"/>
+                                        <button name="action_identification_id" type="object" class="btn btn-link" string="Generate ID" groups="hr.group_hr_user" attrs="{'invisible':[('identification_id','!=','New')]}"/>
+                                    </div>
+                                </group>
+                                <group name="userc_address" string="Current Address">
+                    <!-- <group col=""> -->
+                    <label for="street_c" string="Address (*)"/>
+                    <div class="o_address_format">
+                        <field name="street_c" placeholder="Street..." class="o_address_street"/>
+                        <field name="street2_c" string="Current Address Street2 (*)" placeholder="Street 2..." class="o_address_street"/>
+                        <field name="city_c" string="Current Address City (*)" placeholder="City" class="o_address_city"/>
+                        <field name="state_c" string="Current Address State (*)" class="o_address_state" placeholder="State" options='{"no_open": True, "no_create": True}'/>
+                        <field name="zip_c" string="Current Address ZIP (*)" placeholder="ZIP" class="o_address_zip"/>
+                        <field name="country_c" string="Current Address Country (*)" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                    </div>
+                </group>
+                <group name="userp_address" string="Permanent Address">
+                    <field name="current_address_copy"/>
+                    <label for="street_p" string="Address (*)"/>
+                    <div class="o_address_format">
+                        <field name="street_p" string="Permanent Address Street (*)" placeholder="Street..." class="o_address_street"/>
+                        <field name="street2_p" string="Permanent Address Street2 (*)" placeholder="Street 2..." class="o_address_street"/>
+                        <field name="city_p" string="Permanent Address City (*)" placeholder="City" class="o_address_city"/>
+                        <field name="state_p" class="o_address_state" string="Permanent Address State (*)" placeholder="State" options='{"no_open": True, "no_create": True}'/>
+                        <field name="zip_p" string="Permanent Address ZIP (*)" placeholder="ZIP" class="o_address_zip"/>
+                        <field name="country_p" string="Permanent Address Country (*)" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                    </div>
+                </group>
+                            </group>
+                        </page>
+                        <page string="Allocation" name="allocation">
+                            <field name="allocation_ids"/>
+                        </page>
+                        <page string="HR Settings" groups="hr.group_hr_user">
+                            <group>
+                                <group name="organization_details" string="Organization Details">
+                                    <field name="business_entities" options="{'no_create_edit':True,'no_open':True}" invisible="1"/>
+                                    <field name="relevant_exp_aftr_join"/>
+                                    <field name="band_grade" options="{'no_create_edit':True,'no_open':True}"/>
+                                    <field name="payroll_loc" domain="[('company_id','=',company_id)]" options="{'no_create_edit':True,'no_open':True}"/>
+                                    <field name="is_technical"/>
+                                    <field name="is_hr_verified"/>
+                                    <field name="joining_month"/>
+                                    <field name="contractor_type" attrs="{'invisible': [('employee_category','!=',3)], 'required': [('employee_category','=',3)]}"/>
+                                    <field name="vendor_name" attrs="{'invisible': [('contractor_type','!=','third_party')], 'required': [('contractor_type','=','third_party')]}"/>
+                                    <field name="applicant_id" options="{'no_create':1}" readonly="1"/>
+                                </group>
+                                <group string="Status">
+                                    <field name="is_ezestian"/>
+                                    <field name="user_id" options="{'no_create':1,'no_open':1}"/>
+                                    <field name="planned_join_date"/>
+                                    <field name="joining_date"/>
+                                    <field name="resign_date"/>
+                                    <field name="exit_date"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Access Roles" groups="hr.group_hr_user">
+                            <button name="action_clear_roles" string="Clear Roles" class="btn-primary" type="object" groups="hr.group_hr_user"/>
+                            <button name="action_give_roles" string="Assign Roles" class="btn-primary ml-4" type="object" groups="hr.group_hr_user"/>
+                            <field name="group_ids">
+                                <tree>
+                                    <field name="full_name"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_group" model="ir.actions.act_window">
+        <field name="name">HR Group</field>
+        <field name="res_model">hr.employee.group</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_emp_dept_move" model="ir.actions.act_window">
+        <field name="name">e-Zestian BU Movement</field>
+        <field name="res_model">hr.emp.dept.move</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'search_default_max_date_mov':1}</field>
+    </record>
+
+    <record id="action_inc_employees" model="ir.actions.act_window">
+        <field name="name">e-Zestian Inc</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[('company_id','=','e-Zest Solutions Inc.')]</field>
+    </record>
+
+    <record id="action_inc_employee_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="hr_inherit_employee_kanban_view"/>
+        <field name="act_window_id" ref="action_inc_employees"/>
+    </record>
+
+    <record id="action_inc_employee_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="hr.view_employee_tree"/>
+        <field name="act_window_id" ref="action_inc_employees"/>
+    </record>
+
+    <record id="action_inc_employee_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_inc_employee_form"/>
+        <field name="act_window_id" ref="action_inc_employees"/>
+    </record>
+    
+    <record id="action_designation" model="ir.actions.act_window">
+        <field name="name">Designation</field>
+        <field name="res_model">hr.job</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'default_is_designation': 'in_employee'}</field>
+        <field name="domain">[('is_designation', 'in', ['both','in_employee'])]</field>
+    </record>
+
+    <record id="action_image_download_bulk" model="ir.actions.server">
+        <field name="name">Bulk Image Download</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="groups_id" eval="[(4, ref('base.group_system')), (4, ref('hr.group_hr_manager')), (4, ref('hr.group_hr_user'))]"/>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_view_types">list</field>
+        <field name="code">
+            action = model.action_image_download()
+        </field>
+    </record>
+
+    <menuitem id="menu_emp_dept_move" 
+          name="e-Zestian BU Movement" 
+          parent="hr_employee_updation.menu_hr_management" 
+          action="action_emp_dept_move"/>
+
+    <menuitem id="menu_hr_group"
+          name="HR Groups Master"
+          parent="hr.menu_human_resources_configuration"
+          action="action_hr_group"/>
+
+    <menuitem id="hr.menu_view_hr_job"
+          action="hr.action_hr_job"
+          parent="hr.menu_human_resources_configuration"
+          sequence="1" groups="base.group_erp_manager"/>
+    
+    <menuitem id="designation_menu" 
+          name="Designation"
+          sequence="2"
+          parent="hr.menu_human_resources_configuration" 
+          action="action_designation"/>
+    
+    <menuitem id="recruitment_designation_menu" 
+          name="Designation"
+          sequence="2"
+          parent="hr_recruitment.menu_hr_recruitment_configuration" 
+          action="action_designation" groups="base.group_system"/>
+
+
+    <!-- Change Menu items sequence and string -->
+    <menuitem
+        id="hr.menu_hr_root"
+        name="HR"
+        groups="hr.group_hr_manager,hr.group_hr_user,base.group_user"
+        web_icon="hr,static/description/icon.png"
+        sequence="0"/>
+
+    <!-- <menuitem id="hr_gamification.menu_hr_gamification" parent="hr.menu_hr_root" name="OLIVZ" sequence="0"/> -->
+    
+    <menuitem
+        id="hr.menu_open_view_employee_list_my"
+        action="hr.open_view_employee_list_my"
+        parent="hr.menu_hr_root"
+        groups="hr.group_hr_user"
+        name="Fellow e-Zestian"
+        sequence="3"/>
+
+    <menuitem
+        id="menu_open_view_employee_list_user"
+        action="hr_employee_updation.open_view_employee_list_user"
+        parent="hr.menu_hr_root"
+        name="Fellow e-Zestian"
+        sequence="3"/>
+
+    <menuitem
+        id="menu_inc_employee"
+        action="hr_employee_updation.action_inc_employees"
+        parent="hr.menu_hr_root"
+        name="Fellow e-Zestian Inc"
+        sequence="3"
+        groups="group_inc_team_member"/>
+
+    <!-- <menuitem
+        id="menu_music_wizard"
+        action="hr_employee_updation.music_wizard_action"
+        parent="hr.menu_hr_root"
+        name="Music"
+        sequence="4"/> -->
+
+    <menuitem id="hr_gamification.gamification_badge_menu_hr" parent="hr_gamification.menu_hr_gamification" action="gamification.badge_list_action" name="Badge"/>
+
+    <record id="gamification.badge_list_action" model="ir.actions.act_window">
+        <field name="name">Badge</field>
+    </record>
+
+</odoo>

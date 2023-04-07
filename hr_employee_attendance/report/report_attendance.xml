@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <report
+            id="report_attendance_xlsx"
+            model="hr.attendance.summary"
+            string="Attendance Report"
+            report_type="xlsx"
+            name="hr_employee_attendance.report_attendance_summary"
+            file="Attendance Summary Report"
+            groups="hr.group_hr_user"
+        />
+        <report
+            id="report_new_joinee_xlsx"
+            model="hr.attendance.summary"
+            string="Attendance Report"
+            report_type="xlsx"
+            name="hr_employee_attendance.report_new_joinee_summary"
+            file="Attendance Summary Report"
+            groups="hr.group_hr_user"
+        />
+        <report
+            id="report_leave_adjustment_xlsx"
+            model="hr.attendance.summary"
+            string="Attendance Report"
+            report_type="xlsx"
+            name="hr_employee_attendance.report_leave_adjustment_summary"
+            file="Attendance Summary Report"
+            groups="hr.group_hr_user"
+        />
+    </data>
+</odoo>

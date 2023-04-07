@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_birthday_template_template,access_birthday_template_template,model_birthday_template_template,base.group_user,1,1,1,1
+access_birthday_template,access_birthday_template,model_birthday_template,base.group_user,1,1,1,1
+access_anniversary_template,access_anniversary_template,model_anniversary_template,base.group_user,1,1,1,1
+access_anniversary_template_template,access_anniversary_template_template,model_anniversary_template_template,base.group_user,1,1,1,1
+access_birthday_anni,birthday_anni,model_birthday_anni,base.group_user,1,1,1,1

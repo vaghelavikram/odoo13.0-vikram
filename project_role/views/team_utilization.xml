@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="project_team_utilization_view_tree" model="ir.ui.view">
+        <field name="name">project.team.utilization.view.tree</field>
+        <field name="model">project.team.utilization</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="from_date"/>
+                <field name="to_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="project_team_utilization_view_form" model="ir.ui.view">
+        <field name="name">project.team.utilization.view.form</field>
+        <field name="model">project.team.utilization</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                </group>
+                <notebook>
+                    <page string="Utilization Data">
+                        <field name="utilization_line">
+                            <tree>
+                                <field name="employee_id"/>
+                                <field name="emp_code"/>
+                                <field name="customer_id"/>
+                                <field name="project_id"/>
+                                <field name="bu_head"/>
+                                <field name="engagement_model"/>
+                                <field name="allocation"/>
+                                <field name="effective_alloc"/>
+                                <field name="effective_hours"/>
+                                <field name="standard_hours"/>
+                                <field name="billed_hours"/>
+                                <field name="accrued_rev"/>
+                                <field name="effective_cost"/>
+                                <field name="cost"/>
+                                <field name="revenue"/>
+                                <field name="technology"/>
+                                <field name="total_exp"/>
+                                <field name="doj"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_project_team_utilization" model="ir.actions.act_window">
+        <field name="name">Team Utilization Data</field>
+        <field name="res_model">project.team.utilization</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="project_team_utilization_menu"
+        action="action_project_team_utilization"
+        parent="base.menu_custom"
+        sequence="110"
+    />
+
+</odoo>

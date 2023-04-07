@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Banas Tech project_mgmt",
+    'description': """Project managment module""",
+    'author': "Banas Tech PVT Ltd.",
+    'company': "Banas Tech PVT Ltd.",
+    'category': 'Project Management',
+    'version': '13.0',
+    'depends': ['base', 'project', 'hr_skills', 'sale_timesheet', 'analytic', 'hr_attendance_regularization', 'hr_timesheet_attendance', 'web_timeline'],
+
+    'data': [
+        'security/project_security.xml',
+        'security/ir.model.access.csv',
+        'data/sequence.xml',
+        'data/mail_template.xml',
+        'wizards/extend_project.xml',
+        'wizards/close_project.xml',
+        'views/view.xml',
+        'views/assets.xml',
+        'views/project_task.xml',
+        'views/product_template.xml',
+        'views/analytic_line_views.xml',
+        'views/project_report_email.xml',
+        'report/external_timesheet_attendance_views.xml',
+        'report/external_internal_timesheet_views.xml',
+    ],
+    'license': 'AGPL-3',
+    'application': True,
+    'installable': True,
+    'auto_installable': False,
+}

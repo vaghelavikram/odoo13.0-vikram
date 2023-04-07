@@ -1,0 +1,40 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'Banas Tech Project Roles',
+    'version': '13.0',
+    'category': 'Project',
+    'author': 'Banas Tech PVT Ltd.',
+    'company': 'Banas Tech PVT Ltd.',
+    'summary': 'Project role-based roster',
+    'depends': [
+        'project',
+        'mail',
+        'hr_skills',
+        'web_timeline',
+        'project_mgmt'
+    ],
+    'data': [
+        'data/mail_template.xml',
+        'data/utilization_report_year_data.xml',
+        'report/report_xlsx.xml',
+        'views/hr_employee_view.xml',
+        'views/project_assignment.xml',
+        'views/project_project.xml',
+        'views/project_role.xml',
+        'views/assets.xml',
+        'views/res_config_settings.xml',
+        'views/ptp_allocation.xml',
+        'views/team_utilization.xml',
+        'wizards/extend_project.xml',
+        'wizards/utilization_report.xml',
+        'security/project_role.xml',
+        'security/security.xml',
+        'security/ir.model.access.csv',
+    ],
+    'qweb': [
+        "static/src/xml/open_allocation_tree.xml",
+    ],
+    'license': 'AGPL-3',
+    'installable': True,
+    'application': False,
+}

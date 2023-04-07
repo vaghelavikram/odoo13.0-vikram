@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="ir_cron_active_ptp_allocation" model="ir.cron">
+        <field name="name">Create Active PTP Allocation</field>
+        <field name="interval_number">8</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_project_ptp_assignment"/>
+        <field name="code">model._cron_active_ptp_allocation()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.project</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="40"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Project" string="Project" data-key="project" groups="project.group_project_manager">
+                    <h2>PTP Allocation</h2>
+                    <div class="row mt16 o_settings_container" id="ptp_allocation">
+                        <button class="btn btn-primary" type="object" name="move_to_ptp" string="Move to PTP" confirm="Are you sure want to move members to PTP"/>
+                        <button class="btn btn-primary ml-5" type="object" name="move_ptp_to_project" string="Move PTP to Project" confirm="Are you sure want to move members back to project"/>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

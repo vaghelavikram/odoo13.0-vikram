@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        id="action_report_planned_expense"
+        string="Planned Expenses Report"
+        model="hr.planned.expense.sheet"
+        report_type="qweb-pdf"
+        name="unity_expense.report_planned_expense_sheet"
+        file="unity_expense.report_planned_expense_sheet"
+        print_report_name="'Planned Expenses - %s - %s' % (object.employee_id.name, (object.name).replace('/', ''))"
+    />
+
+    <template id="report_planned_expense_sheet">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <div class='row'>
+                        <div class="col-2">
+                            <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="max-height:75pt;max-width:90%" alt="Company Logo"/>
+                        </div>
+                        <div class="col-10">
+                            <h4><div class="text-center" t-field="docs.company_id"/>
+                            <div class="text-center">Planned Expense Report
+                            </div></h4>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-6">
+                            <strong>Name:</strong>
+                            <span t-field="o.employee_id.name"/>
+                        </div>
+                        <div class="col-6">
+                            <strong>ID Number:</strong>
+                            <span t-field="o.employee_id.identification_id"/>
+                        </div>
+                        <!-- <div class="col-6">
+                            <strong>Submitted Date:</strong>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Designation:</strong>
+                            <span t-field="o.employee_id.job_id"/>
+                        </div>
+                        <div class="col-6">
+                            <strong>Purpose:</strong>
+                            <span t-field="o.name"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Cost Center:</strong>
+                            <span t-field="o.org_unit"/>
+                        </div>
+                    </div>
+
+                    <table class="table table-sm mt-5">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Particulars (Nature)</th>
+                                <th class="text-right">Pay Through</th>
+                                <th class="text-right">Whizible ID</th>
+                                <th class="text-right">Debit Note/Sales Inv No.</th>
+                                <th class="text-right">Advance Amount</th>
+                                <th class="text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.expense_line_ids" t-as="line">
+                                <td>
+                                    <span t-field="line.date"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.name"/>
+                                    <span t-field="line.description"/><br/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.payment_mode"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.project_code"/>
+                                </td>
+                                <td class="text-right">
+                                    <t t-if='line.is_bill_client == "yes"'><span t-field="line.bill_as"/></t>
+                                    <t t-else=' '><span t-field="line.is_bill_client"/></t>
+                                </td>
+                                <td class="text-right">
+                                    <t t-if='line.advance_amount'><span t-field="line.advance_amount"
+                                        t-options='{"widget": "monetary", "display_currency": line.currency_id}'/></t>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.unit_amount"
+                                        t-options='{"widget": "monetary", "display_currency": line.currency_id}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

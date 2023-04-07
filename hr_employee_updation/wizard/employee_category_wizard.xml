@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="employee_change_category_form" model="ir.ui.view">
+        <field name="name">employee.change.category.wizard</field>
+        <field name="model">employee.change.category.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Change Category">
+                <group>
+                    <group>
+                        <field name="employee_id" invisible="1"/>
+                        <field name="employee_category" options="{'no_create':1,'no_open':1}"/>
+                        <field name="generate_id"/>
+                        <field name="exit_date" attrs="{'invisible':[('employee_category','!=',3)],'required':[('employee_category','=',3)]}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_change_category" string="Change" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

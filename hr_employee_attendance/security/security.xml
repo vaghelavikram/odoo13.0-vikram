@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="group_payroll" model="res.groups">
+            <field name="name">Payroll Manager</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_act_allocation_request" model="mail.activity.type">
+            <field name="name">Allocation Approval Request</field>
+            <field name="icon">fa-dollar</field>
+            <field name="res_model_id" ref="project_role.model_project_assignment"/>
+        </record>
+
+        <record id="send_approved_allocation_email_user" model="mail.template">
+            <field name="name">Allocation Approved Email to User</field>
+            <field name="model_id" ref="project_role.model_project_assignment"/>
+            <field name="subject">${object.employee_id.name} have been allocated on project: ${object.project_id.name}</field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear ${object.employee_id.name},<br/><br/>
+                        This is to inform you that you have been assigned on:
+                        <br/>
+                        <p>
+                            Project Name: ${object.project_id.name}<br/>
+                            Project Manager: ${object.project_id.user_id.name}<br/>
+                            Client Name: ${object.project_id.partner_id.name}<br/>
+                            Delivery Unit: ${object.project_id.department_id.name}<br/>
+                            Start Date: ${object.start_date.strftime('%d-%b-%Y')}<br/>
+                            End Date: ${object.end_date.strftime('%d-%b-%Y')}<br/>
+                        </p>
+                        <br/>
+                        <a href="/web#id=${object.id}&amp;model=project.assignment&amp;view_type=form\
+                        &amp; cids=1" target="_blank" style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">View Allocation</a>
+                    
+                        <br/><br/><br/>
+                        Thanks &amp; Regards,<br/>
+                        Team Operation<br/>
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.company_id.phone}
+                % if object.company_id.email
+                    | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+                % endif
+                % if object.company_id.website
+                    | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+                    ${object.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+</table>
+</field>
+</record>
+
+<record id="email_template_allocation_released" model="mail.template">
+            <field name="name">Allocation Released: Send by email</field>
+            <field name="model_id" ref="project_role.model_project_assignment"/>
+            <field name="subject">You have been released from project: ${object.project_id.name}</field>
+            <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
+            <field name="email_to">${object.email_formatted | safe}</field>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+<tbody>
+    <!-- CONTENT -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                <tr><td valign="top" style="font-size: 13px;">
+                    <div>
+                        Dear ${object.employee_id.name},
+                        <br/><br/>
+                        This is to Inform you that you have been released from the project:<br/>
+                        Project Name: ${object.project_id.name}<br/>
+                        Release Date: str(${object.end_date})<br/><br/>
+                        Note: Please ensure you are taking backup/deleting aa the project related code/document etc. to e-Zest repository to comply with required regulations.<br/>
+                        @QA Team Please take appropriate actions.
+                        <br/><br/><br/>
+                        Thanks &amp; Regards,
+                        <br/>
+                        Operations Team<br/>
+                    </div>
+                </td></tr>
+                <tr><td style="text-align:center;">
+                  <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td align="center" style="min-width: 590px;">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+<tbody>
+    <tr>
+    <td>
+    
+        </td></tr><tr>
+            <td valign="bottom" align="left">
+                ${object.company_id.name}
+            </td>
+            <td valign="middle" align="right" rowspan="2">
+        <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}" class="o_we_selected_image" data-original-title="" title="" aria-describedby="tooltip682440"/>
+    </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left" style="opacity: 0.7;">
+                ${object.company_id.phone}
+                % if object.company_id.email
+                    | <a href="'mailto:%s' % ${object.company_id.email}" style=" color: #454748;">${object.company_id.email}</a>
+                % endif
+                % if object.company_id.website
+                    | <a href="'%s' % ${object.company_id.website}" style=" color: #454748;">
+                    ${object.company_id.website}
+                </a>
+                % endif
+            </td>
+        </tr>
+    
+    
+</tbody>
+</table>
+       </td>
+    </tr>
+</tbody>
+</table>
+</td></tr>
+</table>
+</field>
+</record>
+</data>
+</odoo>

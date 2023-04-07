@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_address_proof_letter" model="report.paperformat">
+        <field name="name">Address Proof Letter</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+        id="employee_address_proof_letter"
+        string="Address Proof Letter"
+        model="hr.employee"
+        report_type="qweb-pdf"
+        name="hr_employee_updation.print_address_proof_letter"
+        file="hr_employee_updation.print_address_proof_letter"
+        print_report_name="'Address Proof Letter - %s' % (object.name).replace('/', '')"
+        paperformat="hr_employee_updation.paperformat_address_proof_letter"/>
+
+    <template id="print_address_proof_letter">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="employee">
+                <t t-if="employee.is_watermark">
+                    <div style="text-align:right;">
+                        <img t-if="employee.company_id" t-att-src="image_data_uri(employee.company_id.logo)" alt="Logo"/>
+                    </div>
+                </t>
+                <t t-if="employee.is_watermark">
+                    <div class="watermark" style="position:absolute;opacity:1;font-size:3em;width:100%;text-align:center;z-index:1000;">
+                        <img t-att-src="image_data_uri(employee.company_id.letterhead_watermark)" style="padding-top:10rem;"/>
+                    </div>
+                </t>
+                <div>
+                    e-Zest/HR/Rel/e-Zest<span t-field="employee.identification_id"/>
+                </div>
+                <div>
+                  <span t-esc="time.strftime('%Y-%m-%d')" t-options='{"widget": "date"}'/>
+                </div>
+                <div>
+                    Name: <span t-field="employee.name"/>
+                </div>
+                <div style="text-align: center;margin-top: 2rem;font-size:20px;">
+                    <strong><u><span>To Whomsoever It may Concern</span></u></strong>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <strong>Dear <span t-field="employee.name"/>,</strong>
+                </div>
+                <div>
+                    <p>This is to certify that <t t-if="employee.gender=='male'">Mr. </t> <t t-if="employee.gender=='female'">Ms.</t> <span t-field="employee.name"/> is working with our organization as <span t-field="employee.job_id.name"/> Since <span t-field="employee.joining_date"/> And <t t-if="employee.gender=='male'">his</t> <t t-if="employee.gender=='female'">her</t> local residential address according to our staff record is as given below:</p><br/>
+                    <span><strong>Local Address:</strong></span><br/>
+                    <span t-field="employee.street_c"/><br/>
+                    <t t-if="employee.street2_c"><span t-field="employee.street2_c"/><br/></t>
+                    <t t-if="employee.city_c"><span t-field="employee.city_c"/></t><t t-if="employee.zip_c"> - <span t-field="employee.zip_c"/></t>
+                </div>
+
+                <div style="margin-top: 5rem;" name="signature">
+                    <t t-if="employee.company_id.company_signature">
+                        <div class="row">
+                            <div class="col-4">
+                                <img t-att-src="image_data_uri(employee.company_id.company_signature)" style="max-height: 4cm; max-width: 8cm;margin-left:-22px;" alt="Company signature"/>
+                            </div>
+                            <div class="col-6"/>
+                        </div>
+                    </t>
+                    <div class="row">
+                        <div style="margin-top: 1rem;" class="col-4">
+                            <strong>Authorized Signatory</strong>
+                        </div>
+                        <div class="col-6"/>
+                    </div>
+                    <div class="row">
+                        <div style="margin-top: 1rem;" class="col-4">
+                            <strong>e-Zest Solutions Ltd.</strong>
+                        </div>
+                        <div class="col-6"/>
+                    </div>
+                </div>
+                <t t-if="employee.is_watermark">
+                    <footer style="position:relative;top:32rem;border-top:1px solid black;">
+                        <span><t t-esc="employee.company_id.name"/></span><br/>
+                        <span><t t-esc="employee.payroll_loc.address"/></span><br/>
+                        <span><t t-esc="employee.company_id.website"/></span><br/>
+                        <span><t t-esc="employee.payroll_loc.cin"/></span>
+                    </footer>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

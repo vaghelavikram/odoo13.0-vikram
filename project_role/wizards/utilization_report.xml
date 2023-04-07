@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="utilization_report_form" model="ir.ui.view">
+        <field name="name">allocation.utilization.report.form</field>
+        <field name="model">allocation.utilization.report</field>
+        <field name="arch" type="xml">
+            <form string="Allocation Utilization Report">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="report_month" required="1"/>
+                            <field name="save_report"/>
+                        </group>
+                        <group>
+                            <field name="report_year" required="1" widget="selection"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="act_download_report" string="Download" type="object" class="oe_highlight" />  
+                    <button name="cancel" string="Cancel" class="oe_highlight" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_utilization_report" model="ir.actions.act_window">
+        <field name="name">Utilization Report</field>
+        <field name="res_model">allocation.utilization.report</field>
+        <field name="view_id" ref="utilization_report_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_utilization_report" name="Utilization Report" parent="project.menu_project_report" action="action_utilization_report" sequence="2" groups="project.group_project_manager"/>
+</odoo>

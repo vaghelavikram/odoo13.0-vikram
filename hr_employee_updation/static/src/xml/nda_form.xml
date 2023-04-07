@@ -1,0 +1,158 @@
+<template>
+    <t t-name="KanbanView.NdaForm">
+            <!-- <div class="m-5" style="background-image:url(../web/static/src/img/ezest-logo.png);background-repeat: no-repeat;background-size: cover;background-attachment: fixed;"> -->
+            <div class="m-5">
+                <div style="text-align:right;">
+                    <img src="/web/static/src/img/ezest-logo.png?company=${object.company_id.id}" style="width: 128px;" alt="Company Logo"/>
+                </div>
+                <div class="text-center" style="color:black;">
+                    <h2>Employee Agreement</h2>
+                    <h2>(Non-Competition, Non-disclosure and Inventions and Proprietary Information)</h2>
+                </div>
+                <div class="mt-5" style="text-align: justify;">
+                    <h4>As a condition of my employment with <strong style="color:black;">e-Zest Solutions Ltd.</strong>, its subsidiaries, affiliates,successors, or assigns (together “the Company”), and in consideration of my employment with the Company and my receipt of the compensation now and hereafter paid to me by the Company, I agree to the following:</h4>
+                    <h2 style="color:black;">A. NONDISCLOSURE of CONFIDENTIAL INFORMATION</h2>
+                    <h2 style="color:black;">1. Company Information</h2>
+                    <h4>
+                        I agree at all times during the term of my employment and thereafter, to hold in strictest confidence,  and  not  to  use,  except  for  the  benefit  of  the  Company,  or  to  disclose  to  any person, firm or corporation without written authorization from the <strong style="color:black;">Founder and Director</strong>, any Confidential Information of the Company. I understand that “Confidential Information” means  any  Company  proprietary  information,  technical  data,  trade  secrets  or  know-how, including but not limited to: research, product plans, products, services, customer lists and customers   (including   but  not   limited  to:   communications   with   customers)  markets, software,source  codes,  object  codes,  employees,  employee  data,  distributor,  prospective distributor, data pertaining to the distributors, algorithms, diagrams, graphs, product brief, ideas, content, concepts, drawings, technologyand other business information disclosed to me  by  the  Company  either  directly  or  indirectly  in  writing,  orally  or  by  drawings  or observation of parts or equipment. I further understand that Confidential Information does not  include  any  of  the  foregoing  items  which  has  become  publicly  known  and  made generally  available  through  no  wrongful  act  of  mine  or  of  others  who  were  under confidentiality obligations as to the item or items involved.</h4>
+                        <h4>The  present  Agreement  is  also governed  by  the  General  Data  Protection  Regulations  (EU) 2016/679  (<strong style="color:black;">said  Regulations</strong>)  which shall  govern the  personal  data  and  digital  privacy  of the data subject.
+</h4>
+
+<h2 style="color:black;">Definitions:</h2>
+
+<h4>
+    The following definitions of terms used in this document are drawn from Article 4 of the
+European Union’s General Data Protection Regulation:
+</h4>
+<h4>
+    <strong style="color:black;">Personal Data:</strong> Any information relating to an identified or identifiable natural person <strong style="color:black;">("Data Subject")</strong> who can be identified, directly or indirectly, in particular by reference to
+an identifier such as a name, an identification number, location data, an online identifier or
+to one or more factors specific to the physical, physiological, genetic, mental, economic,
+cultural or social identity of that natural person.
+</h4>
+<h4>
+    <strong style="color:black;">Sensitive Personal Data:</strong> Personal data which are, by their nature, particularly sensitive in relation to fundamental rights and freedoms merit specific protection as the context of their processing  could  create  significant  risks  to  the  fundamental  rights  and  freedoms.  Those personal  data  includebut  is  not  limited  to,personal  data  revealing  racial  or  ethnic  origin, political  opinions,  religious  or  philosophical  beliefs,  or  trade  union  membership,  genetic data,  biometric  data  for  the  purpose  of  uniquely  identifying  a  natural  person,  data concerning health or data concerning a natural person's sex life or sexual orientation.
+</h4>
+<h4>
+    <strong style="color:black;">Declaration:</strong> The assurance given by the Employee that it shall not disclose any personal information of its colleague or any other individual associated with the Company, and whose details have been received by the Employee during its  tenure with e-Zest after termination of  its  services.    It  has  also  been  understood  by  the  Employee  that  Personal  information includes Personal Data and Sensitive Personal Data of clients, vendors, consultants, vendors of/ at e-Zest
+</h4>
+<h4>
+    <strong style="color:black;">Employee Privacy Notice:</strong>  have shared my personally identifiable information to enable the  company  to  fulfill  its  legal  and  contractual  obligations. I  have  read,  agreed  and  fully understood Employee Privacy Notice.
+</h4>
+<h4><strong style="color:black;">Ref.:</strong> Employee Privacy Notice</h4>
+<h2 style="color:black;">2. Former Employer Information</h2>
+<h4> I agree that I will not, during the course of my employment with the Company, improperly use or disclose any proprietary information or trade secrets of any former employer or other person or entity that I had been associated with and that I will not bring onto the premises of  the  Company  any  unpublished  document  or  proprietary  information  belonging  to  any such employer, person or entity unless consented to in writing by such employer, person or entity. I  shall indemnify  and  hold  harmlesstheCompany  from  all claims,  damages,  costs, expenses, fines, and fees (including reasonable attorneys' fees) arising out of assertions by third  parties  of  superior  rights for  infringement  or  violation  of any  intellectual  property brought to Company and incorporated by me in any deliverable pursuant to this Agreement.
+</h4>
+<h2 style="color:black;">3. Third Party Information</h2>
+<h4>I recognize that the Company has received and in the future will receive from other persons or  certain  Government  authorities  or  agencies  and  other  third  parties  their  confidential  or proprietary  information  subject  to  a  duty  on  the  Company's   part  to  maintain  the confidentiality of such information and to use it only for certain limited purposes. I agree to hold  allsuch  confidential  or  proprietary  information  in  the  strictest  confidence till  such information remains confidential, and not to disclose it to any person, firm or corporation or to use it except as necessary in carrying out my work for the Company consistent with the Company's agreement with such third party.</h4>
+<h2 style="color:black;">B) NONCOMPETE COVENANTS</h2>
+<h4>It is the Company’s policies to conduct its affairs in strict compliance with the letter and spirit of the law and to adhere to the highest principles of business ethics. Accordingly, all officers, employees, and independent contractors must avoid activities which are in conflict, or  give the  appearance  of  being in  conflict,  with  these  principles  and  with the  interests  of the Company. 
+<p>During the employment period with the Company, I assure and promise to perform for the Company such duties as the Company may designate from time to time and will devote my full  time  and  best  efforts  to  the  business  of  the  Company  and,  I  will  not,  directly  or indirectly:</p>
+<p>(a) Work for, own, invest in, direct, or aid any company or person engaged in competition
+with the Company,</p>
+<p>(b) Engage in any other professional employment or consulting.</p>
+<p>A company or person is in competition with the Company if it solicits business, performs
+services, or delivers goods that are competitive to the Company, its customers, or its
+prospective customers.</p>
+</h4>
+<h2 style="color:black;">C) NON-SOLICITATION OF CLIENTS</h2>
+<h4>I agree  that I will  not,  without  the  prior  written  consent  of  the Company  or  any  person authorised to take decisions on behalf of the Company, at any time during myemployment with  the Company or  for  a  period  of 5 years from  thedate  oftermination  of myemployment  however  caused  (whether myemployment  is  terminated  by submission  of  a resignation  or  by  the  Companyand  whether  with  or  without  cause  or  in  breach  of  this Agreement), either individually or through any company under my control and either on myown  behalf  or  on  behalf  of  any  person  competing  or  endeavoring  to  compete  with  the Company, directly or indirectly solicit, endeavor to solicit or gain the custom of, canvass or interfere with any person who is a client of the Companyor use your personal knowledge of or  influence  over  any  such  client  to  or  for myown  benefit  or  that  of  any  other  person competing with the Company.
+<p>I further agree that I will not, without the prior written consent of the Employer, at any time during myemployment  with the Company or  for  a  period  of  1  year  from the  termination  of myemployment   however   caused   (whether my employment   is   terminated   by way   of submission  of  a  resignation  or  by  the  Company  or  its  representative and  whether  with  or without cause or in breach of this Agreement), accept employment from any person who is a client of the Employer.</p>
+</h4>
+<h2 style="color:black;">D) NON-SOLICITATION OF EMPLOYEES</h2>
+<h4>I agree that I will not, without the prior written consent of the Company, at any time during my employment  with  the  Employer  or  for  a  period  of atleast 1  years  from  the  date  of termination  of my employment  however  caused  (whether I  furnish  the  Company  with  my resignation  or my employment is terminated  by the Employer  and  whether  with  or  without cause or in breach of this Agreement), either individually or through any company under my controlled  and  either  on mybehalf  or  on  behalf  of  any  other  person  competing  or endeavoring to compete with the Company, directly or indirectly solicit for employment, or endeavor  to  employ  or to  retain  as  an  independent  contractor  or  agent,  or to  resign from the company, any person who is an employee of the Company on the date of termination of my employment or was an employee of the Companyat any time during 5 years prior to the termination of my employment.
+<p>I further agree and accept that, should I be approached by a person who is or has been an
+employee of the Company during the period described above, I will not accept any such
+offer or engage with, employ or retain as an independent contractor or agent for a period
+ofatleast3 years following the termination of your employment.</p>
+</h4>
+<h2 style="color:black;">E) INVENTIONS AND PROPRIETARY INFORMATION</h2>
+<h4>
+1. I acknowledge that in its business, the Companyhas developed and commercially used
+valuable technical and non-technical information and, to protect the legitimate interests of
+the Company, it is necessary for the Company to protect certain of the information either by
+patents, copyright, industrial design or by any other available mechanism, or by maintaining
+the information as secret or confidential.
+<p>2. I acknowledge that, through my employment with the Company, I may be exposed to or
+generate confidential information including, without limiting the generality of the foregoing,
+technology, know-how, trade secrets, data, processes, inventions, developments,
+formulations, discoveries, algorithms, applications, methods of manufacture, information
+pertaining to existing or potential customers, suppliers, markets, contracts, prices,
+programs, strategies and products, and improvements thereof, whether oral or written, but
+not including information otherwise publicly known not as a result of a breach of this
+Agreement, information acquired by me through my own independent research and
+experience, and information which was lawfully in my possession prior to receipt thereof
+from the Company.</p>
+<p>3. I agree that I shall not disclose to any person, firm or corporation, nor use for my own or
+another person’s benefit, either during or after my employment, any confidential
+information referred to in this agreement for any reason, except as otherwise specifically
+authorised in writing by the Company.</p>
+<p>4. I will not disclose to the Company or induce the Company to use inventions or
+confidential information belonging to others.</p>
+<p>5. I agree to perform for the Company such duties as may be delegated from time to time, which  may  include  the  functions  of  inventing,  improving,  discovering  and  developing  new and  novel  devices,  methods  and  principles  relating  to  the  work  of  the Company.  Any invention,  including  without  limitation,  new  contributions,  concepts,  ideas,  algorithms, developments,  discoveries,  processes,  compositions,  techniques  or  improvements  thereof, made, conceived, learned or reduced to practice during the course of my employment, and all trade secret, patent, copyright, and other intellectual property rights worldwide therein, are the property of the Company, to which all right, title and interestin and to the same are hereby assigned, whether or not they are patentable or copyrightable or otherwise capable of statutory protection and whether or not they are made by myself or jointly with any other persons. I also hereby waive all moral rights into any copyright assigned hereunder. I also agree to assign all my right, title and interest in and to any such invention to the Company or a third party as shall be directed by the Company and shall also execute all documents necessary  to  give  effect  to  such  transfer.  I  agree  that  during  my  employment  by  the Employer, I will promptly and fully disclose in writing and assign to the Company, all rights, title and interests in such inventions. I also agree, if requested, I will assist the Companyor its  authorised  representative in  preparing  and obtaining  any  patents, copyrights,  industrial designs  or  securing  any  other  rights  for  such  inventions,  in  any  and  all  countries.  I  also agree,  upon  request,  to  execute  without any consideration,  such  documents  as  may reasonably be required to obtain the patents, copyrights, industrial designs or other rights. In  the  event  the Companyis unable  for  any  reason,  after  reasonable  effort, to  secure my signature  on  any  document  needed  in  connection  with  the  actions  specified in  Sections  5 and  7  hereof,  I  hereby  irrevocably  designate  and  appoint  the Companyand  its  duly authorised  officers  and  agents  as  my  agent  and  attorney  in  fact,  which  appointment  is coupled  with  an interest, to  act  for  and on my  behalf to  execute,  verify  and  file  any such documents and to do all other lawfully permitted acts in furtherance of the purposes of this Agreement with the same legal force and effect as if executed by me. I hereby waive and release all my claimsin favour of the Company, the same being inclusive of but not limited to any  and  all  claims,  of  any  nature  whatsoever,  which  I  now  or  may  hereafter  have developed  due  to  the  work  carried  out  by  me  for  the  Company  in  consonance  with  my employment.    I  further  state  that  I  here  by  protect,  indemnify  and  hold  harmless  the Company from any claims, liabilities, costs, damages, litigation accruing due to the omission or  commission  of  any  acts  carried  out  by me, the  same  being  inclusive  of  infringement  of proprietary rights of a third party.</p>
+<p>6. I  agree  that,  during  my  employment,  I  will  not  apply  for  any  patent,  copyright  or industrial  design  or  otherwise  secure  any  other  right  in  any  country  for  any  invention, including   new   contributions,   concepts,   ideas,   algorithms,   developments,   discoveries, processes,  compositions,papers,  articles,  thesis,  drawings,techniques  or  improvements thereof, which  pertain  to  the  work  that  has  been  carried  out  by  me  on  behalf  of  the Company.</p>
+<p>7. I  agree,  both  during  and subsequent  to my  employment  by  the Company,  and  without any  additional  compensation  other  than  for  out-of-pocket  costs  incurred,  to  testify  in  any legal  proceeding,  sign  all  lawful  papers,  execute  all  divisional,  continuation,  substitution, renewal  and  re-issue  applications,  execute  all  assignment  papers,  make  all  rightful  oaths and generally do everything necessary or desirable to assist the Companyor its successors and  assigns  in  obtaining  and  enforcing  proper  protection  for  its  patents,  copyrights  and industrial designs or other relevant rights in any and all countries.</p>
+<p>8. I agree to make and maintain for the Company, adequate and current written records of all my innovations, inventions, discoveries and improvements.</p>
+<p>9. I acknowledge that all records or copies of records concerning the Company’sactivities, business interest or investigations made or received by me during my employment with the Companyare  and  shall  be  the  property  of  the  Employer.  I  agree  to  keep  such  records  or copies in the custody of the Companyand subject to its control, and to surrender the same at  the  termination  of  my  employment,  or  at  any  time  during  my  employment,  at  the Company’srequest  without  keeping  any  copies  thereof.  Prior  to  leaving  my  employment with  the Company,  I  agree  to  cooperate  with  the Company in  completing  and  signing  the termination statement at the Company’srequest. In the event that I leave the employment of the Company, I hereby consent to notify my new employer of my rights and obligations under this Agreement.</p>
+<p>10. I agree to obtain the written consent of the Companyin advance of any presentation or publication,  or  submission  for  presentation  or  publication,  of  any  speech,  paper  or  article authored by me, either alone or jointly with others.</p>
+<p>11. The  obligations in  agreements  shall  apply  to  any  period  during  which  I  was  previously employed,  or  will  in  the  future  be  employed,  by  the  Company.  These Inventions  and Proprietary  Information  Agreement  along  with  the  Employment  Agreement  entered  into between  me  and  the Companyare  the  final,  complete  and  exclusive agreement  of  the parties  with  respect  to  the  subject  matter  hereof  and  supersedes  and  merges  all  prior discussions between us. No modification of or amendment to this Invention and Proprietary Information Agreement, nor any waiver of any rights hereunder, will be effective unless in writing  and  signed  by the  party  to  be  charged.  Any subsequent  change  or  changes in  my duties, salary or compensation will not affect the validity or scope of this Agreement.</p>
+</h4>
+<h2 style="color:black;">12. Prior Contracts</h2>
+<h4>I represent that there are no other contracts to assign inventions or works that are now in
+existence between me and any other person or entity. I further represent that I have no
+other employment(s), consultancies or undertakings which would restrict and impair my
+performance under this Undertaking, or refrain me from performing my obligations as an
+employee of the Company.</h4>
+<h2 style="color:black;">13. Responsibilities related to Information Security:</h2>
+<h4>I am also under obligation to observe and fulfill all my responsibilities regarding information
+Security. The same shall be treated as part and parcel of my employment agreement and
+breach of the same and shall expose me to appropriate disciplinary/legal action.</h4>
+<h4><strong style="color:black;">Ref.:</strong> Roles and Responsibilities for Information Security Sec. 2.11</h4>
+<h2 style="color:black;">F) GENERAL PROVISIONS</h2>
+<h2 style="color:black;">1) Entire Agreement</h2>
+<h4>This Agreement sets forth the entire agreement and understanding between the Company
+and me relating to the subject matter herein and merges all prior discussions between us
+except for prior confidentiality agreements I have signed relating to information not covered
+by this Agreement. No modification of or amendment to this agreement, nor any waiver of
+any rights under this agreement, will be effective unless in writing signed by the party to be charged. Any subsequent change or changes in my duties, salary or compensation will not
+affect the validity or scope of this Agreement.</h4>
+<h2 style="color:black;">2) Severability</h2>
+<h4>If one or more of the provisions (or part thereof) in this Agreement are invalid,
+unenforceable or deemed void by law, then the remaining provisions will continue in full
+force and effect and shall not affect validity or enforceability of any other provision (or
+remaining part thereof)</h4>
+<h2 style="color:black;">3) Waiver</h2>
+<h4>The waiver by the Company of a breach of any provision of this Undertaking shall not
+operate or be construed as a waiver of any subsequent breach of the same or any other
+provision hereof.</h4>
+<h2 style="color:black;">4) Successors and Assigns</h2>
+<h4>This Agreement will be binding upon my heirs, executors, administrators and other legal
+representatives and will be for the benefit of the Company, its successors, and its assigns.</h4>
+<h2 style="color:black;">5) Survival</h2>
+<h4>The rights and obligations of the parties shall survive the termination of this Agreement as
+well as any other provisions that by their nature must survive termination of this
+Agreement.</h4>
+<h2 style="color:black;">6) Governing Law</h2>
+<h4>This terms stated under this Undertaking shall be governed and construed in accordance
+with laws of India.</h4>
+<h2 style="color:black;">7) Injunctive Relief; Consent to Jurisdiction</h2>
+<h4>I  acknowledge  and  agree that  damages  will  not  be  an  adequate  remedy in  the  event  of  a breach of any of my obligations under this Undertaking. I therefore agree that the Company shall  be  entitled  (without  limitation  of  any  other  rights  or  remedies  otherwise  available  to the  Company)  to  obtain  an  injunction  or  other  measures  from  any  court  of  competent jurisdiction  prohibiting  the  continuance  or  recurrence  of  any  breach  of  this  Undertaking.  I hereby  submit  myself  to  the  jurisdiction  and  venue  of  the  Courts  in  India  for  purposes  of any such action. </h4>
+<h2 style="color:black;">8) Arbitration</h2>
+<h4>I  further  agree  that  the  Company,  at  its  option,  may  elect  to  submit  any  dispute  or controversy  arising  out  of  or  related  to  this  Undertaking  for  final  settlement  by a  sole arbitrator  appointed  in  accordance  with  the  Arbitration  and  Conciliation  Act  1996,  the proceedings of which shall be conducted in Pune and in English language and the judgment upon  the  award  rendered  by  the  arbitrator  shall  be final  and  binding  on  both  the  Parties. The courts of Pune shall have exclusive jurisdiction.</h4>
+<h2 style="color:black;">9) Disciplinary Action:</h2>
+<h4>If I  am found  involved  in  any  act/s,  commissions  &amp;  omissions  which  would  amount  to breach  of  this  agreement  &amp;/or  violation  of  security  policies,  &amp;/or  would  amount  to misconduct, the Company shall initiate appropriate disciplinary action against mewhich may include termination  of myengagement  with  the Company,and shall further  be  entitled to receive liquidated damages from me, the same being of an amount equivalent to the losses incurred by the Company due to my acts, or the lack of it thereof. </h4>
+<h4><strong style="color:black;">Ref.:</strong> Enterprise Information Security Policies Manual Section 7.2</h4>
+
+<h2 class="mt-5">I have read, understood and hereby voluntarily accept the terms of employment outlined
+above.</h2>
+
+<div class="text-center">
+    <button type="button" class="btn btn-primary btn-agree btn-lg">
+        I Agree
+    </button>
+</div>
+
+                </div>
+            </div>
+    </t>
+</template>

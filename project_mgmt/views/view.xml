@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+      <record id="ir_cron_ryg_form_close" model="ir.cron">
+        <field name="name">Close RYG Form</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_project_ryg"/>
+        <field name="code">model._cron_ryg_form_close()</field>
+        <field name="state">code</field>
+      </record>
+
+      <record id="ir_cron_ryg_update_reminder" model="ir.cron">
+        <field name="name">RYG Reminder</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="code">model._cron_reminder_ryg()</field>
+        <field name="state">code</field>
+      </record>
+
+      <record id="project_mgmt_inherit_form" model="ir.ui.view">
+        <field name="name">Project mgmt inherit form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+          <header>
+            <field name="state" widget="statusbar"/>
+            <button name="action_active" type= "object" string="Active" states="draft" class="oe_highlight" groups="project_mgmt.group_project_operations" confirm="Are you sure want to Active the project!"/>
+            <button name="action_close_project" type= "object" string="Closed" states="active" class="oe_highlight" groups="project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy"/>
+          </header>
+          <xpath expr="//button[@name='action_make_billable']" position="attributes">
+            <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+            <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('invoice_count', '=', 0)]}" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy">
+                <field name="invoice_count" widget="statinfo" string="Invoices"/>
+            </button>
+          </xpath>
+          <xpath expr="//field[@name='name']" position="attributes">
+            <attribute name="attrs">{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}</attribute>
+          </xpath>
+          <xpath expr="//notebook/page[@name='settings']" position="before">
+            <page string="Details">
+              <div class="oe_title">
+                      <h1>
+                          <field name="name_seq" readonly="1"/>
+                      </h1>
+                  </div>
+              <group>
+                  <group>
+                      <field name="edit_project_access" invisible="1"/>
+                      <field name="abbreviated_name" readonly="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                      <field name="whizible_id" required="1" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="description" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="billable" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="is_internal" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="planned_start_date" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="planned_end_date" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="primary_skill" options="{'no_create':True,'no_open':True}" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="department_id" options="{'no_create':True,'no_open':True}" domain="[('company_id','=',company_id)]" widget="dept_format" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                  </group>
+                  <group>
+                      <field name="work_hours" groups="project_mgmt.group_project_operations,project_mgmt.group_project_manager,project_mgmt.group_project_operations_copy" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}" invisible="1"/>
+                      <field name="duration" groups="project_mgmt.group_project_operations,project_mgmt.group_project_manager,project_mgmt.group_project_operations_copy" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="project_value" groups="project_mgmt.group_project_operations,project_mgmt.group_project_manager,project_mgmt.group_project_operations_copy" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)], 'invisible':[('is_internal','=',True)]}"/>
+                      <field name="project_currency" invisible="1"/>
+                      <field name="project_pricelist" options="{'no_create': True,'no_open':True}" groups="project_mgmt.group_project_operations,project_mgmt.group_project_manager,project_mgmt.group_project_operations_copy" attrs="{'readonly':['|', ('state', '=', 'closed'),('edit_project_access', '=', False)], 'invisible':[('is_internal','=',True)]}"/>
+                      <field name="commercial_details" groups="project_mgmt.group_project_operations,project_mgmt.group_project_manager,project_mgmt.group_project_operations_copy" attrs="{'readonly':['|', ('state', '=', 'closed'),('edit_project_access', '=', False)], 'invisible':[('is_internal','=',True)]}"/>
+                      <field name="delivery_responsible" groups="project_mgmt.group_project_operations,project_mgmt.group_project_manager,project_mgmt.group_project_operations_copy" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                   </group>
+                   <group>
+                      <field name="project_ref" invisible="1"/>
+                      <field name="project_type" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="ryg_review" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="payroll_loc" options="{'no_create': True,'no_open':True}" attrs="{'readonly':[('abbreviated_name','!=','New')]}"/>
+                      <field name="work_loc" options="{'no_create': True,'no_open':True}" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="project_location" options="{'no_create': True,'no_open':True}" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="geo_location" required="0" options="{'no_create': True,'no_open':True}" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                      <field name="del_eng_model"/>
+                    </group>
+                <group>
+                  <field name="customer_id" domain="[('customer_rank','>',0),('is_company', '=', True)]" invisible="1"/>
+                  <field name="partner_id" options="{'no_create': True,'no_open':True}" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                  <field name="customer_type" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                  <field name="is_manager_allocate" invisible="1"/>
+                  <label for="user_id" options="{'no_create': True,'no_open':True}" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                  <div class="o_row">
+                    <field name="user_id" options="{'no_create': True,'no_open':True}" required="1" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                    <button name="action_allocation" class=
+                    "btn-link" type="object" string="Create Allocation" attrs="{'invisible': [('is_manager_allocate','=',True)]}" groups="project_mgmt.group_project_operations"/>
+                  </div>
+                  <field name="business_entity" options="{'no_create': True,'no_open':True}" invisible="1"/>
+                  <field name="company_id" options="{'no_create': True, 'no_open': True}" readonly="1"/>
+                  <field name="practice" options="{'no_create': True,'no_open':True}" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                  <field name="organization_unit" options="{'no_create': True,'no_open':True}" invisible="1"/>
+                  <field name="actual_start_date" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                  <field name="actual_end_date" attrs="{'readonly': ['|',('state', '=', 'closed'), ('edit_project_access', '=', False)]}"/>
+                </group>
+              </group>
+            </page>
+          </xpath>
+          <xpath expr="//page[@name='settings']" position="attributes">
+            <attribute name="groups">base.group_erp_manager</attribute>
+          </xpath>
+          <xpath expr="//page[@name='settings']" position="inside">
+            <group string="Emails">
+              <field name="alias_name" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+              <field name="alias_contact" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+            </group>
+          </xpath>
+          <xpath expr="//page[@name='emails']" position="attributes">
+            <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//notebook/page[@name='settings']" position="before">
+             <page string="Skills">
+             <div class="col-lg-4 o_group_skills">
+                  <separator string="Skills"/>
+                  <field mode="tree" nolabel="1" name="project_skill_ids"  widget="hr_skills" attrs="{'readonly':['|', ('state', '=', 'closed'), ('edit_project_access', '=', False)]}">
+                      <tree>
+                          <field name="skill_type_id" invisible="1"/>
+                          <field name="skill_id"/>
+                          <field name="skill_level_id"/>
+                          <field name="project_id" invisible="1"/>
+                          <field name="level_progress" widget="progressbar"/>
+                      </tree>
+                  </field>
+              </div>
+             </page>
+          </xpath>
+
+          <xpath expr="//div[@name='options_active']" position="attributes">
+             <attribute name="invisible">1</attribute>
+          </xpath>
+
+          <xpath expr="//notebook" position="inside">
+            <page string="Project Charter" groups="project_mgmt.group_project_manager,project_mgmt.group_project_operations,mgmtsystem.group_mgmtsystem_manager,project_mgmt.role_project_coordinator">
+                <field name="is_submit" invisible="1"/>
+                <div>
+                  <label for="context" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="context" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="product_vision" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="product_vision" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="objective" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="objective" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="scope" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="scope" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="on_board_off_board" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="on_board_off_board" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="est_technique" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="est_technique" widget="char" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="high_estimation" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="high_estimation" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div invisible="1">
+                  <label for="project_size" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="project_size" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="project_size_char" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="project_size_char" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="sla" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="sla" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="issue" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="issue" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="efforts_in_person" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="efforts_in_person" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="team_plan_ids" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="team_plan_ids" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="du_head_id" options="{'no_create':1}" domain="[('share','=',False)]"/>
+                  <field name="du_head_id" options="{'no_create':1}" domain="[('share','=',False)]"/>
+                  <field name="is_du_head" invisible="1"/>
+                </div>
+                <div>
+                  <label for="assumption" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="assumption" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div invisible="1">
+                  <label for="risk" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="risk" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="contraint" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="contraint" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="dependency" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="dependency" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div invisible="1">
+                  <label for="implement_approach" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                 <field name="implement_approach" invisible="1" attrs="{'readonly': [('state', '!=', 'closed')]}"/>
+                </div>
+                <div invisible="1">
+                  <label for="action_plan" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                 <field name="action_plan" invisible="1" attrs="{'readonly': [('state', '!=', 'closed')]}"/>
+                </div>
+                <div invisible="1">
+                  <label for="planned_comp_date" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                 <field name="planned_comp_date" class="note-editor" invisible="1" attrs="{'readonly': [('state', '!=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="life_cycle" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="life_cycle" class="o_field_many2many"  attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="potential_costs" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="potential_costs" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="potential_benefit" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="potential_benefit" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="intellectual_property" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="intellectual_property" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="comp_climate" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="comp_climate" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="long_term_need" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="long_term_need" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="profit_margin" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="profit_margin" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="core_competency" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="core_competency" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="core_competency_3_party" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                 <field name="core_competency_3_party" attrs="{'readonly': [('state', '!=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="future_trend" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="future_trend" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="security_approach" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="security_approach" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="end_date_poc" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="end_date_poc" class="note-editor" attrs="{'reaonly': [('state', '!=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="non_req" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="non_req" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="benifits" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                 <field name="benifits" invisible="1" attrs="{'readonly': [('state', '!=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="key_output" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                 <field name="key_output" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="success" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="success" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <div>
+                  <label for="size" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                  <field name="size" invisible="1" attrs="{'readonly': [('state', '=', 'closed')]}"/>
+                </div>
+                <button class="btn btn-primary" type="object" name="action_submit_charter" string="Submit" style="float:right;" help="Submit this form to inform QA and Ops team" attrs="{'invisible':[('is_submit','=',True)]}"/>
+                <button class="btn btn-primary" type="object" name="action_approve_charter" string="Approve" style="float:right;" attrs="{'invisible':[('is_du_head','=', False)]}"/>
+            </page>
+            <page string="RYG Assessment" name="ryg_assisment" attrs="{'invisible':['|',('ryg_review', '=', 'no'),('ryg_access', '=', False)]}">
+              <field name="ryg_access" invisible="1"/>
+              <field name ="ryg_id" widget="one2many" context="{'default_project_id': active_id}" attrs="{'readonly': [('state', '=', 'closed')]}">
+                <form>
+                  <header>
+                  <field name="state" widget="statusbar" clickable="1"/>
+                </header>
+                  <group>
+                    <group>
+                         <field name="project_id" readonly="1" force_save="1"/>
+                         <field name="project_code" readonly="1" force_save="1"/>
+                         <field name="business_unit" readonly="1" options="{'no_open': True,'no_open':True}"/>
+                         <field name="project_manager" readonly="1" options="{'no_open': True,'no_open':True}"/>
+                    </group>
+                    <group>
+                         <field name="start_date" readonly="1" force_save="1"/>
+                         <field name="end_date" readonly="1" force_save="1"/>
+                         <field name="ryg_status" attrs="{'readonly': [('state','in',['closed'])]}"/>
+                         <field name="ryg_status_change_date" readonly="1"/>
+                         <field name="write_date" string="Last Updated On"/>
+                    </group>                       
+                  </group>
+                  <group>
+                    <field name="remarks" attrs="{'readonly': [('state','in',['closed'])]}"/>
+                    <field name="achievement" attrs="{'readonly': [('state','in',['closed'])]}"/>
+                  </group>
+                </form>
+                <tree>
+                  <field name="project_id"/>
+                  <field name="project_code"/>
+                  <field name="start_date"/>
+                  <field name="end_date"/>
+                  <field name="ryg_status"/>
+                  <field name="remarks"/>
+                  <field name="achievement"/>
+                  <field name="state"/>
+                  <button name="action_open_ryg" type="object" string="View Details" class="btn btn-sm" groups="project_mgmt.group_project_operations"/>
+                </tree>
+              </field>
+            </page>
+          </xpath>
+          <xpath expr="//div[hasclass('oe_chatter')]" position="inside">
+            <field name="message_ids" widget="mail_thread"/>
+          </xpath>
+        </field>
+      </record>
+
+      <record id="project_project_view_form_inherit" model="ir.ui.view">
+          <field name="name">project.project.form</field>
+          <field name="model">project.project</field>
+          <field name="inherit_id" ref="sale_timesheet.project_project_view_form"/>
+          <field name="arch" type="xml">
+              <xpath expr="//field[@name='sale_line_id']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//page[@name='billing_employee_rate']" position="attributes">
+                <attribute name="invisible">1</attribute>
+              </xpath>
+              <field name="sale_order_id" position="attributes">
+                <attribute name="attrs">{}</attribute>
+              </field>
+          </field>
+      </record>
+
+      <record id="view_sale_service_inherit_form3" model="ir.ui.view">
+            <field name="name">sale.service.form3.view.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="sale_timesheet.view_sale_service_inherit_form2"/>
+            <field name="arch" type="xml">
+              <xpath expr="//field[@name='sale_line_id']" position="attributes">
+                     <attribute name="string">Milestone</attribute>
+                   </xpath>
+            </field>
+        </record>
+     
+      <record id="view_project_filter" model="ir.ui.view">
+        <field name="name">view.project.filter</field>
+          <field name="model">project.project</field>
+          <field name="inherit_id" ref="project.view_project_project_filter"/>
+          <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_projects']" position="before">
+              <!-- <filter string="Active" name="active" domain="[('actual_start_date','&lt;=', context_today().strftime('%m-%d-%Y')),('planned_end_date','&gt;=', context_today().strftime('%m-%d-%Y')), ('state','!=','closed')]"/> -->
+              <filter string="Active" name="active" domain="[('actual_start_date','&lt;=', context_today().strftime('%m-%d-%Y')),('actual_end_date','=',False), ('state','!=','closed')]"/>
+              <separator/>
+          </xpath>
+        </field>
+      </record>
+
+        <record id="view_project_task_filter" model="ir.ui.view">
+            <field name="name">project.task.filter</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_search_form"/>
+            <field name="arch" type="xml">
+              <xpath expr="//field[@name='tag_ids']" position="replace">
+              </xpath>
+              <xpath expr="//field[@name='project_id']" position="replace">
+              </xpath>
+              <xpath expr="//field[@name='user_id']" position="after">
+                <field name="project_id"/>
+              </xpath>
+              <xpath expr="//filter[@name='my_tasks']" position="before">
+                <filter string="Active Tasks" name="active_task" domain="['|',('stage_id','ilike','In Progress'),('stage_id','ilike','To Do')]"/>
+                <separator/>
+                 <filter string="Milestone" name="milestone" context="{'group_by': 'sale_line_id'}"/>
+            </xpath>
+          </field>
+        </record>
+
+      <record id="view_project_list_tree" model="ir.ui.view">
+        <field name="name">project.project.list.tree</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+          <tree create="0" delete="0">
+            <field name="partner_id"/>
+            <field name="name" string="Project"/>
+            <field name="planned_start_date"/>
+            <field name="planned_end_date"/>
+            <field name="department_id" widget="dept_format" options="{'no_open':True}"/>
+            <field name="sbu_id" widget="dept_format" options="{'no_open':True}"/>
+            <field name="payroll_loc"/>
+            <field name="group_company_payroll_loc"/>
+            <field name="whizible_id" string="Whizible ID"/> 
+            <field name="name_seq" string="Unity ID"/> 
+            <field name="actual_start_date"/>
+            <field name="state"/>
+          </tree>
+        </field>
+      </record>
+
+      <record id="action_open_view_project_list" model="ir.actions.act_window">
+          <field name="name">Projects List</field>
+          <field name="res_model">project.project</field>
+          <field name="domain">[('sale_order_id.group_multi_company','=',False)]</field>
+          <field name="context">{'search_default_active':1}</field>
+          <field name="view_mode">tree,form</field>
+          <field name="view_id" ref="project_mgmt.view_project_list_tree"/>
+          <field name="search_view_id" ref="project.view_project_project_filter"/>
+      </record>
+
+        <record id="project.open_view_project_all" model="ir.actions.act_window">
+          <field name="context">{'search_default_active':1}</field>
+        </record>
+
+        <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
+          <field name="name">Tasks</field>
+          <field name="res_model">project.task</field>
+          <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+          <field name="context">{'search_default_project_id': [active_id],'default_project_id': active_id, 'search_default_my_tasks':1}</field>
+          <!-- <field name="domain">['|',('sale_line_id','=',False),('sale_line_id.product_uom_qty','!=',0)]</field> -->
+        </record>
+
+      <!-- project tree view -->
+      <record id="project_mgmt_tree" model="ir.ui.view">
+        <field name="name">Project mgmt tree</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <tree js_class="open_form_edit">
+              <field name="partner_id"/>
+              <field name="name" string="Project"/>
+              <field name="planned_start_date"/>
+              <field name="planned_end_date"/>
+              <field name="department_id" widget="dept_format" options="{'no_open':True}"/>
+              <field name="sbu_id" widget="dept_format" options="{'no_open':True}"/>
+              <field name="payroll_loc"/>
+              <field name="whizible_id" string="Whizible ID"/> 
+              <field name="name_seq" string="Unity ID"/> 
+              <field name="actual_start_date"/>
+              <field name="state"/>
+            </tree>
+          </field>
+      </record>
+
+      <record id="action_project_mgmt_tree" model="ir.actions.act_window.view">
+          <field name="sequence" eval="0" />
+          <field name="view_mode">tree</field>
+          <field name="view_id" ref="project_mgmt.project_mgmt_tree"/>
+          <field name="act_window_id" ref="project.open_view_project_all"/>
+      </record>
+
+    <record id="project_view_project_kanban_inherit" model="ir.ui.view">
+      <field name="name">project.view.project.kanban.inherit</field>
+      <field name="model">project.project</field>
+      <field name="inherit_id" ref="project.view_project_kanban"/>
+      <field name="arch" type="xml">
+        <xpath expr="//templates" position="before">
+          <field name="department_id"/>
+          <field name="project_status"/>
+          <field name="abbreviated_name"/>
+          <field name="planned_start_date"/>
+          <field name="planned_end_date"/>
+          <field name="payroll_loc"/>
+          <field name="customer_id"/>
+
+        </xpath>    
+          <xpath expr="//div[hasclass('o_primary')]" position="after">
+            <span><b>Abbreviated name: </b><field name="abbreviated_name"/></span><br/>
+            <span><b>Customer: </b><field name="customer_id"/></span><br/>
+            <span><b>Department: </b><field name="department_id"/></span><br/> 
+            <span><b>Start Date: </b><field name="planned_start_date"/></span><br/>
+            <span><b>End Date: </b><field name="planned_end_date"/></span><br/>
+            <span><b>Execution Location: </b><field name="payroll_loc"/></span><br/>
+            <span><b>Status: </b><field name="project_status"/></span><br/>                 
+          </xpath>
+          <xpath expr="//a[@name='%(portal.portal_share_action)d']" position="replace">
+          </xpath>
+        </field>
+      </record>
+
+      <record id="edit_project_view_form_inherit" model="ir.ui.view">
+        <field name="name">edit.project.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+          <xpath expr="//button[@name='%(portal.portal_share_action)d']" position="replace">
+          </xpath>
+          <xpath expr="//header" position="inside">
+            <button name="action_project_extend" string="Extend Project" type="object" class="oe_highlight" groups="project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy" attrs="{'invisible': [('state', '=', 'closed')]}"/>
+          </xpath>
+        </field>
+      </record>
+
+      <record id="project_invoice_form_inherit" model="ir.ui.view">
+        <field name="name">project.project.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="hr_timesheet.project_invoice_form"/>
+        <field name="arch" type="xml">
+          <xpath expr="//button[@icon='fa-calendar']" position="replace">
+            <button class="oe_stat_button" name="%(hr_timesheet.act_hr_timesheet_line)s" type="action" icon="fa-calendar" string="Timesheets" attrs="{'invisible': [('allow_timesheets', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+          </xpath>
+        </field>
+      </record>
+      <!-- <record id="view_task_form2_view_form_inherit" model="ir.ui.view">
+        <field name="name">project.task.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(portal.portal_share_action)d']" position="replace">
+            </xpath>
+        </field>
+      </record> -->
+
+      <record id="view_task_kanban_view_form_inherit" model="ir.ui.view">
+        <field name="name">project.task.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//a[@name='%(portal.portal_share_action)d']" position="replace">
+            </xpath>
+        </field>
+      </record>
+
+      <record id="project_create_sale_order_view_form_inherit" model="ir.ui.view">
+        <field name="name">project.create.sale.order.wizard.form.inherit</field>
+        <field name="model">project.create.sale.order</field>
+        <field name="inherit_id" ref="sale_timesheet.project_create_sale_order_view_form"/>
+        <field name="arch" type="xml">
+              <field name="partner_id" position="attributes">
+                <attribute name="domain">[('customer_rank','>',0)]</attribute>
+                <attribute name="options">{'no_create':True,'no_open':True}</attribute>
+              </field>
+        </field>
+      </record>
+
+      <!-- <record id="hr_employee_skill_type_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.skill.type.form.inherit</field>
+        <field name="model">hr.skill.type</field>
+        <field name="inherit_id" ref="hr_skills.hr_employee_skill_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="project_id"/>
+            </xpath>
+        </field>
+      </record> -->
+
+<!--       <record id="project_whizible_commercial_form" model="ir.ui.view">
+          <field name="name">project.whizible.commercial.form</field>
+          <field name="model">project.whizible.commercial</field>
+          <field name="arch" type="xml">
+              <form string="Project_Commercial">
+                <sheet>
+                    <group>
+                       <field name="name"/>
+                    </group>
+                </sheet>
+              </form>
+          </field>
+      </record> -->
+
+      <!-- <record id="project_whizible_currency_form" model="ir.ui.view">
+          <field name="name">project.whizible.currency.form</field>
+          <field name="model">project.whizible.currency</field>
+          <field name="arch" type="xml">
+              <form string="Project_Currency">
+                <sheet>
+                    <group>
+                       <field name="name"/>
+                    </group>
+                </sheet>
+              </form>
+          </field>
+      </record> -->
+
+      <record id="project_whizible_practice_form" model="ir.ui.view">
+          <field name="name">project.whizible.practice.form</field>
+          <field name="model">project.whizible.practice</field>
+          <field name="arch" type="xml">
+              <form string="Project_Practice">
+                <sheet>
+                    <group>
+                       <field name="name"/>
+                    </group>
+                </sheet>
+              </form>
+          </field>
+      </record>
+
+      <record id="project_whizible_organization_form" model="ir.ui.view">
+          <field name="name">project.whizible.organization.form</field>
+          <field name="model">project.whizible.organization</field>
+          <field name="arch" type="xml">
+              <form string="Project_Organization">
+                <sheet>
+                    <group>
+                       <field name="name"/>
+                    </group>
+                </sheet>
+              </form>
+          </field>
+      </record>
+
+      <record id="project_whizible_status_form" model="ir.ui.view">
+          <field name="name">project.whizible.status.form</field>
+          <field name="model">project.whizible.status</field>
+          <field name="arch" type="xml">
+              <form string="Project_Status">
+                <sheet>
+                    <group>
+                       <field name="name"/>
+                    </group>
+                </sheet>
+              </form>
+          </field>
+      </record> 
+     
+      <record id="project_whizible_life_form" model="ir.ui.view">
+          <field name="name">project.whizible.life.form</field>
+          <field name="model">project.whizible.life</field>
+          <field name="arch" type="xml">
+              <form string="Project_life">
+                <sheet>
+                    <group>
+                       <field name="name"/>
+                    </group>
+                </sheet>
+              </form>
+          </field>
+      </record>
+
+      <!-- RYG form view -->
+      <record id="project_ryg_form" model="ir.ui.view">
+          <field name="name">project.ryg.form</field>
+          <field name="model">project.ryg</field>
+          <field name="arch" type="xml">
+              <form string="Project_RYG">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                      <group>
+                         <field name="project_id" attrs="{'readonly': [('state','!=','open')]}"/>
+                         <field name="project_code" attrs="{'readonly': [('state','!=','open')]}"/>
+                         <field name="business_unit" attrs="{'readonly': [('state','!=','open')]}" invisible="1"/>
+                         <field name="ryg_status" attrs="{'readonly': [('state','!=','open')]}"/>
+                      </group>
+                      <group>
+                         <field name="start_date" attrs="{'readonly': [('state','!=','open')]}"/>
+                         <field name="end_date" attrs="{'readonly': [('state','!=','open')]}"/>
+                         <field name="ryg_status_change_date" attrs="{'readonly': [('state','!=','open')]}"/>
+                      </group>                       
+                   </group>
+                    <group>
+                         <field name="remarks" attrs="{'readonly': [('state','!=','open')]}"/>
+                         <field name="achievement" attrs="{'readonly': [('state','!=','open')]}"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div> 
+              </form>
+          </field>
+      </record>
+      
+      <!-- Tree view of the project -->
+<!--       <record id="project_whizible_commercial_tree" model="ir.ui.view">
+          <field name="name">project.whizible.commercial.tree</field>
+          <field name="model">project.whizible.commercial</field>
+          <field name="arch" type="xml">
+              <tree>
+                    <field name="name"/>
+              </tree>
+          </field>
+      </record> -->
+
+      <!-- <record id="project_whizible_currency_tree" model="ir.ui.view">
+          <field name="name">project.whizible.currency.tree</field>
+          <field name="model">project.whizible.currency</field>
+          <field name="arch" type="xml">
+              <tree>
+                    <field name="name"/>
+              </tree>
+          </field>
+      </record> -->
+
+      <record id="project_whizible_practice_tree" model="ir.ui.view">
+          <field name="name">project.whizible.practice.tree</field>
+          <field name="model">project.whizible.practice</field>
+          <field name="arch" type="xml">
+              <tree>
+                    <field name="name"/>
+              </tree>
+          </field>
+      </record>
+
+      <record id="project_whizible_organization_tree" model="ir.ui.view">
+          <field name="name">project.whizible.organization.tree</field>
+          <field name="model">project.whizible.organization</field>
+          <field name="arch" type="xml">
+              <tree>
+                    <field name="name"/>
+              </tree>
+          </field>
+      </record>
+
+      <record id="project_whizible_status_tree" model="ir.ui.view">
+          <field name="name">project.whizible.status.tree</field>
+          <field name="model">project.whizible.status</field>
+          <field name="arch" type="xml">
+              <tree>
+                    <field name="name"/>
+              </tree>
+          </field>
+      </record>
+
+      <record id="project_whizible_life_tree" model="ir.ui.view">
+          <field name="name">project.whizible.life.tree</field>
+          <field name="model">project.whizible.life</field>
+          <field name="arch" type="xml">
+              <tree>
+                    <field name="name"/>
+              </tree>
+          </field>
+      </record>
+
+<!-- tree view for ryg assisment -->
+      <record id="project_ryg_tree" model="ir.ui.view">
+          <field name="name">project.ryg.tree</field>
+          <field name="model">project.ryg</field>
+          <field name="arch" type="xml">
+              <tree create="false">
+                    <field name="project_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                   <field name="ryg_status"/>
+                   <field name="remarks"/>
+                   <field name="achievement"/>
+                   <field name="state"/>
+              </tree>
+          </field>
+      </record>
+
+<!-- tree view for project location -->
+      <record id="project_location_tree" model="ir.ui.view">
+          <field name="name">project.location.tree</field>
+          <field name="model">project.location</field>
+          <field name="arch" type="xml">
+              <tree editable="top">
+                   <field name="name"/>
+              </tree>
+          </field>
+      </record>
+
+      <record id="project_team_plan" model="ir.ui.view">
+          <field name="name">project.team.plan.tree</field>
+          <field name="model">team.plan</field>
+          <field name="arch" type="xml">
+            <tree editable="top">
+              <field name="team_plan_id" invisible="1"/>
+              <field name="role"/>
+              <field name="no_of_resources"/>
+              <field name="required_skills"/>
+            </tree>
+          </field>
+      </record>
+
+    <!-- action of the project menu -->
+<!--     <record id="action_project_whizible_commercial" model="ir.actions.act_window">
+        <field name="name">Project Commercial</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.whizible.commercial</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+              Create Project Commercial.
+            </p>
+        </field>
+    </record> -->
+
+    <!-- <record id="action_project_whizible_currency" model="ir.actions.act_window">
+        <field name="name">Project Currency</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.whizible.currency</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+              Create Project Currency.
+            </p>
+        </field>
+    </record> -->
+
+    <record id="action_project_whizible_practice" model="ir.actions.act_window">
+        <field name="name">Project Practice</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.whizible.practice</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+              Create Project Practice.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_project_whizible_organization" model="ir.actions.act_window">
+        <field name="name">Project Organization Unit</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.whizible.organization</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+              Create Project Organization Unit.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_project_whizible_status" model="ir.actions.act_window">
+        <field name="name">Project Status</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.whizible.status</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+              Create Project Status.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_project_whizible_life" model="ir.actions.act_window">
+        <field name="name">Project Life</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.whizible.life</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+              Create Project Life Cycle.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_team_plan" model="ir.actions.act_window">
+        <field name="name">Project Charter Team Plan</field>
+        <field name="res_model">team.plan</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+              Create Project Charter Team Plan.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_project_location" model="ir.actions.act_window">
+        <field name="name">Project Location</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.location</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="action_project_ryg" model="ir.actions.act_window">
+        <field name="name">RYG Assessment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.ryg</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+              Create RYG Assesment.
+            </p>
+        </field>
+    </record>
+
+         
+    <menuitem id="parent_menu_project_whisible" name="Project Information" parent="project.menu_main_pm" sequence = '101'/>
+    
+    <menuitem id="menu_project_list" name="Project List" parent="project.menu_main_pm" sequence = '102' action="action_open_view_project_list"/>
+
+<!--     <menuitem id="menu_project_whizible_commercial" name="Commercial" parent="project_mgmt.parent_menu_project_whisible" action="action_project_whizible_commercial" sequence = '1'/> -->
+    
+    <!-- <menuitem id="menu_project_whizible_currency" name="Currency" parent="project_mgmt.parent_menu_project_whisible" action="action_project_whizible_currency" sequence = '2'/> -->
+
+    <menuitem id="menu_project_whizible_practice" name="Practice" parent="project_mgmt.parent_menu_project_whisible" action="action_project_whizible_practice" sequence = '4'/>
+    
+    <menuitem id="menu_project_location" name="Project Location" parent="project_mgmt.parent_menu_project_whisible" action="action_project_location" sequence = '5'/>
+
+    <menuitem id="menu_project_whizible_organization" name="Delivery Unit" parent="project_mgmt.parent_menu_project_whisible" action="action_project_whizible_organization" sequence = '6'/>
+
+    <menuitem id="menu_project_whizible_status" name="Status" parent="project_mgmt.parent_menu_project_whisible" action="action_project_whizible_status" sequence = '9'/>
+    
+    <menuitem id="menu_project_whizible_life" name="Life Cycle" parent="project_mgmt.parent_menu_project_whisible" action="action_project_whizible_life" sequence = '13'/>
+
+    <menuitem id="menu_project_ryg" name="RYG Assessment" parent="project_mgmt.parent_menu_project_whisible" action="action_project_ryg" sequence = '14'/>
+
+</odoo>

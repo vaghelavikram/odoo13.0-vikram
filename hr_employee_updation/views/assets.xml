@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="hr_employee_nda" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/hr_employee_updation/static/src/js/nda_form.js"></script>
+            <script type="text/javascript" src="/hr_employee_updation/static/src/js/hr_org_chart.js"></script>
+            <script type="text/javascript" src="/hr_employee_updation/static/src/js/coc_form.js"></script>
+        </xpath>
+    </template>
+</odoo>

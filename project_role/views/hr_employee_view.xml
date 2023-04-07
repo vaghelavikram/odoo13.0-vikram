@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record model="ir.ui.view" id="hr_employee_inherit_form_view_project">
+            <field name="name">hr.employee.form.view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='work_phone']" position="after">
+            		<field name="project_allocate" invisible="1"/>
+                    <field name="project_assign_till" invisible="1"/>
+                    <field name="total_billability" invisible="1"/>
+                    <field name="allocate" invisible="1"/>
+<!--                    <field name="show_skills" invisible="1"/>-->
+                </xpath>
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="object" name="action_emp_allocation" icon="fa-users" groups="project_mgmt.group_project_user_custom">
+                        <div class="o_stat_info">
+                            <span class="o_stat_text">Allocations</span>
+                        </div>
+                    </button>
+                </div>
+                <xpath expr="//page[@name='hr_settings']" position="after">
+                    <page string="Project Allocation" name="allocations" groups="hr.group_hr_user,project_mgmt.group_project_manager,project_mgmt.group_project_operation,project_mgmt.group_project_operation_copy">
+                        <field name="allocation_ids">
+                            <tree create="0">
+                                <field name="employee_id"/>
+                                <field name="project_id"/>
+                                <field name="manager_id"/>
+                                <field name="project_role_id"/>
+                                <field name="project_bill_status"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="allocation_percentage"/>
+                                <field name="assign_status"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

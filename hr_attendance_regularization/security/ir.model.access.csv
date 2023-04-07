@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+request,request_regular,model_attendance_regular,base.group_user,1,1,1,0
+requestes,request_regulars,model_reg_categories,base.group_user,1,1,1,0
+access_attendance_regular_line,access_attendance_regular_line,model_attendance_regular_line,base.group_user,1,1,1,1
+access_hr_attendance_regular,access_hr_attendance_regular,model_hr_attendance_regular,base.group_user,1,1,1,1
+access_hr_reg_categories,access_hr_reg_categories,model_hr_reg_categories,base.group_user,1,1,1,1 
+access_leader_team,access_leader_team,model_leader_team,base.group_user,1,1,1,1

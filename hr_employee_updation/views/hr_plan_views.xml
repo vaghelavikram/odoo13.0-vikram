@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_plan_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.plan.view.form.inherit</field>
+        <field name="model">hr.plan</field>
+        <field name="inherit_id" ref="hr.hr_plan_view_form"/>
+        <field name="mode">extension</field>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="duplicate">0</attribute>
+            </xpath>
+            <xpath expr="//sheet//div" position="after">
+                <group>
+                    <group>
+                        <field name="plan_type"/>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='plan_activity_type_ids']" position="replace">
+                <field name="plan_activity_type_ids" nolabel="1">
+                    <tree editable="bottom">
+                        <field name="activity_type_id"/>
+                        <field name="topic" attrs="{'column_invisible': [('parent.plan_type', '=', 'generic')]}"/>
+                        <field name="summary"/>
+                        <!-- <field name="courses" options="{'no_create':True}" attrs="{'column_invisible':[('parent.plan_type', '=', 'generic')], 'invisible': [('activity_type_id','!=', 63)]}"/> -->
+                        <field name="courses" options="{'no_create':True}" attrs="{'column_invisible':[('parent.plan_type', '=', 'generic')]}"/>
+                        <field name="tentative_training_date" attrs="{'column_invisible': [('parent.plan_type', '=', 'generic')]}"/>
+                        <field name="responsible"/>
+                        <field name="training_proposed" attrs="{'column_invisible': [('parent.plan_type', '=', 'generic')]}"/>
+                        <field name="responsible_id" attrs="{'readonly': [('responsible', '!=', 'other')]}" string="Trainer identified by" options="{'no_create':1,'no_open':1}"/>
+                        <field name="trainer" options="{'no_create':1}" attrs="{'column_invisible': [('parent.plan_type', '=', 'generic')]}"/>
+                    </tree>
+                </field>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_plan_view_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.plan.view.tree.inherit</field>
+        <field name="model">hr.plan</field>
+        <field name="inherit_id" ref="hr.hr_plan_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="duplicate">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="plan_type"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_plan_activity_type_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.plan.activity.type.view.form.inherit</field>
+        <field name="model">hr.plan.activity.type</field>
+        <field name="inherit_id" ref="hr.hr_plan_activity_type_view_form"/>
+        <field name="arch" type="xml">
+            <field name="summary" position="before">
+                <field name="topic"/>
+            </field>
+            <field name="summary" position="after">
+                <!-- <field name="courses" options="{'no_create':True}" attrs="{'invisible':[('activity_type_id','!=', 63)]}"/> -->
+                <field name="courses" options="{'no_create':True}" invisible="1"/>
+                <field name="tentative_training_date"/>
+            </field>
+            <field name="responsible" position="after">
+                <field name="training_proposed"/>
+            </field>
+            <field name="responsible_id" position="attributes">
+                <attribute name="string">Trainer identified by</attribute>
+                <attribute name="attrs">{}</attribute>
+                <attribute name="options">{'no_create':1,'no_open':1}</attribute>
+            </field>
+            <field name="responsible_id" position="after">
+                <field name="trainer" options="{'no_create':1}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_plan_activity_type_view_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.plan.activity.type.view.tree.inherit</field>
+        <field name="model">hr.plan.activity.type</field>
+        <field name="inherit_id" ref="hr.hr_plan_activity_type_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="responsible" position="after">
+                <field name="training_proposed"/>
+                <field name="responsible_id" string="Trainer identified by"/>
+                <field name="trainer"/>
+            </field>
+            <field name="summary" position="before">
+                <field name="topic"/>
+            </field>
+            <field name="summary" position="after">
+                <!-- <field name="courses" options="{'no_create':True}" attrs="{'invisible':[('activity_type_id','!=', 63)]}"/> -->
+                <field name="courses" options="{'no_create':True}" invisible="1"/>
+                <field name="tentative_training_date"/>
+            </field>
+        </field>
+    </record>
+    
+    <record id="hr.hr_plan_action" model="ir.actions.act_window">
+        <field name="name">Learning Planning</field>
+    </record>
+
+    <record model="ir.ui.menu" id="hr.menu_config_plan_plan">
+        <field name="name">Learning Planning</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model='ir.ui.view' id='document_file_type_list_form_view'>
+        <field name="name">document.file.type.form</field>
+        <field name="model">document.file.type</field>
+        <field name="arch" type="xml">
+            <form string="File Type">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+     </record>
+
+    <record id="action_doc_file_type" model="ir.actions.act_window">
+        <field name="name">Document File Type</field>
+        <field name="res_model">document.file.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="document_file_type_menu" 
+              name="Upload File Type" 
+              parent="hr.menu_human_resources_configuration" 
+              action="action_doc_file_type"/>
+
+</odoo>

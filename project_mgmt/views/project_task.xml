@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_task_form2_inherit" model="ir.ui.view">
+        <field name="name">project.task.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="attrs">{'readonly':['|',('is_assign','=',False),'&amp;', ('task_type','=','milestone'),('edit_task_access', '=', False)]}</attribute>
+            </field>
+            <field name="tag_ids" position="attributes">
+                <attribute name="attrs">{'readonly':['|',('task_type','=','milestone'),('is_assign','=',False)]}</attribute>
+            </field>
+            <field name="description" position="attributes">
+                <attribute name="attrs">{'readonly':['|',('task_type','=','milestone'),('is_assign','=',False)]}</attribute>
+            </field>
+            <field name="parent_id" position="replace">
+                <field name="parent_id" attrs="{'invisible' : [('subtask_count', '&gt;', 0)], 'readonly':['|',('task_type','=','milestone'),('is_assign','=',False)]}" options="{'no_create':True,'no_open':True}"/>
+            </field>
+            <field name="user_id" position="replace">
+                <field name="edit_task_access" invisible="1"/>
+                <field name="user_ids" widget="many2many_tags" invisible="1"/>
+                <field name="user_id" options="{'no_create': True, 'no_open':True}" domain="[('id','in',user_ids)]" attrs="{'readonly':[('is_assign','=',False)],'invisible':[('start_date','=',False)]}" string="e-Zestian"/>
+                <field name="is_assign" invisible="1"/>
+                <field name="is_allocate" class="btn btn-primary btn-sm" string="Search" invisible="1"/>
+                <field name="task_type" readonly="1"/>
+                <field name="sale_line_id" string="Sales Order Item" attrs="{'invisible': ['|', ('partner_id', '=', False), '&amp;', ('sale_order_id', '!=', False), ('sale_line_id', '=', False)]}" options="{'no_open': True}" readonly="1" context="{'create': False, 'edit': False, 'delete': False}"/>
+                <field name="is_parent_task" groups="project_mgmt.group_project_operations,project_mgmt.group_project_operations_copy,project_mgmt.group_project_manager" attrs="{'invisible':[('task_type','=','milestone')]}"/>
+            </field>
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="options">{'no_create_edit': True, 'no_create': True}</attribute>
+                <attribute name="attrs">{'readonly':['|',('is_assign','=',False),('task_type','=','milestone')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="before">
+                <field name="parent_id" domain="[('parent_id', '=', False),('project_id','=',project_id),('date_deadline','&lt;=',date_deadline),('start_date', '&gt;=',start_date),('sale_line_id','not in', ['accepted_by_client', 'reinvoice', 'paid'])]" attrs="{'invisible' : ['|','|',('subtask_count', '&gt;', 0),('start_date','=',False),('date_deadline','=',False)],'readonly':['|',('is_assign','=',False),('task_type','=','milestone')]}" options="{'no_create':True,'no_open':True}"/>
+            </xpath>
+            <xpath expr="//field[@name='date_deadline']" position="before">
+                <field name="start_date" required="1" attrs="{'readonly':['|',('is_assign','=',False),('task_type','=','milestone')]}"/>
+            </xpath>
+            <field name="date_deadline" position="attributes">
+                <attribute name="required">1</attribute>
+                <attribute name="attrs">{'readonly':['|',('is_assign','=',False),('task_type','=','milestone')]}</attribute>
+            </field>
+            <field name="planned_hours" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="force_save">1</attribute>
+            </field>
+            <xpath expr="//page[@name='extra_info']" position="attributes">
+                <attribute name="groups">project_mgmt.group_project_operations</attribute>
+            </xpath>
+            <xpath expr="//page[@name='extra_info']//field[@name='sale_line_id']" position="attributes">
+                <attribute name="options">{'no_open':True}</attribute>
+            </xpath>
+            <field name="company_id" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_task_form2_inherited_inherit" model="ir.ui.view">
+        <field name="name">project.task.form2.inherited.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='planned_hours']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='employee_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_task_timeline" model="ir.ui.view">
+        <field name="model">project.task</field>
+        <field name="type">timeline</field>
+        <field name="arch" type="xml">
+            <timeline date_start="start_date"
+                      date_stop="date_deadline"
+                      default_group_by="project_id"
+                      event_open_popup="true"
+                      zoomKey="no"
+                      mode="week"
+                      colors="#ec7063: user_id == false;">
+                <field name="user_id"/>
+                <field name="planned_hours"/>
+                <templates>
+                    <t t-name="timeline-item">
+                        <div class="o_project_timeline_item">
+                            <img t-if="record.user_id"
+                                 t-attf-src="/web/image/res.users/#{record.user_id[0]}/image/24x24"
+                                 t-att-title="record.user_id[1]" width="24" height="24" class="mr8"/>
+                            <span name="display_name">
+                                <t t-esc="record.display_name"/>
+                            </span>
+                            <small name="planned_hours" class="text-muted ml4">
+                                planned hours:<t t-esc="field_utils.format.float_time(record.planned_hours)"/>
+                            </small>
+                        </div>
+                    </t>
+                </templates>
+            </timeline>
+        </field>
+    </record>
+
+    <record id="view_task_tree2_inherit" model="ir.ui.view">
+        <field name="name">project.task.tree</field>
+        <field name="model">project.task</field>
+        <field eval="2" name="priority"/>
+        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="replace">
+                <tree decoration-bf="message_needaction==True" decoration-danger="date_deadline and (date_deadline&lt;current_date)" string="Tasks">
+                    <field name="partner_id"/>
+                    <field name="project_id"/>
+                    <field name="parent_id"/>
+                    <field name="task_type" invisible="1"/>
+                    <field name="name" string="Task"/>
+                    <field name="user_id" invisible="context.get('user_invisible', False)" string="e-Zestian"/>
+                    <field name="start_date"/>
+                    <field name="date_deadline"/>
+                    <field name="effective_hours" widget="float_time"/>
+                    <field name="message_needaction" invisible="1"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project.action_view_task" model="ir.actions.act_window">
+        <field name="view_mode">tree,kanban,form,calendar,timeline,pivot,graph,activity</field>
+        <field name="context">{'search_default_my_tasks': 1, 'search_default_project': 1}</field>
+    </record>
+
+    <record id="project.open_view_task_list_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+    </record>
+
+    <record id="project.open_view_task_list_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="0"/>
+    </record>
+
+    <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
+        <field name="view_mode">tree,kanban,form,calendar,timeline,pivot,graph,activity</field>
+        <!-- <field name="context">{'search_default_my_tasks': 1}</field> -->
+    </record>
+
+    <record id="project.project_task_action_sub_task" model="ir.actions.act_window">
+        <field name="view_mode">tree,kanban,form,calendar,timeline,pivot,graph,activity</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="SummaryListView.employee_summary_button">
+        <button type="button" class="btn btn-primary o_employee_summary_button">
+            My Attendance Summary
+        </button>
+        <!-- <button type="button" class="btn btn-primary o_employee_reg_button">
+            Regularization Request
+        </button> -->
+        <button type="button" class="btn btn-primary o_employee_timesheet_button">
+            Apply Timesheet
+        </button>
+        <button type="button" class="btn btn-primary o_employee_reg_view_button">
+            View Regularization
+        </button>
+    </t>
+
+    <t t-name="LeaveSummaryListView.employee_summary_button">
+        <button type="button" class="btn btn-primary o_employee_leave_request">
+            Leave Request
+        </button>
+        <button type="button" class="btn btn-primary o_employee_summary_button">
+            My Attendance Summary
+        </button>
+    </t>
+
+    <t t-extend="ListView.buttons" t-name="SummaryListView.buttons">
+        <t t-jquery="button.o_list_button_save" t-operation="after">
+            <t t-call="SummaryListView.employee_summary_button"/>
+        </t>
+    </t>
+
+    <t t-extend="ListView.buttons" t-name="LeaveSummaryListView.buttons">
+        <t t-jquery="button.o_list_button_save" t-operation="after">
+            <t t-call="LeaveSummaryListView.employee_summary_button"/>
+        </t>
+    </t>
+</templates>

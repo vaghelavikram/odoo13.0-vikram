@@ -1,0 +1,521 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Ho",
+				"HospitalPatient"
+			],
+			[
+				"re",
+				"reccivable"
+			],
+			[
+				"ma",
+				"many2many_tags"
+			],
+			[
+				"tag",
+				"tag_ids"
+			],
+			[
+				"group_",
+				"group_no_one"
+			],
+			[
+				"b",
+				"boolean_toggle"
+			],
+			[
+				"ac",
+				"active"
+			],
+			[
+				"mo",
+				"models"
+			],
+			[
+				"Ima",
+				"Image"
+			],
+			[
+				"pro",
+				"product"
+			],
+			[
+				"tem",
+				"template"
+			],
+			[
+				"t",
+				"True"
+			],
+			[
+				"col",
+				"column"
+			],
+			[
+				"product",
+				"product_id"
+			],
+			[
+				"price",
+				"price_unit"
+			],
+			[
+				"appo",
+				"appointment_id"
+			],
+			[
+				"Appo",
+				"Appointment"
+			],
+			[
+				"_dis",
+				"_description_size"
+			],
+			[
+				"ho",
+				"data-hotkey"
+			],
+			[
+				"st",
+				"states"
+			],
+			[
+				"act",
+				"action_done"
+			],
+			[
+				"tr",
+				"true"
+			],
+			[
+				"op",
+				"options"
+			],
+			[
+				"many",
+				"many2one_avatar"
+			],
+			[
+				"da",
+				"date_of_birth"
+			],
+			[
+				"se",
+				"set_upper"
+			],
+			[
+				"val",
+				"vals"
+			],
+			[
+				"c",
+				"create"
+			],
+			[
+				"v",
+				"vals"
+			],
+			[
+				"o",
+				"oe_title"
+			],
+			[
+				"sh",
+				"show"
+			],
+			[
+				"deco",
+				"decoration-danger"
+			],
+			[
+				"in",
+				"in_consultation"
+			],
+			[
+				"con",
+				"confirm"
+			],
+			[
+				"pri",
+				"print"
+			],
+			[
+				"clicka",
+				"Clickable"
+			],
+			[
+				"oe_",
+				"oe_title"
+			],
+			[
+				"Pri",
+				"priority"
+			],
+			[
+				"no",
+				"normal"
+			],
+			[
+				"edi",
+				"edit"
+			],
+			[
+				"date",
+				"date_of_birth"
+			],
+			[
+				"D",
+				"Date"
+			],
+			[
+				"Dat",
+				"Datetime"
+			],
+			[
+				"d",
+				"booking_date"
+			],
+			[
+				"Da",
+				"Datetime"
+			],
+			[
+				"sel",
+				"select"
+			],
+			[
+				"Tr",
+				"tracking"
+			],
+			[
+				"a",
+				"activity"
+			],
+			[
+				"inher",
+				"inherit"
+			],
+			[
+				"message_",
+				"message_ids"
+			],
+			[
+				"activi",
+				"activity_ids"
+			],
+			[
+				"gro",
+				"groupby"
+			],
+			[
+				"ser",
+				"separator"
+			],
+			[
+				"filter",
+				"filter_domain"
+			],
+			[
+				"menu",
+				"menu_patient_master"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "odoo.conf",
+			"settings":
+			{
+				"buffer_size": 216,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					3,
+					1,
+					"paste",
+					null,
+					"AQAAAAAAAAAAAAAA2gAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					10,
+					5,
+					"left_delete",
+					null,
+					"BQAAAFcAAAAAAAAAVwAAAAAAAAABAAAAblYAAAAAAAAAVgAAAAAAAAABAAAAaVUAAAAAAAAAVQAAAAAAAAABAAAAbVQAAAAAAAAAVAAAAAAAAAABAAAAZFMAAAAAAAAAUwAAAAAAAAABAAAAYQ",
+					"AQAAAAAAAAABAAAAWAAAAAAAAABYAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					11,
+					1,
+					"insert",
+					{
+						"characters": "123"
+					},
+					"AwAAAFMAAAAAAAAAVAAAAAAAAAAAAAAAVAAAAAAAAABVAAAAAAAAAAAAAABVAAAAAAAAAFYAAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAUwAAAAAAAABTAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					16,
+					6,
+					"left_delete",
+					null,
+					"BgAAANYAAAAAAAAA1gAAAAAAAAABAAAAc9UAAAAAAAAA1QAAAAAAAAABAAAAbtQAAAAAAAAA1AAAAAAAAAABAAAAb9MAAAAAAAAA0wAAAAAAAAABAAAAZNIAAAAAAAAA0gAAAAAAAAABAAAAZNEAAAAAAAAA0QAAAAAAAAABAAAAYQ",
+					"AQAAAAAAAAABAAAA1wAAAAAAAADXAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					17,
+					1,
+					"insert",
+					{
+						"characters": "addo"
+					},
+					"BAAAANEAAAAAAAAA0gAAAAAAAAAAAAAA0gAAAAAAAADTAAAAAAAAAAAAAADTAAAAAAAAANQAAAAAAAAAAAAAANQAAAAAAAAA1QAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA0QAAAAAAAADRAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					18,
+					1,
+					"insert",
+					{
+						"characters": "ns"
+					},
+					"AgAAANUAAAAAAAAA1gAAAAAAAAAAAAAA1gAAAAAAAADXAAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA1QAAAAAAAADVAAAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/great-ideas/Documents/custom_addons",
+		"/home/great-ideas/Documents/custom_addons/om_hospital",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/models",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/security",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/views"
+	],
+	"file_history":
+	[
+		"/home/great-ideas/Documents/custom_addons/conf/untitled.sublime-project",
+		"/home/great-ideas/Documents/custom_addons/om_hospital",
+		"/home/great-ideas/Documents/odoo-15.0/addons/account/security/ir.model.access.csv",
+		"/home/great-ideas/Documents/odoo-15.0/conf",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/models/__init__.py",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/__manifest__.py",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/models/patient_.py",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/__init__.py",
+		"/home/great-ideas/Documents/custom_addons/__manifest__.py",
+		"/home/great-ideas/Documents/odoo-15.0/custom/config",
+		"/home/great-ideas/Desktop/Mayank_Python/odoo/Python_odoo",
+		"/home/great-ideas/Documents/old/om_hospital/data/data.xml",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/static",
+		"/home/great-ideas/Documents/old/om_hospital/__manifest__.py",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/models/patient_tag.py",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/models/patient.py",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/models/appointment.py",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/views/patient_tag_view.xml",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/views/patient_view.xml",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/security/ir.model.access.csv",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/views/menu.xml",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/views/appointment_view.xml",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/data/data.xml",
+		"/home/great-ideas/Documents/odoo-15.0/odoo/fields.py",
+		"/home/great-ideas/Documents/env_odoo15/lib/python3.10/site-packages/attr/__init__.pyi",
+		"/home/great-ideas/Documents/custom_addons/om_hospital/views/female_patient_view.xml",
+		"/home/great-ideas/Documents/odoo-15.0/addons/hr/views/hr_employee_public_views.xml",
+		"/home/great-ideas/Documents/odoo-15.0/addons/hr_recruitment_survey/__manifest__.py",
+		"/home/great-ideas/Desktop/Mayank_Python/odoo/manyfest",
+		"/home/great-ideas/Desktop/Mayank_Python/demo1.py",
+		"/home/great-ideas/Desktop/Mayank_Python/demo.py"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 98.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "odoo.conf",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 216,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								215,
+								215
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "untitled.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 251.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

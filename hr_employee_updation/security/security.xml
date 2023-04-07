@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_hr_conf_manager" model="res.groups">
+        <field name="name">Confirmation Manager</field>
+        <field name="category_id" ref="base.module_category_human_resources"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="manager_expense_visibility" model="ir.rule">
+        <field name="name">Manager Confirmation Visibility</field>
+        <field ref="hr_employee_updation.model_hr_probation_survey" name="model_id"/>
+        <!-- <field name="domain_force">['|',('employee_id.user_id','=',user.id),('employee_id.parent_id.user_id','=',user.id)]</field> -->
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('hr_employee_updation.group_hr_conf_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="hr_probation_survey" model="ir.rule">
+        <field name="name">Confirmation of my Company</field>
+        <field name="model_id" ref="hr_employee_updation.model_hr_probation_survey"/>
+        <field eval="True" name="global"/>
+        <field name="domain_force">['|', ('employee_id.company_id', '=', False), ('employee_id.company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="group_inc_team_member" model="res.groups">
+        <field name="name">Role: Inc Team Member</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_emp_cheque_access" model="res.groups">
+        <field name="name">Team Member Cheque Access</field>
+    </record>
+    
+    <!-- <record id="group_vp_operation" model="res.groups">
+        <field name="name">Role: VP Operations</field>
+    </record>
+
+    <record id="project_allocation" model="ir.rule">
+      <field name="name">Allocations all</field>
+        <field name="model_id" ref="project_role.model_project_assignment"/>
+        <field name="groups" eval="[(4, ref('group_vp_operation'))]"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="project_project" model="ir.rule">
+      <field name="name">Project all</field>
+        <field name="model_id" ref="project.model_project_project"/>
+        <field name="groups" eval="[(4, ref('group_vp_operation'))]"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record> -->
+</odoo>
