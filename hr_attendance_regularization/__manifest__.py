@@ -20,7 +20,7 @@
             # 'wizard/confirm_regularize_wizard.xml',
             ],
     'demo': [],
-    # 'qweb': ['static/src/xml/tree_inherit.xml'],
+    'qweb': ['static/src/xml/tree_inherit.xml'],
     'images': ['static/description/icon.png'],
     'license': "AGPL-3",
     'installable': True,
